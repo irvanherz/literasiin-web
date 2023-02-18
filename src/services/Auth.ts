@@ -1,14 +1,26 @@
 import { axiosInstance } from 'libs/api'
+import ApiData from 'models/ApiData'
+import ApiError from 'models/ApiError'
+
+const BASEURL = process.env.REACT_APP_API_BASEURL
 
 export default class AuthService {
   static async signin (payload: any) {
-    const resp = await axiosInstance.post('http://localhost:5000/auth/signin', payload)
-    return resp.data
+    try {
+      const resp = await axiosInstance.post(`${BASEURL}/auth/signin`, payload)
+      return ApiData.fromResponse(resp)
+    } catch (err: any) {
+      throw new ApiError(err)
+    }
   }
 
   static async signup (payload: any) {
-    const resp = await axiosInstance.post('http://localhost:5000/auth/signup', payload)
-    return resp.data
+    try {
+      const resp = await axiosInstance.post(`${BASEURL}/auth/signup`, payload)
+      return ApiData.fromResponse(resp)
+    } catch (err: any) {
+      throw new ApiError(err)
+    }
   }
 
   static persistToken (token?: string | null, refreshToken?: string | null) {

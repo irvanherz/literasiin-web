@@ -33,18 +33,21 @@ export function translateApiError (error:any): TranslatedApiError {
   }
 }
 
+export function generateAuthorizationHeaderValue () {
+  const token = localStorage.getItem('token')
+  return token ? `Bearer ${token}` : null
+}
+
 export const axiosInstance = axios.create()
 
-axios.interceptors.request.use(config => {
-  // const token = localStorage.getItem('token')
-
-  // if (token) {
-  //   config.headers = {
-  //     ...config.headers,
-  //     Authorization: `Bearer ${token}`
-  //   }
-  // }
-  return config
+axiosInstance.interceptors.request.use(config => {
+  const auth = generateAuthorizationHeaderValue()
+  if (auth) {
+    config.headers.Authorization = auth
+  }
+  return { ...config }
 }, error => {
   Promise.reject(error)
 })
+
+// https://gist.github.com/Godofbrowser/bf118322301af3fc334437c683887c5f#file-axios-refresh_token-2-js

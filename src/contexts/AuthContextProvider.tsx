@@ -10,6 +10,7 @@ export default function AuthContextProvider ({ children }: AuthContextProviderPr
     status: 'idle',
     token: undefined
   })
+
   useEffect(() => {
     const token = localStorage.getItem('token')
     setValue({

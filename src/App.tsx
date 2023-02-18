@@ -1,8 +1,10 @@
 import { ConfigProvider, theme } from 'antd'
 import ChapterEdit from 'pages/ChapterEdit'
+import StoryCreate from 'pages/StoryCreate'
 import StoryDetails from 'pages/StoryDetails'
+import StoryListMine from 'pages/StoryListMine'
+import UserProfileEdit from 'pages/UserProfileEdit'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
-import './App.css'
 import Auth from './pages/Auth'
 import Home from './pages/Home'
 import NotFound from './pages/NotFound'
@@ -20,9 +22,24 @@ const router = createBrowserRouter([
     element: <Auth />
   },
   {
-    id: '/users/:userId',
-    path: '/users/:userId',
+    id: '/users/:username',
+    path: '/users/:username',
     element: <UserDetails />
+  },
+  {
+    id: '/users/:username/edit',
+    path: '/users/:username/edit',
+    element: <UserProfileEdit />
+  },
+  {
+    id: '/stories/mine',
+    path: '/stories/mine',
+    element: <StoryListMine />
+  },
+  {
+    id: '/stories/create',
+    path: '/stories/create',
+    element: <StoryCreate />
   },
   {
     id: '/stories/:storyId',

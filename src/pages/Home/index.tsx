@@ -1,4 +1,7 @@
 import { List, Space } from 'antd'
+import AuthorCardCarousel from 'components/AuthorCardCarousel'
+import { useQuery } from 'react-query'
+import StoriesService from 'services/Stories'
 import styled from 'styled-components'
 import Layout from '../../components/Layout'
 import StoryCard from '../../components/StoryCard'
@@ -10,6 +13,9 @@ const StyledList = styled(List)`
 }
 `
 export default function Home () {
+  const { data: storiesData } = useQuery(['stories', 'newest'], () => StoriesService.findMany({}))
+  const { data = [] } = storiesData || {}
+
   return (
     <Layout.Default>
       <Layout.Scaffold withHeader={false}>
@@ -17,14 +23,15 @@ export default function Home () {
           <Banner />
           <StyledList
             grid={{ column: 4, gutter: 8 }}
-            dataSource={[1, 2, 3, 4, 5, 6, 7]}
+            dataSource={data}
             renderItem={story => (
               <List.Item>
-                <StoryCard />
+                <StoryCard story={story} />
               </List.Item>
 
             )}
           />
+          <AuthorCardCarousel />
         </Space>
 
       </Layout.Scaffold>

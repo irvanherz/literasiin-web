@@ -1,8 +1,9 @@
-import { Button, Form, message } from 'antd'
+import { Button, Form, message, Space } from 'antd'
+import { getMessaging, getToken } from 'firebase/messaging'
 import useAuthContext from 'hooks/useAuthContext'
 import { useEffect } from 'react'
 import { useMutation } from 'react-query'
-import { useNavigate, useSearchParams } from 'react-router-dom'
+import { Link, useNavigate, useSearchParams } from 'react-router-dom'
 import AuthService from 'services/Auth'
 import SigninForm from './SigninForm'
 
@@ -13,10 +14,21 @@ export default function Signin () {
   const [form] = Form.useForm()
   const signin = useMutation<any, any, any>(AuthService.signin)
 
-  const handleSubmit = (values: any) => {
-    signin.mutate(values, {
-      onError: () => {
-        message.error('Oops, something went wrong')
+  const handleSubmit = async (values: any) => {
+    const messaging = getMessaging()
+    const notificationToken = await getToken(messaging).catch(() => undefined)
+
+    const payload = {
+      ...values,
+      deviceType: 'web',
+      deviceId: window.navigator.userAgent,
+      notificationToken
+    }
+    console.log(payload)
+
+    signin.mutate(payload, {
+      onError: (e) => {
+        message.error(e.message)
       },
       onSuccess: (result) => {
         const { token, refreshToken } = result.meta
@@ -42,7 +54,12 @@ export default function Signin () {
       >
         <SigninForm />
       </Form>
-      <Button type="primary" onClick={form.submit} loading={signin.isLoading}>Sign In</Button>
+      <Space style={{ width: '100%', justifyContent: 'space-between' }}>
+        <Button type="primary" onClick={form.submit} loading={signin.isLoading}>Sign In</Button>
+        <Link to='/auth/signup' replace={true}>
+          <Button type="link">Does not have an account? Sign Up</Button>
+        </Link>
+      </Space>
     </div>
   )
 }
