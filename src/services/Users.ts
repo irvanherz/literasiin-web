@@ -4,6 +4,26 @@ import ApiError from 'models/ApiError'
 
 const BASEURL = process.env.REACT_APP_API_BASEURL
 
+class Connections {
+  static async findManyFollowersByUserId (id: number, params: any = {}) {
+    try {
+      const resp = await axiosInstance.get(`${BASEURL}/users/${id}/followers`, { params })
+      return ApiData.fromResponse(resp)
+    } catch (err: any) {
+      throw new ApiError(err)
+    }
+  }
+
+  static async findManyFollowingByUserId (id: number, params: any = {}) {
+    try {
+      const resp = await axiosInstance.get(`${BASEURL}/users/${id}/following`, { params })
+      return ApiData.fromResponse(resp)
+    } catch (err: any) {
+      throw new ApiError(err)
+    }
+  }
+}
+
 class Identities {
   static async create (payload: any) {
     try {
@@ -53,6 +73,7 @@ class Identities {
 
 export default class UsersService {
   static Identities = Identities
+  static Connections = Connections
   static async create (payload: any) {
     try {
       const resp = await axiosInstance.post(`${BASEURL}/users`, payload)

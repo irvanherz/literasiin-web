@@ -1,20 +1,23 @@
 import { Button, Form, message, Space } from 'antd'
 import useAuthContext from 'hooks/useAuthContext'
+import { useEffect } from 'react'
 import { useMutation } from 'react-query'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate, useSearchParams } from 'react-router-dom'
 import AuthService from 'services/Auth'
 import SignupForm from './SignupForm'
 
 export default function Signup () {
   const auth = useAuthContext()
+  const navigate = useNavigate()
+  const [searchParams] = useSearchParams()
   const signup = useMutation<any, any, any>(AuthService.signup)
   const [form] = Form.useForm()
 
   const handleSubmit = (values: any) => {
     delete values.passwordConfirmation
     signup.mutate(values, {
-      onError: (e) => {
-        message.error(e.message)
+      onError: (err) => {
+        message.error(err?.message)
       },
       onSuccess: (result) => {
         const { token, refreshToken } = result.meta
@@ -26,6 +29,13 @@ export default function Signup () {
   const handleValidationFailed = () => {
     message.error('Check all fields and then try again')
   }
+
+  useEffect(() => {
+    if (auth.status === 'authenticated') {
+      const redirect = searchParams.get('redirect') || '/'
+      navigate(redirect, { replace: true })
+    }
+  }, [auth.status])
 
   return (
     <div>

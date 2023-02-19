@@ -1,5 +1,6 @@
 /* eslint-disable prefer-promise-reject-errors */
 import { DatePicker, Form, Input, Select } from 'antd'
+import UsernameInput from 'components/shared/UsernameInput'
 
 export default function SignupForm () {
   const form = Form.useFormInstance()
@@ -25,7 +26,7 @@ export default function SignupForm () {
         name='username'
         rules={[{ required: true, message: 'Username is required' }]}
       >
-        <Input placeholder="Username" maxLength={255} />
+        <UsernameInput placeholder="Username" maxLength={255} />
       </Form.Item>
       <Form.Item
         label="Full name"

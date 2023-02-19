@@ -1,5 +1,5 @@
 import { ConfigProvider, theme } from 'antd'
-import ChapterEdit from 'pages/ChapterEdit'
+import StoryChapterEdit from 'pages/StoryChapterEdit'
 import StoryCreate from 'pages/StoryCreate'
 import StoryDetails from 'pages/StoryDetails'
 import StoryListMine from 'pages/StoryListMine'
@@ -47,9 +47,9 @@ const router = createBrowserRouter([
     element: <StoryDetails />
   },
   {
-    id: '/stories/:storyId/chapters/:chapterId/write',
-    path: '/stories/:storyId/chapters/:chapterId/write',
-    element: <ChapterEdit />
+    id: '/stories/chapters/:chapterId/edit',
+    path: '/stories/chapters/:chapterId/edit',
+    element: <StoryChapterEdit />
   },
   {
     id: '*',

@@ -1,28 +1,46 @@
 import useAuthContext from 'hooks/useAuthContext'
-import { ReactNode, useEffect } from 'react'
+import { ReactNode, useEffect, useState } from 'react'
 import { useQuery } from 'react-query'
 import UsersService from 'services/Users'
-import CurrentUserContext from './CurrentUserContext'
+import CurrentUserContext, { CurrentUserContextType } from './CurrentUserContext'
 
 type CurrentUserContextProviderProps = {
   children: ReactNode
 }
 export default function CurrentUserContextProvider ({ children }: CurrentUserContextProviderProps) {
   const auth = useAuthContext()
-  const { data, status, refetch, remove } = useQuery(
+  const [value, setValue] = useState<CurrentUserContextType>({
+    status: 'idle',
+    data: undefined
+  })
+
+  const userQuery = useQuery(
     'users[me]',
     () => UsersService.findByUsername('me'),
     { enabled: false }
   )
 
   useEffect(() => {
-    if (auth.status === 'authenticated') refetch()
-    else if (auth.status === 'unauthenticated') remove()
+    const fun = async () => {
+      try {
+        if (auth.status === 'authenticated') {
+          const result = await userQuery.refetch()
+          const data = result.data?.data
+          setValue({ status: 'success', data })
+        } else if (auth.status === 'unauthenticated') {
+          setValue({ status: 'success', data: undefined })
+        }
+      } catch (err) {
+        console.log(err)
+        setValue({ status: 'error', data: undefined })
+      }
+    }
+    fun()
   }, [auth.status])
 
   return (
-    <CurrentUserContext.Provider value={{ status, data: data?.data }}>
-      {status !== 'idle' && children}
+    <CurrentUserContext.Provider value={value}>
+      {value.status === 'success' && children}
     </CurrentUserContext.Provider>
   )
 }

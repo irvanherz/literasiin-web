@@ -14,17 +14,23 @@ export default function Signin () {
   const [form] = Form.useForm()
   const signin = useMutation<any, any, any>(AuthService.signin)
 
+  const getNotificationToken = async () => {
+    try {
+      const messaging = getMessaging()
+      const token = await getToken(messaging).catch(() => undefined)
+      return token
+    } catch (err) {
+      return null
+    }
+  }
   const handleSubmit = async (values: any) => {
-    const messaging = getMessaging()
-    const notificationToken = await getToken(messaging).catch(() => undefined)
-
+    const notificationToken = await getNotificationToken()
     const payload = {
       ...values,
       deviceType: 'web',
       deviceId: window.navigator.userAgent,
       notificationToken
     }
-    console.log(payload)
 
     signin.mutate(payload, {
       onError: (e) => {

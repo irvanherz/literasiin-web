@@ -40,14 +40,14 @@ export function generateAuthorizationHeaderValue () {
 
 export const axiosInstance = axios.create()
 
-axiosInstance.interceptors.request.use(config => {
-  const auth = generateAuthorizationHeaderValue()
-  if (auth) {
-    config.headers.Authorization = auth
-  }
-  return { ...config }
-}, error => {
-  Promise.reject(error)
-})
+// axiosInstance.interceptors.request.use(config => {
+//   const auth = generateAuthorizationHeaderValue()
+//   if (auth) {
+//     config.headers.Authorization = auth
+//   }
+//   return { ...config }
+// }, error => {
+//   Promise.reject(error)
+// })
 
 // https://gist.github.com/Godofbrowser/bf118322301af3fc334437c683887c5f#file-axios-refresh_token-2-js

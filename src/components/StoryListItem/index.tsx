@@ -1,49 +1,22 @@
-import { UserOutlined } from '@ant-design/icons'
-import { Button, Dropdown, List, MenuProps, Space } from 'antd'
+import { Button, List, Space, Tag } from 'antd'
 import StoryCover from 'components/StoryCover'
+import dayjs from 'dayjs'
 import { DEFAULT_IMAGE } from 'libs/variables'
-import moment from 'moment-timezone'
-import { Link } from 'react-router-dom'
-
-const items: MenuProps['items'] = [
-  {
-    label: '1st menu item',
-    key: '1',
-    icon: <UserOutlined />
-  },
-  {
-    label: '2nd menu item',
-    key: '2',
-    icon: <UserOutlined />
-  },
-  {
-    label: '3rd menu item',
-    key: '3',
-    icon: <UserOutlined />,
-    danger: true
-  },
-  {
-    label: '4rd menu item',
-    key: '4',
-    icon: <UserOutlined />,
-    danger: true,
-    disabled: true
-  }
-]
+import ContinueWritingButton from './ContinueWritingButton'
 
 type StoryListItemProps = {
   story: any
 }
 
 export default function StoryListItem ({ story }: StoryListItemProps) {
-  const lastUpdateTime = moment(story.updatedAt).format('LLLL')
-
   return (
     <List.Item
       extra={
         <div>
           <Space>
-            <Dropdown.Button menu={{ items }}>Continue Writing</Dropdown.Button>
+            <ContinueWritingButton story={story}>
+              <Button>Continue Writing</Button>
+            </ContinueWritingButton>
             <Button>Share</Button>
           </Space>
 
@@ -51,17 +24,22 @@ export default function StoryListItem ({ story }: StoryListItemProps) {
       }
     >
       <List.Item.Meta
-        avatar={<StoryCover src={DEFAULT_IMAGE} />}
-        title={<Link to={`/stories/${story.id}/edit`}>{story.title}</Link>}
+        style={{ alignItems: 'center' }}
+        avatar={
+          <div style={{ minWidth: 72 }}>
+            <StoryCover src={DEFAULT_IMAGE} />
+          </div>
+        }
+        title={
+          <Space>
+            <span>{story.title}</span>
+            {story?.status === 'draft' && (<Tag>Draft</Tag>)}
+          </Space>
+        }
         description={
           <Space direction='vertical'>
             <div>{story.description}</div>
-            <div>Diperbarui <b>{lastUpdateTime}</b></div>
-            <Space>
-              <div>Views</div>
-              <div>Rating</div>
-              <div>Comments</div>
-            </Space>
+            <div>Last updated {dayjs(story?.updatedAt).fromNow()}</div>
           </Space>
         }
       />

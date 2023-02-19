@@ -3,9 +3,9 @@ import React from 'react'
 import ReactDOM from 'react-dom/client'
 import { QueryClient, QueryClientProvider } from 'react-query'
 import App from './App'
-import './index.css'
 import reportWebVitals from './reportWebVitals'
 
+import AxiosInterceptor from 'components/shared/AxiosInterceptor'
 import CurrentUserContextProvider from 'contexts/CurrentUserContextProvider'
 import dayjs from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime'
@@ -42,9 +42,11 @@ root.render(
   <React.StrictMode>
     <QueryClientProvider client={queryClient}>
       <AuthContextProvider>
-        <CurrentUserContextProvider>
-          <App />
-        </CurrentUserContextProvider>
+        <AxiosInterceptor>
+          <CurrentUserContextProvider>
+            <App />
+          </CurrentUserContextProvider>
+        </AxiosInterceptor>
       </AuthContextProvider>
     </QueryClientProvider>
   </React.StrictMode>

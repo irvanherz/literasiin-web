@@ -23,6 +23,15 @@ export default class AuthService {
     }
   }
 
+  static async refreshToken (rtoken: string) {
+    try {
+      const resp = await axiosInstance.post(`${BASEURL}/auth/refresh-token`, { refreshToken: rtoken })
+      return ApiData.fromResponse(resp)
+    } catch (err: any) {
+      throw new ApiError(err)
+    }
+  }
+
   static persistToken (token?: string | null, refreshToken?: string | null) {
     if (token) {
       localStorage.setItem('token', token)

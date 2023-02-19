@@ -8,14 +8,17 @@ type AuthContextProviderProps = {
 export default function AuthContextProvider ({ children }: AuthContextProviderProps) {
   const [value, setValue] = useState<any>({
     status: 'idle',
-    token: undefined
+    token: undefined,
+    refreshToken: undefined
   })
 
   useEffect(() => {
     const token = localStorage.getItem('token')
+    const refreshToken = localStorage.getItem('refreshToken')
     setValue({
       status: token ? 'authenticated' : 'unauthenticated',
-      token: token || undefined
+      token: token || undefined,
+      refreshToken: refreshToken || undefined
     })
   }, [])
 
@@ -23,7 +26,8 @@ export default function AuthContextProvider ({ children }: AuthContextProviderPr
     AuthService.persistToken(token, refreshToken)
     setValue({
       status: token ? 'authenticated' : 'unauthenticated',
-      token: token || undefined
+      token: token || undefined,
+      refreshToken: refreshToken || undefined
     })
   }
 

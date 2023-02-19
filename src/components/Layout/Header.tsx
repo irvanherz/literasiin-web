@@ -52,7 +52,7 @@ export default function Header ({ searchComponent }: HeaderProps) {
   return (
     <StyledPageWidthAdapter className="adapter">
       <Link to="/" className="logo">
-        <img src={`${process.env.PUBLIC_URL}/assets/images/logo-light-iconic.svg`} />
+        <img src={`${process.env.PUBLIC_URL}/assets/images/logo.svg`} />
       </Link>
       <div className="search">
         {searchComponent}

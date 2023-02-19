@@ -1,5 +1,6 @@
 import { Button, Form, message } from 'antd'
 import Layout from 'components/Layout'
+import RouteGuard from 'components/RouteGuard'
 import UserProfileForm from 'components/shared/UserProfileForm'
 import dayjs from 'dayjs'
 import { useMemo } from 'react'
@@ -45,25 +46,27 @@ export default function UserProfileEdit () {
 
   const [form] = Form.useForm()
   return (
-    <Layout.Default>
-      <Layout.Scaffold
-        title="Edit Profile"
-        description="Update your profile details"
-        bodyStyle={{ padding: '24px 0' }}
+    <RouteGuard require='authenticated'>
+      <Layout.Default>
+        <Layout.Scaffold
+          title="Edit Profile"
+          description="Update your profile details"
+          bodyStyle={{ padding: '24px 0' }}
       >
-        <Form
-          wrapperCol={{ span: 24 }}
-          labelCol={{ span: 24 }}
-          initialValues={initialValues}
-          form={form}
-          onFinish={handleFinish}
-          onFinishFailed={handleFinishFailed}
+          <Form
+            wrapperCol={{ span: 24 }}
+            labelCol={{ span: 24 }}
+            initialValues={initialValues}
+            form={form}
+            onFinish={handleFinish}
+            onFinishFailed={handleFinishFailed}
         >
-          <UserProfileForm />
-        </Form>
-        <Button loading={updater.isLoading} onClick={form.submit}>Update</Button>
-      </Layout.Scaffold>
-    </Layout.Default>
+            <UserProfileForm />
+          </Form>
+          <Button loading={updater.isLoading} onClick={form.submit}>Update</Button>
+        </Layout.Scaffold>
+      </Layout.Default>
+    </RouteGuard>
 
   )
 }

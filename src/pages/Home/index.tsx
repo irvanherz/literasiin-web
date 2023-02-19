@@ -33,9 +33,7 @@ export default function Home () {
           />
           <AuthorCardCarousel />
         </Space>
-
       </Layout.Scaffold>
-
     </Layout.Default>
   )
 }

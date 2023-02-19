@@ -12,11 +12,12 @@ const StyledLayout = styled(Layout)`
   }
   .ant-layout-header {
     padding: 0;
-    background: #FFF;
+    background: rgba(255,255,255,0.5);
     position: sticky;
     top: 0;
     z-index: 9;
     box-shadow: 0 0 20px rgb(0 0 0 / 10%);
+    backdrop-filter: blur(5px);
   }
   .ant-layout-content {
     padding: 0;

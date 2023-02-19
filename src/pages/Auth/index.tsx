@@ -1,4 +1,5 @@
 import { Card } from 'antd'
+import RouteGuard from 'components/RouteGuard'
 import { useMemo } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import Layout from '../../components/Layout'
@@ -26,15 +27,18 @@ export default function Auth () {
   }
 
   return (
-    <Layout.Blank contentStyle={{ display: 'flex' }}>
-      <Card
-        onTabChange={handleTabChange}
-        tabList={[{ key: 'signin', tab: 'Sign In' }, { key: 'signup', tab: 'Sign Up' }]}
-        activeTabKey={sectionId}
-        style={{ width: '100%', maxWidth: 500, margin: 'auto' }}
+    <RouteGuard require='unauthenticated'>
+      <Layout.Blank contentStyle={{ display: 'flex' }}>
+        <Card
+          onTabChange={handleTabChange}
+          tabList={[{ key: 'signin', tab: 'Sign In' }, { key: 'signup', tab: 'Sign Up' }]}
+          activeTabKey={sectionId}
+          style={{ width: '100%', maxWidth: 500, margin: 'auto' }}
       >
-        {renderedSection}
-      </Card>
-    </Layout.Blank>
+          {renderedSection}
+        </Card>
+      </Layout.Blank>
+    </RouteGuard>
+
   )
 }

@@ -13,7 +13,9 @@ export default function ProfileCard ({ user }: ProfileCardProps) {
       </Space>
 
       <Divider />
-      <div>Follower list</div>
+      <div>
+        Isi apa gitu
+      </div>
       <Divider />
       <div>Share links</div>
     </Card>
