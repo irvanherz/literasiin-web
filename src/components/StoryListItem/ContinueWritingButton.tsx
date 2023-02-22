@@ -2,7 +2,6 @@ import { PlusOutlined } from '@ant-design/icons'
 import { Button, Card, List, Modal, Typography } from 'antd'
 import StoryCover from 'components/StoryCover'
 import dayjs from 'dayjs'
-import { DEFAULT_IMAGE } from 'libs/variables'
 import { cloneElement, ReactElement, useState } from 'react'
 import { useQuery } from 'react-query'
 import StoriesService from 'services/Stories'
@@ -36,7 +35,7 @@ export default function ContinueWritingButton ({ children, story }: ContinueWrit
               <Card.Meta
                 avatar={
                   <div style={{ minWidth: 72 }}>
-                    <StoryCover src={DEFAULT_IMAGE} />
+                    <StoryCover story={story} />
                   </div>
                 }
                 title={story.title}

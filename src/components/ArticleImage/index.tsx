@@ -5,7 +5,7 @@ import styled, { CSSProperties } from 'styled-components'
 const CoverWrapper = styled.div`
 position: relative;
 width: 100%;
-padding-top: 150%;
+padding-top: 50%;
 img {
   position: absolute;
   top: 0;
@@ -16,18 +16,18 @@ img {
 }
 `
 
-type StoryCoverProps = DetailedHTMLProps<ImgHTMLAttributes<HTMLImageElement>, HTMLImageElement> & {
-  story?: any
+type ArticleImageProps = DetailedHTMLProps<ImgHTMLAttributes<HTMLImageElement>, HTMLImageElement> & {
+  article?: any
   containerStyle?: CSSProperties
   containerClassName?: string
 }
-export default function StoryCover ({ story, containerStyle, containerClassName, ...props }: StoryCoverProps) {
+export default function ArticleImage ({ article, containerStyle, containerClassName, ...props }: ArticleImageProps) {
   const src = useMemo(() => {
-    const cover = story?.cover
-    const objects: any[] = cover?.meta?.objects || []
+    const image = article?.image
+    const objects: any[] = image?.meta?.objects || []
     const md = objects.find(object => object.id === 'md')
     return md?.url || DEFAULT_IMAGE
-  }, [story])
+  }, [article])
 
   return (
     <CoverWrapper style={containerStyle} className={containerClassName}>

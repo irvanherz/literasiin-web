@@ -23,6 +23,7 @@ export default function CurrentUserContextProvider ({ children }: CurrentUserCon
   useEffect(() => {
     const fun = async () => {
       try {
+        setValue({ status: 'idle', data: undefined })
         if (auth.status === 'authenticated') {
           const result = await userQuery.refetch()
           const data = result.data?.data

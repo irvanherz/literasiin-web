@@ -1,4 +1,6 @@
 import { ConfigProvider, theme } from 'antd'
+import ArticleDetails from 'pages/ArticleDetails'
+import StoryChapterDetails from 'pages/StoryChapterDetails'
 import StoryChapterEdit from 'pages/StoryChapterEdit'
 import StoryCreate from 'pages/StoryCreate'
 import StoryDetails from 'pages/StoryDetails'
@@ -47,9 +49,19 @@ const router = createBrowserRouter([
     element: <StoryDetails />
   },
   {
+    id: '/stories/chapters/:chapterId',
+    path: '/stories/chapters/:chapterId',
+    element: <StoryChapterDetails />
+  },
+  {
     id: '/stories/chapters/:chapterId/edit',
     path: '/stories/chapters/:chapterId/edit',
     element: <StoryChapterEdit />
+  },
+  {
+    id: '/articles/:articleId',
+    path: '/articles/:articleId',
+    element: <ArticleDetails />
   },
   {
     id: '*',

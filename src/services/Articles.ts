@@ -41,7 +41,7 @@ class Categories {
     }
   }
 
-  static async bulkUpdate (id: number, payload: any[]) {
+  static async bulkUpdate (payload: any[]) {
     try {
       const resp = await axiosInstance.patch(`${BASEURL}/articles/categories/bulk-update`, { data: payload })
       return ApiData.fromResponse(resp)

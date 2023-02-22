@@ -1,7 +1,6 @@
 import { Button, List, Space, Tag } from 'antd'
 import StoryCover from 'components/StoryCover'
 import dayjs from 'dayjs'
-import { DEFAULT_IMAGE } from 'libs/variables'
 import ContinueWritingButton from './ContinueWritingButton'
 
 type StoryListItemProps = {
@@ -27,7 +26,7 @@ export default function StoryListItem ({ story }: StoryListItemProps) {
         style={{ alignItems: 'center' }}
         avatar={
           <div style={{ minWidth: 72 }}>
-            <StoryCover src={DEFAULT_IMAGE} />
+            <StoryCover story={story} />
           </div>
         }
         title={

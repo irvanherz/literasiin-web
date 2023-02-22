@@ -1,17 +1,17 @@
-import { Card, Col, Menu, Row, Space, Typography } from 'antd'
+import { Card, Col, Row, Space, Typography } from 'antd'
 import ContentGateway from 'components/ContentGateway'
 import Layout from 'components/Layout'
 import StoryCover from 'components/StoryCover'
-import { DEFAULT_IMAGE } from 'libs/variables'
 import { useQuery } from 'react-query'
 import { useParams } from 'react-router-dom'
 import StoriesService from 'services/Stories'
+import StoryChapters from './StoryChapters'
 
 export default function StoryDetails () {
   const params = useParams()
   const storyId = +(params?.storyId || 0)
   const { data, status, error } = useQuery<any, any, any>(['stories.details', storyId], () => StoriesService.findById(storyId))
-  const story = data?.data || {}
+  const story = data?.data
 
   return (
     <Layout.Default>
@@ -21,14 +21,23 @@ export default function StoryDetails () {
           title={
             <Space size='large' style={{ alignItems: 'start' }}>
               <div style={{ minWidth: 150, maxWidth: 150 }}>
-                <StoryCover src={DEFAULT_IMAGE} />
+                <StoryCover story={story} />
               </div>
               <div style={{ flex: 1 }}>
-                <Typography.Title style={{ marginTop: 0 }}>{story.title}</Typography.Title>
-                <Space>
-                  <div>Read</div>
-                  <div>Vote</div>
-                  <div>Chapters</div>
+                <Typography.Title style={{ marginTop: 0 }}>{story?.title}</Typography.Title>
+                <Space style={{ textAlign: 'center' }}>
+                  <div>
+                    <div>{story?.numReads || 0}</div>
+                    <div>Reads</div>
+                  </div>
+                  <div>
+                    <div>{story?.numVotes || 0}</div>
+                    <div>Votes</div>
+                  </div>
+                  <div>
+                    <div>{story?.numChapters}</div>
+                    <div>Chapters</div>
+                  </div>
                 </Space>
               </div>
             </Space>
@@ -38,13 +47,10 @@ export default function StoryDetails () {
             <Col xs={24} md={18}>
               <Space direction='vertical' style={{ width: '100%' }}>
                 <Card>
-                  <Typography.Paragraph>{story.description}</Typography.Paragraph>
-                  <div>Copyright</div>
-                  <div>tags</div>
+                  <Typography.Paragraph>{story?.description}</Typography.Paragraph>
+                  <div>Category: {story?.category?.name || 'Uncategorized'}</div>
                 </Card>
-                <Card title="Chapters">
-                  <Menu items={[{ key: '1', label: 'Chapter 1' }, { key: '2', label: 'Chapter 2' }]} />
-                </Card>
+                <StoryChapters story={story} />
               </Space>
             </Col>
             <Col xs={24} md={6}>

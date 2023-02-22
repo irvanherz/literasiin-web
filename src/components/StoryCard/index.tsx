@@ -1,6 +1,5 @@
 import { Card } from 'antd'
 import StoryCover from 'components/StoryCover'
-import { DEFAULT_IMAGE } from 'libs/variables'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 const StyledCard = styled(Card)`
@@ -28,7 +27,7 @@ export default function StoryCard ({ story }: StoryCardProps) {
       <StyledCard
         size='small'
         cover={
-          <StoryCover src={DEFAULT_IMAGE} />
+          <StoryCover story={story} />
         }
       >
         <Card.Meta

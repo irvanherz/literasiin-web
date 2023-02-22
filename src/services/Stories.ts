@@ -79,9 +79,9 @@ class Chapters {
     }
   }
 
-  static async findById (id: number) {
+  static async findById (id: number, params: any = {}) {
     try {
-      const resp = await axiosInstance.get(`${BASEURL}/stories/chapters/${id}`)
+      const resp = await axiosInstance.get(`${BASEURL}/stories/chapters/${id}`, { params })
       return ApiData.fromResponse(resp)
     } catch (err: any) {
       throw new ApiError(err)

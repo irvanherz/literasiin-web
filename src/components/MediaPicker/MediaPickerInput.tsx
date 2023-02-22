@@ -127,10 +127,11 @@ export default function MediaPickerInput ({ filters = {}, value, defaultValue, o
             ))
           })}
         </Row>
-        {!!data?.pages?.length && (
-          <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />
-        )}
+
       </InfiniteScroll>
+      {!!data?.pages?.length && (
+        <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />
+      )}
     </Space>
   )
 }

@@ -34,7 +34,6 @@ export default function StoryCreate () {
           title="Create Story"
           description="Fill information about your story below"
           bodyStyle={{ padding: '16px 0' }}
-          actions={[<Button key='sub' onClick={form.submit}>Submit</Button>]}
         >
           <Form
             form={form}
