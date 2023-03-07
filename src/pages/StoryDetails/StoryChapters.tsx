@@ -1,4 +1,4 @@
-import { Card, Menu, MenuProps } from 'antd'
+import { Card, Empty, Menu, MenuProps } from 'antd'
 import { useQuery } from 'react-query'
 import { useNavigate } from 'react-router-dom'
 import StoriesService from 'services/Stories'
@@ -19,7 +19,14 @@ export default function StoryChapters ({ story }:StoryChaptersProps) {
   }
   return (
     <Card title="Chapters">
-      <Menu onSelect={handleSelect} items={menuItems} style={{ border: 0 }} />
+      {chapters.length
+        ? <Menu onSelect={handleSelect} items={menuItems} style={{ border: 0 }} />
+        : <Empty
+            image={Empty.PRESENTED_IMAGE_SIMPLE}
+            description="Chapters not available yet"
+        />
+
+    }
     </Card>
   )
 }

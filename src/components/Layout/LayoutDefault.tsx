@@ -2,7 +2,6 @@ import { Layout, theme } from 'antd'
 import ScrollToTop from 'components/utils/ScrollToTop'
 import { ReactNode } from 'react'
 import styled from 'styled-components'
-import Content from './Content'
 import Footer from './Footer'
 import Header from './Header'
 
@@ -38,16 +37,14 @@ export default function LayoutDefault ({ children, searchComponent }: LayoutDefa
   return (
     <StyledLayout>
       <div className='top'>
-        <Layout.Header>
+        <Layout.Header className='layout-default-header'>
           <Header searchComponent={searchComponent} />
         </Layout.Header>
-        <Layout.Content>
-          <Content>
-            {children}
-          </Content>
+        <Layout.Content className='layout-default-content'>
+          {children}
         </Layout.Content>
       </div>
-      <Layout.Footer style={{ background: token.colorBgContainer }}>
+      <Layout.Footer className='layoout-default-footer' style={{ background: token.colorBgContainer }}>
         <Footer />
       </Layout.Footer>
       <ScrollToTop />

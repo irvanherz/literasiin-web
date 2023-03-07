@@ -1,4 +1,4 @@
-import { MessageOutlined, ShoppingCartOutlined, UserOutlined } from '@ant-design/icons'
+import { UserOutlined } from '@ant-design/icons'
 import { Button, Space } from 'antd'
 import useAuthContext from 'hooks/useAuthContext'
 import { ReactNode } from 'react'
@@ -12,12 +12,12 @@ function UserMenu () {
   return auth.status === 'authenticated'
     ? (
       <Space>
-        <Link to='/cart'>
+        {/* <Link to='/cart'>
           <Button shape='circle' icon={<ShoppingCartOutlined />} />
         </Link>
         <Link to='/chats'>
           <Button shape='circle' icon={<MessageOutlined />} />
-        </Link>
+        </Link> */}
         <ProfileMenu><Button shape='round' icon={<UserOutlined />}>Menu</Button></ProfileMenu>
       </Space>
       )

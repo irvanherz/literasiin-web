@@ -1,5 +1,6 @@
 import { Card, Col, Row, Tabs } from 'antd'
 import ArticleImage from 'components/ArticleImage'
+import PageWidthAdapter from 'components/PageWidthAdapter'
 import { useQuery } from 'react-query'
 import { Link } from 'react-router-dom'
 import ArticlesService from 'services/Articles'
@@ -53,11 +54,14 @@ export default function ArticleList () {
   const { data } = useQuery('articles.categories[]', () => ArticlesService.Categories.findMany())
   const categories: any[] = data?.data || []
   return (
-    <Tabs tabPosition='top'>
-      <Tabs.TabPane tab="All" key={0}><ArticleListPerCategory category={undefined} /></Tabs.TabPane>
-      {categories.map(cat => (
-        <Tabs.TabPane tab={cat.name} key={cat.id}><ArticleListPerCategory category={cat} /></Tabs.TabPane>
-      ))}
-    </Tabs>
+    <PageWidthAdapter>
+      <Tabs tabPosition='top'>
+        <Tabs.TabPane tab="All" key={0}><ArticleListPerCategory category={undefined} /></Tabs.TabPane>
+        {categories.map(cat => (
+          <Tabs.TabPane tab={cat.name} key={cat.id}><ArticleListPerCategory category={cat} /></Tabs.TabPane>
+        ))}
+      </Tabs>
+    </PageWidthAdapter>
+
   )
 }

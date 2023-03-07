@@ -1,5 +1,6 @@
 import { ConfigProvider, theme } from 'antd'
 import ArticleDetails from 'pages/ArticleDetails'
+import Notifications from 'pages/Notifications'
 import StoryChapterDetails from 'pages/StoryChapterDetails'
 import StoryChapterEdit from 'pages/StoryChapterEdit'
 import StoryCreate from 'pages/StoryCreate'
@@ -17,6 +18,11 @@ const router = createBrowserRouter([
     id: '/',
     path: '/',
     element: <Home />
+  },
+  {
+    id: '/notifications',
+    path: '/notifications',
+    element: <Notifications />
   },
   {
     id: '/auth/:sectionId',

@@ -11,12 +11,21 @@ import MediaPickerUploader from './MediaPickerUploader'
 
 const MediaWrapper = styled.div`
 width: 100%;
+height: 0;
 position: relative;
+overflow: hidden;
+padding-bottom: 150%;
+border: 4px solid transparent;
 &>img {
+  position: absolute;
+  left: 0;
+  top: 0;
   width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 &.media-selected {
-  border: 4px solid rgb(0 140 200 / 30%);
+  border: 4px solid rgb(13 110 253 / 25%);
 }
 .media-controls {
   position: absolute;

@@ -1,4 +1,5 @@
 import { Card, Col, Row } from 'antd'
+import PageWidthAdapter from 'components/PageWidthAdapter'
 import StoryCover from 'components/StoryCover'
 import { useQuery } from 'react-query'
 import { Link } from 'react-router-dom'
@@ -36,12 +37,15 @@ export default function StoryList () {
   const stories: any[] = data?.data || []
 
   return (
-    <Row gutter={[16, 16]} style={{ width: '100%' }}>
-      {stories.map((story) => (
-        <Col key={story.id} xs={24} sm={12} md={8} lg={6} xl={4} xxl={4}>
-          <StoryCard story={story} />
-        </Col>
-      ))}
-    </Row>
+    <PageWidthAdapter>
+      <Row gutter={[16, 16]} style={{ width: '100%' }}>
+        {stories.map((story) => (
+          <Col key={story.id} xs={24} sm={12} md={8} lg={6} xl={4} xxl={4}>
+            <StoryCard story={story} />
+          </Col>
+        ))}
+      </Row>
+    </PageWidthAdapter>
+
   )
 }

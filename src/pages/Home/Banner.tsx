@@ -1,4 +1,5 @@
 import { Carousel } from 'antd'
+import PageWidthAdapter from 'components/PageWidthAdapter'
 import { DEFAULT_IMAGE } from 'libs/variables'
 import styled from 'styled-components'
 
@@ -27,15 +28,18 @@ function BannerItem ({ banner }: BannerItemProps) {
   )
 }
 
-const BannerContainer = styled(Carousel)`
-width: 100%;
-margin: 0 -8px;
-.slick-slide > div {
-  padding: 8px;
-  img {
-    border-radius: 8px;
-  }
+const BannerContainer = styled.div`
+.banner-element {
+  width: 100%;
+  margin: 0 -8px;
+  .slick-slide > div {
+    padding: 8px;
+    img {
+      border-radius: 8px;
+    }
+  }  
 }
+
 `
 
 const CAROUSEL_SETTINGS = {
@@ -50,9 +54,13 @@ export default function Banner () {
   const banners = [1, 1, 1, 1, 1]
   return (
     <BannerContainer {...CAROUSEL_SETTINGS}>
-      {banners.map(banner => (
-        <BannerItem key='key' banner={banner} />
-      ))}
+      <PageWidthAdapter>
+        <Carousel className='banner-element' {...CAROUSEL_SETTINGS}>
+          {banners.map(banner => (
+            <BannerItem key='key' banner={banner} />
+          ))}
+        </Carousel>
+      </PageWidthAdapter>
     </BannerContainer>
   )
 }

@@ -59,14 +59,14 @@ export default function ProfileMenu ({ children }: ProfileMenuProps) {
                 key: '/notifications',
                 label: <Link to={'/notifications'}>Notifications</Link>
               },
-              {
-                key: '/chats',
-                label: <Link to={'/chats'}>Messages</Link>
-              },
-              {
-                key: '/users/me/settings',
-                label: <Link to={'/users/me/settings'}>Settings</Link>
-              },
+              // {
+              //   key: '/chats',
+              //   label: <Link to={'/chats'}>Messages</Link>
+              // },
+              // {
+              //   key: '/users/me/settings',
+              //   label: <Link to={'/users/me/settings'}>Settings</Link>
+              // },
               {
                 key: 'signout',
                 label: 'Sign Out',
