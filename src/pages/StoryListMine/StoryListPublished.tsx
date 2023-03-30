@@ -6,7 +6,7 @@ import StoriesService from 'services/Stories'
 
 export default function StoryListPublished () {
   const user = useCurrentUser()
-  const { data } = useQuery(
+  const { data, refetch } = useQuery(
     'stories.mine.published',
     () => StoriesService.findMany({ status: 'published', userId: user.id, limit: 100 })
   )
@@ -16,7 +16,7 @@ export default function StoryListPublished () {
     <List
       dataSource={stories}
       renderItem={story => (
-        <StoryListItem story={story} />
+        <StoryListItem story={story} afterUpdated={refetch} afterDeleted={refetch} />
       )}
     />
   )

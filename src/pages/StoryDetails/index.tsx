@@ -1,17 +1,32 @@
-import { Card, Col, Row, Space, Typography } from 'antd'
+import { Card, Col, Row, Space } from 'antd'
 import ContentGateway from 'components/ContentGateway'
 import Layout from 'components/Layout'
-import StoryCover from 'components/StoryCover'
-import { useQuery } from 'react-query'
+import StoryShareSegment from 'components/StoryShareSegment'
+import useStoryContext from 'hooks/useStoryContext'
+import { useEffect } from 'react'
+import { Helmet } from 'react-helmet'
+import { useMutation, useQuery } from 'react-query'
 import { useParams } from 'react-router-dom'
 import StoriesService from 'services/Stories'
+import AuthorEditButton from './AuthorEditButton'
+import BookmarkButton from './BookmarkButton'
+import Header from './Header'
+import RecommendedStories from './RecommendedStories'
 import StoryChapters from './StoryChapters'
+import Summary from './Summary'
 
 export default function StoryDetails () {
   const params = useParams()
   const storyId = +(params?.storyId || 0)
-  const { data, status, error } = useQuery<any, any, any>(['stories.details', storyId], () => StoriesService.findById(storyId))
+  const tracker = useMutation(() => StoriesService.Readers.track(storyId))
+  const { data, status, error } = useQuery<any, any, any>(`stories[${storyId}]`, () => StoriesService.findById(storyId))
+  const { data: contextData, refetch: refetchContext } = useStoryContext(storyId)
   const story = data?.data
+  const context = contextData?.data
+
+  useEffect(() => {
+    tracker.mutate()
+  }, [storyId])
 
   return (
     <Layout.Default>
@@ -19,47 +34,35 @@ export default function StoryDetails () {
         <Layout.Scaffold
           bodyStyle={{ padding: '16px 0' }}
           title={
-            <Space size='large' style={{ alignItems: 'start' }}>
-              <div style={{ minWidth: 150, maxWidth: 150 }}>
-                <StoryCover story={story} />
-              </div>
-              <div style={{ flex: 1 }}>
-                <Typography.Title style={{ marginTop: 0 }}>{story?.title}</Typography.Title>
-                <Space style={{ textAlign: 'center' }}>
-                  <div>
-                    <div>{story?.numReads || 0}</div>
-                    <div>Reads</div>
-                  </div>
-                  <div>
-                    <div>{story?.numVotes || 0}</div>
-                    <div>Votes</div>
-                  </div>
-                  <div>
-                    <div>{story?.numChapters}</div>
-                    <div>Chapters</div>
-                  </div>
-                </Space>
-              </div>
-            </Space>
-        }
-      >
+            <Header story={story} />
+          }
+          actions={[
+            <BookmarkButton key='bookmark' story={story} context={context} afterUpdated={refetchContext} />,
+            <AuthorEditButton key='settings' story={story} />
+          ]}
+          actionsContainerStyle={{ alignSelf: 'start' }}
+        >
           <Row gutter={[16, 16]}>
-            <Col xs={24} md={18}>
+            <Col xs={24} md={16}>
               <Space direction='vertical' style={{ width: '100%' }}>
-                <Card>
-                  <Typography.Paragraph>{story?.description}</Typography.Paragraph>
-                  <div>Category: {story?.category?.name || 'Uncategorized'}</div>
-                </Card>
+                <Summary story={story}/>
                 <StoryChapters story={story} />
               </Space>
             </Col>
-            <Col xs={24} md={6}>
-              Recommended
+            <Col xs={24} md={8}>
+              <Space direction='vertical' style={{ width: '100%' }}>
+                <Card bodyStyle={{ textAlign: 'center' }}>
+                  <StoryShareSegment story={story}/>
+                </Card>
+                <RecommendedStories />
+              </Space>
             </Col>
           </Row>
         </Layout.Scaffold>
       </ContentGateway>
-
+      <Helmet>
+        <title>{story?.title ? `${story.title} - Literasiin` : 'Literasiin'}</title>
+      </Helmet>
     </Layout.Default>
   )
 }

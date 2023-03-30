@@ -6,16 +6,16 @@ import StoriesService from 'services/Stories'
 
 export default function StoryListAny () {
   const user = useCurrentUser()
-  const { data } = useQuery(
+  const { data, refetch } = useQuery(
     'stories.mine.any',
-    () => StoriesService.findMany({ userId: user.id, limit: 100 })
+    () => StoriesService.findMany({ userId: user.id, limit: 100, status: 'any' })
   )
   const stories = data?.data || []
   return (
     <List
       dataSource={stories}
       renderItem={story => (
-        <StoryListItem story={story} />
+        <StoryListItem story={story} afterUpdated={refetch} afterDeleted={refetch} />
       )}
     />
   )

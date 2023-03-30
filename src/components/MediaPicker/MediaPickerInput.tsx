@@ -11,39 +11,14 @@ import MediaPickerUploader from './MediaPickerUploader'
 
 const MediaWrapper = styled.div`
 width: 100%;
-height: 0;
 position: relative;
-overflow: hidden;
-padding-bottom: 150%;
 border: 4px solid transparent;
+line-height: 0;
 &>img {
-  position: absolute;
-  left: 0;
-  top: 0;
   width: 100%;
-  height: 100%;
-  object-fit: cover;
 }
 &.media-selected {
   border: 4px solid rgb(13 110 253 / 25%);
-}
-.media-controls {
-  position: absolute;
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0,0,0,0.1);
-  opacity: 0;
-  &:hover {
-    opacity: 1;
-  }
-  .media-controls-button {
-    padding: 4px 8px;
-    background: none;
-    border: none;
-    color: rgba(0,0,0,0.5);
-  }
 }
 `
 type MediaItemProps = {
@@ -59,13 +34,10 @@ export function MediaItem ({ media, selected, onClick }:MediaItemProps) {
   return (
     <MediaWrapper className={selected ? 'media-selected' : ''} onClick={onClick}>
       <img src={md?.url || DEFAULT_IMAGE} />
-      <div className='media-controls'>
-      </div>
       <Image
         style={{ display: 'none' }}
         preview={{ visible: preview, onVisibleChange: setPreview }}
         src={md?.url || DEFAULT_IMAGE}
-
     />
     </MediaWrapper>
 
@@ -81,7 +53,7 @@ type MediaPickerProps = {
   cropProps?: Omit<ImgCropProps, 'children'>
 }
 
-export default function MediaPickerInput ({ filters = {}, value, defaultValue, onChange, preset, cropProps }: MediaPickerProps) {
+export default function MediaPickerInput ({ filters = {}, value, defaultValue, onChange, preset = 'photo', cropProps }: MediaPickerProps) {
   const [computedValue, triggerValueChange] = useCustomComponent({ value, defaultValue, onChange })
   const selectedMediaId = computedValue?.id
 

@@ -35,12 +35,12 @@ export default class AuthService {
   static persistToken (token?: string | null, refreshToken?: string | null) {
     if (token) {
       localStorage.setItem('token', token)
-    } else if (token === null) {
+    } else {
       localStorage.removeItem('token')
     }
     if (refreshToken) {
       localStorage.setItem('refreshToken', refreshToken)
-    } else if (refreshToken === null) {
+    } else {
       localStorage.removeItem('refreshToken')
     }
   }

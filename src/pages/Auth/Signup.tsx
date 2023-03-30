@@ -1,6 +1,7 @@
 import { Button, Form, message, Space } from 'antd'
 import useAuthContext from 'hooks/useAuthContext'
 import { useEffect } from 'react'
+import { Helmet } from 'react-helmet'
 import { useMutation } from 'react-query'
 import { Link, useNavigate, useSearchParams } from 'react-router-dom'
 import AuthService from 'services/Auth'
@@ -54,6 +55,9 @@ export default function Signup () {
           <Button type="link">Already have an account? Sign In</Button>
         </Link>
       </Space>
+      <Helmet>
+        <title>Sign up - Literasiin</title>
+      </Helmet>
     </div>
   )
 }

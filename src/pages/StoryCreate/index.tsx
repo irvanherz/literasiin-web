@@ -2,6 +2,7 @@ import { PlusOutlined } from '@ant-design/icons'
 import { Button, Card, Col, Form, message, Row, Space } from 'antd'
 import Layout from 'components/Layout'
 import RouteGuard from 'components/RouteGuard'
+import { Helmet } from 'react-helmet'
 import { useMutation } from 'react-query'
 import { useNavigate } from 'react-router-dom'
 import StoriesService from 'services/Stories'
@@ -66,6 +67,9 @@ export default function StoryCreate () {
             </Row>
           </Form>
         </Layout.Scaffold>
+        <Helmet>
+          <title>Create new Story - Literasiin</title>
+        </Helmet>
       </Layout.Default>
     </RouteGuard>
   )

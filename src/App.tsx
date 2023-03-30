@@ -1,10 +1,16 @@
 import { ConfigProvider, theme } from 'antd'
 import ArticleDetails from 'pages/ArticleDetails'
+import Chats from 'pages/Chats'
+import KbDetails from 'pages/KbDetails'
+import KbExplore from 'pages/KbExplore'
+import KbHome from 'pages/KbHome'
 import Notifications from 'pages/Notifications'
+import PublicationCreate from 'pages/PublicationCreate'
 import StoryChapterDetails from 'pages/StoryChapterDetails'
 import StoryChapterEdit from 'pages/StoryChapterEdit'
 import StoryCreate from 'pages/StoryCreate'
 import StoryDetails from 'pages/StoryDetails'
+import StoryEdit from 'pages/StoryEdit'
 import StoryListMine from 'pages/StoryListMine'
 import UserProfileEdit from 'pages/UserProfileEdit'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
@@ -55,6 +61,11 @@ const router = createBrowserRouter([
     element: <StoryDetails />
   },
   {
+    id: '/stories/:storyId/edit',
+    path: '/stories/:storyId/edit',
+    element: <StoryEdit />
+  },
+  {
     id: '/stories/chapters/:chapterId',
     path: '/stories/chapters/:chapterId',
     element: <StoryChapterDetails />
@@ -70,6 +81,41 @@ const router = createBrowserRouter([
     element: <ArticleDetails />
   },
   {
+    id: '/hc',
+    path: '/hc',
+    element: <KbHome />
+  },
+  {
+    id: '/hc/:categoryId',
+    path: '/hc/:categoryId',
+    element: <KbExplore />
+  },
+  {
+    id: '/hc/explore',
+    path: '/hc/explore',
+    element: <KbExplore />
+  },
+  {
+    id: '/hc/:categoryId/:kbId',
+    path: '/hc/:categoryId/:kbId',
+    element: <KbDetails />
+  },
+  {
+    id: '/chats',
+    path: '/chats',
+    element: <Chats />
+  },
+  {
+    id: '/chats/:roomId',
+    path: '/chats/:roomId',
+    element: <Chats />
+  },
+  {
+    id: '/publications/create',
+    path: '/publications/create',
+    element: <PublicationCreate />
+  },
+  {
     id: '*',
     path: '*',
     element: <NotFound />
@@ -79,7 +125,9 @@ const router = createBrowserRouter([
 function App () {
   return (
     <div className="App">
-      <ConfigProvider theme={{ algorithm: theme.defaultAlgorithm }}>
+      <ConfigProvider
+        theme={{ algorithm: theme.defaultAlgorithm, token: { fontFamily: 'Roboto, sans-serif' } }}
+      >
         <RouterProvider router={router} />
       </ConfigProvider>
     </div>

@@ -1,3 +1,4 @@
+import { LeftOutlined, RightOutlined } from '@ant-design/icons'
 import { Avatar, Card, Carousel, CarouselProps } from 'antd'
 import PageWidthAdapter from 'components/PageWidthAdapter'
 import { DEFAULT_PHOTO } from 'libs/variables'
@@ -41,6 +42,23 @@ function TestimonialItem ({ testimonial }: TestimonialItemProps) {
 }
 
 const TestimonialContainer = styled.div`
+.ant-carousel .slick-prev,
+.ant-carousel .slick-prev:hover {
+  left: 10px;
+  z-index: 2;
+  color: black;
+  font-size: 20px;
+  height: 30px;
+}
+
+.ant-carousel .slick-next,
+.ant-carousel .slick-next:hover {
+  right: 10px;
+  z-index: 2;
+  color: black;
+  font-size: 20px;
+  height: 30px;
+}
 .testimonial-element {
   width: 100%;
   margin: 0 -8px;
@@ -54,12 +72,34 @@ const TestimonialContainer = styled.div`
 `
 
 const CAROUSEL_SETTINGS: CarouselProps = {
-  dots: true,
+  dots: false,
   infinite: true,
   speed: 500,
   slidesToShow: 3,
   slidesToScroll: 1,
-  arrows: true
+  arrows: true,
+  prevArrow: <LeftOutlined />,
+  nextArrow: <RightOutlined />,
+  responsive: [
+    {
+      breakpoint: 500,
+      settings: {
+        slidesToShow: 1
+      }
+    },
+    {
+      breakpoint: 920,
+      settings: {
+        slidesToShow: 2
+      }
+    },
+    {
+      breakpoint: 1200,
+      settings: {
+        slidesToShow: 3
+      }
+    }
+  ]
 }
 
 type TestimonialsProps = {

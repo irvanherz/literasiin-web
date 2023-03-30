@@ -21,7 +21,7 @@ type PartnersProps = {
 }
 
 export default function Partners ({ config }: PartnersProps) {
-  const partners = config?.faqs || []
+  const partners = config?.partners || []
 
   return (
     <Wrapper>
@@ -33,7 +33,7 @@ export default function Partners ({ config }: PartnersProps) {
           <div className='section-2-inner'>
             <Space size={32}>
               {partners.map((partner: any) => (
-                <Avatar key={partner.id} size={64} src={partner?.avatar || DEFAULT_PHOTO} />
+                <Avatar key={partner.id} size={64} src={partner?.image || DEFAULT_PHOTO} />
               ))}
             </Space>
           </div>

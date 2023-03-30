@@ -31,6 +31,20 @@ export default function AuthContextProvider ({ children }: AuthContextProviderPr
     })
   }
 
+  useEffect(() => {
+    if (value.refreshToken) {
+      const interval = setInterval(async () => {
+        try {
+          const result = await AuthService.refreshToken(value.refreshToken)
+          const { token, refreshToken } = result?.meta || {}
+          setToken(token, refreshToken)
+        } catch (err) {}
+      }, 4 * 60 * 1000)
+
+      return () => clearInterval(interval)
+    }
+  }, [value.refreshToken])
+
   return (
     <AuthContext.Provider value={{ setToken, ...value }}>
       {value.status !== 'idle' && children}

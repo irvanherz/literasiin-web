@@ -20,6 +20,7 @@ type LayoutScaffoldProps = {
   children?: ReactNode,
   bodyStyle?: CSSProperties,
   bodyClassName?: string,
+  actionsContainerStyle?: CSSProperties,
 }
 
 const ScaffoldContainer = styled.div`
@@ -50,7 +51,7 @@ const ScaffoldContainer = styled.div`
       padding: 12px 0;
     }
   `
-export default function LayoutScaffold ({ withHeader = true, headerStyle, headerClassName, title, description, actions, style, extra, extraStyle, extraClassName, children, bodyStyle, bodyClassName }: LayoutScaffoldProps) {
+export default function LayoutScaffold ({ withHeader = true, headerStyle, headerClassName, title, description, actions, style, extra, extraStyle, extraClassName, children, bodyStyle, bodyClassName, actionsContainerStyle }: LayoutScaffoldProps) {
   const navigate = useNavigate()
   const { token } = theme.useToken()
 
@@ -63,7 +64,7 @@ export default function LayoutScaffold ({ withHeader = true, headerStyle, header
           style={{ background: token.colorBgContainer, ...headerStyle }}
           className={classNames('scaffold-header', headerClassName)}
         >
-          <PageWidthAdapter style={{ display: 'flex', alignItems: 'center' }}>
+          <PageWidthAdapter style={{ display: 'flex' }}>
             <div style={{ flex: 1 }}>
               <button className='back-button' style={{ color: token.colorTextBase, marginBottom: token.marginSM }} onClick={handleBack}>
                 <span className='back-button-icon' style={{ paddingRight: token.padding }}><ArrowLeftOutlined /></span>
@@ -72,7 +73,7 @@ export default function LayoutScaffold ({ withHeader = true, headerStyle, header
               <Typography.Title level={2} className='scaffold-header-title'>{title}</Typography.Title>
               <Typography.Paragraph className='scaffold-header-description'>{description}</Typography.Paragraph>
             </div>
-            <div style={{ flex: 0 }}>{<Space>{actions}</Space>}</div>
+            <div style={{ flex: 0, display: 'flex', ...actionsContainerStyle }}>{<Space>{actions}</Space>}</div>
           </PageWidthAdapter>
         </div>
       )}

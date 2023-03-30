@@ -1,15 +1,39 @@
 import { Avatar, Button, List, Modal } from 'antd'
+import { DEFAULT_PHOTO } from 'libs/variables'
 import { useState } from 'react'
 import InfiniteScroll from 'react-infinite-scroll-component'
 import { useInfiniteQuery } from 'react-query'
+import { useNavigate } from 'react-router-dom'
 import UsersService from 'services/Users'
+
+type UserItemProps = { user: any, onClick: (user: any) => void }
+function UserItem ({ user, onClick }: UserItemProps) {
+  const objects: any[] = user?.photo?.meta?.objects || []
+  const md = objects.find(object => object.id === 'md')
+
+  const handleClick = () => {
+    onClick(user)
+  }
+  return (
+    <List.Item style={{ cursor: 'pointer' }} onClick={handleClick}>
+      <List.Item.Meta
+        style={{ alignItems: 'center' }}
+        avatar={<Avatar size='large' src={md?.url || DEFAULT_PHOTO} />}
+        title={user?.fullName}
+        description={`@${user?.username}`}
+      />
+    </List.Item>
+  )
+}
 
 type FollowersButtonProps = {
   user: any
+  context: any
 }
 
-export default function FollowersButton ({ user }: FollowersButtonProps) {
+export default function FollowersButton ({ user, context }: FollowersButtonProps) {
   const userId = user?.id
+  const navigate = useNavigate()
   const [open, setOpen] = useState(false)
 
   const handleOpen = () => setOpen(true)
@@ -20,11 +44,10 @@ export default function FollowersButton ({ user }: FollowersButtonProps) {
     ({ pageParam }) => UsersService.Connections.findManyFollowersByUserId(userId, { page: pageParam }),
     {
       getNextPageParam: ({ meta }) => (meta.page < meta.numPages) ? meta.page + 1 : undefined,
-      getPreviousPageParam: ({ meta }) => (meta.page > 1) ? meta.page - 1 : undefined
+      getPreviousPageParam: ({ meta }) => (meta.page > 1) ? meta.page - 1 : undefined,
+      enabled: open
     }
   )
-
-  const numUsers = data?.pages?.[0]?.meta?.numItems
   const users = data?.pages?.reduce<any>((a, c) => {
     return [...a, ...c?.data]
   }, [])
@@ -35,10 +58,15 @@ export default function FollowersButton ({ user }: FollowersButtonProps) {
     }, 0)
     : 0
 
+  const handleViewProfile = (user: any) => {
+    handleClose()
+    navigate(`/users/${user?.username}`)
+  }
+
   return (
     <>
       <Button onClick={handleOpen} type='ghost' style={{ display: 'inline-block', height: 'auto' }}>
-        <div>{numUsers}</div>
+        <div>{context?.numFollowers || 0}</div>
         <div>Followers</div>
       </Button>
       <Modal
@@ -58,16 +86,7 @@ export default function FollowersButton ({ user }: FollowersButtonProps) {
           <List
             size='small'
             dataSource={users}
-            renderItem={(user: any) => (
-              <List.Item>
-                <List.Item.Meta
-                  style={{ alignItems: 'center' }}
-                  avatar={<Avatar size='large' />}
-                  title={user?.fullName}
-                  description={`@${user?.username}`}
-              />
-              </List.Item>
-            )}
+            renderItem={(user: any) => <UserItem user={user} onClick={handleViewProfile} />}
         />
         </InfiniteScroll>
       </Modal>

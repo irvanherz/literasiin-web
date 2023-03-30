@@ -1,19 +1,20 @@
 import { Card } from 'antd'
 import StoryCover from 'components/StoryCover'
+import { useMemo } from 'react'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
+
 const StyledCard = styled(Card)`
 width: 100%;
-.cover-wrapper {
-  position: relative;
-  padding-top: 150%;
-  img {
-    position: absolute;
-    top: 0; left: 0;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-  }
+.ant-card-meta {
+  text-align: center;
+}
+.ant-card-meta-title {
+  font-size: 1em;
+  margin-bottom: 0 !important;
+}
+.ant-card-meta-description {
+  font-size: 0.9em;
 }
 `
 
@@ -22,8 +23,23 @@ type StoryCardProps = {
 }
 
 export default function StoryCard ({ story }: StoryCardProps) {
+  const authors = useMemo(() => {
+    const writers: any[] = story?.writers || []
+    return writers.reduce((a, c, i, arr) => {
+      if (i === arr.length - 2) {
+        a.push(<Link to={`/users/${c.username}`} className='header-author'>{c.fullName}</Link>)
+        a.push(<span> and </span>)
+      } else if (i !== arr.length - 1) {
+        a.push(<Link to={`/users/${c.username}`} className='header-author'>{c.fullName}</Link>)
+        a.push(<span>, </span>)
+      } else {
+        a.push(<Link to={`/users/${c.username}`} className='header-author'>{c.fullName}</Link>)
+      }
+      return a
+    }, [])
+  }, [story?.writers])
   return (
-    <Link to="/stories/1">
+    <Link to={`/stories/${story.id}`}>
       <StyledCard
         size='small'
         cover={
@@ -32,7 +48,7 @@ export default function StoryCard ({ story }: StoryCardProps) {
       >
         <Card.Meta
           title={story.title}
-          description={story.description}
+          description={authors}
         />
       </StyledCard>
     </Link>

@@ -42,7 +42,6 @@ export default function ProfileMenu ({ children }: ProfileMenuProps) {
               <div style={{ fontWeight: 800 }}>{user?.fullName}</div>
               <div>@{user?.username}</div>
             </Space>
-
           </div>
           <Menu
             onClick={handleClick}
@@ -59,10 +58,10 @@ export default function ProfileMenu ({ children }: ProfileMenuProps) {
                 key: '/notifications',
                 label: <Link to={'/notifications'}>Notifications</Link>
               },
-              // {
-              //   key: '/chats',
-              //   label: <Link to={'/chats'}>Messages</Link>
-              // },
+              {
+                key: '/chats',
+                label: <Link to={'/chats'}>Chats</Link>
+              },
               // {
               //   key: '/users/me/settings',
               //   label: <Link to={'/users/me/settings'}>Settings</Link>

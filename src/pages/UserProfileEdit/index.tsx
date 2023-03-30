@@ -4,6 +4,7 @@ import RouteGuard from 'components/RouteGuard'
 import UserProfileForm from 'components/shared/UserProfileForm'
 import dayjs from 'dayjs'
 import { useMemo } from 'react'
+import { Helmet } from 'react-helmet'
 import { useMutation, useQuery, useQueryClient } from 'react-query'
 import { useParams } from 'react-router-dom'
 import UsersService from 'services/Users'
@@ -65,6 +66,9 @@ export default function UserProfileEdit () {
           </Form>
           <Button loading={updater.isLoading} onClick={form.submit}>Update</Button>
         </Layout.Scaffold>
+        <Helmet>
+          <title>Edit Profile - Literasiin</title>
+        </Helmet>
       </Layout.Default>
     </RouteGuard>
 

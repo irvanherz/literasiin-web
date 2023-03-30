@@ -1,16 +1,9 @@
+
 importScripts('https://www.gstatic.com/firebasejs/9.0.0/firebase-app-compat.js');
 importScripts('https://www.gstatic.com/firebasejs/9.0.0/firebase-messaging-compat.js');
 
 // Initialize the Firebase app in the service worker by passing the generated config
-var firebaseConfig = {
-  apiKey: "AIzaSyCvyCX7bdEqyAcVailXA2E4m8sN2tutwFM",
-  authDomain: "literasiin-dev.firebaseapp.com",
-  projectId: "literasiin-dev",
-  storageBucket: "literasiin-dev.appspot.com",
-  messagingSenderId: "147850382366",
-  appId: "1:147850382366:web:340f7cb79ff896e273720f",
-  measurementId: "G-N4X0GHL2P3"
-};
+var firebaseConfig = {"apiKey":"AIzaSyAqcciHaSqTvlujZAhe5P7B4HB7Onh63u4","authDomain":"literasiin-dev-8af6d.firebaseapp.com","projectId":"literasiin-dev-8af6d","storageBucket":"literasiin-dev-8af6d.appspot.com","messagingSenderId":"517801728724","appId":"1:517801728724:web:c1dd7f0a01ec756a8e3941","measurementId":"G-HRFZ7FW2PT"};
 
 firebase.initializeApp(firebaseConfig);
 

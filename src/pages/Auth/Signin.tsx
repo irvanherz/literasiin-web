@@ -2,6 +2,7 @@ import { Button, Form, message, Space } from 'antd'
 import { getMessaging, getToken } from 'firebase/messaging'
 import useAuthContext from 'hooks/useAuthContext'
 import { useEffect } from 'react'
+import { Helmet } from 'react-helmet'
 import { useMutation } from 'react-query'
 import { Link, useNavigate, useSearchParams } from 'react-router-dom'
 import AuthService from 'services/Auth'
@@ -66,6 +67,9 @@ export default function Signin () {
           <Button type="link">Does not have an account? Sign Up</Button>
         </Link>
       </Space>
+      <Helmet>
+        <title>Sign in - Literasiin</title>
+      </Helmet>
     </div>
   )
 }

@@ -2,6 +2,7 @@ import { Col, Row, Space, Typography } from 'antd'
 import ArticleImage from 'components/ArticleImage'
 import Layout from 'components/Layout'
 import PageWidthAdapter from 'components/PageWidthAdapter'
+import { Helmet } from 'react-helmet'
 import { useQuery } from 'react-query'
 import { useParams } from 'react-router-dom'
 import ArticlesService from 'services/Articles'
@@ -32,6 +33,9 @@ export default function ArticleDetails () {
           </Row>
         </div>
       </PageWidthAdapter>
+      <Helmet>
+        <title>{article?.title ? `${article.title} - Literasiin` : 'Literasiin'}</title>
+      </Helmet>
     </Layout.Default>
   )
 }

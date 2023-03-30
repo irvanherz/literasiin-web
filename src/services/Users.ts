@@ -110,6 +110,33 @@ export default class UsersService {
     }
   }
 
+  static async findContextById (id: number) {
+    try {
+      const resp = await axiosInstance.get(`${BASEURL}/users/${id}/context`)
+      return ApiData.fromResponse(resp)
+    } catch (err: any) {
+      throw new ApiError(err)
+    }
+  }
+
+  static async followById (id: number) {
+    try {
+      const resp = await axiosInstance.post(`${BASEURL}/users/${id}/follow`)
+      return ApiData.fromResponse(resp)
+    } catch (err: any) {
+      throw new ApiError(err)
+    }
+  }
+
+  static async unfollowById (id: number) {
+    try {
+      const resp = await axiosInstance.delete(`${BASEURL}/users/${id}/unfollow`)
+      return ApiData.fromResponse(resp)
+    } catch (err: any) {
+      throw new ApiError(err)
+    }
+  }
+
   static async updateById (id: number, payload: any) {
     try {
       const resp = await axiosInstance.patch(`${BASEURL}/users/${id}`, payload)

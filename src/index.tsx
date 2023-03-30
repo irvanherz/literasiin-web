@@ -1,12 +1,14 @@
 import AuthContextProvider from 'contexts/AuthContextProvider'
-import React from 'react'
 import ReactDOM from 'react-dom/client'
 import { QueryClient, QueryClientProvider } from 'react-query'
 import App from './App'
 import reportWebVitals from './reportWebVitals'
 
 import AxiosInterceptor from 'components/shared/AxiosInterceptor'
+import ChatContextProvider from 'contexts/ChatContextProvider'
 import CurrentUserContextProvider from 'contexts/CurrentUserContextProvider'
+import NotificationContextProvider from 'contexts/NotificationContextProvider'
+import SocketContextProvider from 'contexts/SocketContextProvider'
 import dayjs from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime'
 import { getAnalytics } from 'firebase/analytics'
@@ -39,17 +41,23 @@ const root = ReactDOM.createRoot(
 const queryClient = new QueryClient({ defaultOptions: { queries: { refetchOnWindowFocus: false } } })
 
 root.render(
-  <React.StrictMode>
-    <QueryClientProvider client={queryClient}>
-      <AuthContextProvider>
-        <AxiosInterceptor>
-          <CurrentUserContextProvider>
-            <App />
-          </CurrentUserContextProvider>
-        </AxiosInterceptor>
-      </AuthContextProvider>
-    </QueryClientProvider>
-  </React.StrictMode>
+  // <React.StrictMode>
+  <QueryClientProvider client={queryClient}>
+    <AuthContextProvider>
+      <AxiosInterceptor>
+        <CurrentUserContextProvider>
+          <SocketContextProvider>
+            <ChatContextProvider>
+              <NotificationContextProvider>
+                <App />
+              </NotificationContextProvider>
+            </ChatContextProvider>
+          </SocketContextProvider>
+        </CurrentUserContextProvider>
+      </AxiosInterceptor>
+    </AuthContextProvider>
+  </QueryClientProvider>
+  // </React.StrictMode>
 )
 
 // If you want to start measuring performance in your app, pass a function
