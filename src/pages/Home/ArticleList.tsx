@@ -1,35 +1,10 @@
-import { Card, Col, Row, Tabs } from 'antd'
-import ArticleImage from 'components/ArticleImage'
+import { Col, List, Row, Tabs, Typography } from 'antd'
+import ArticleCard from 'components/ArticleCard'
 import PageWidthAdapter from 'components/PageWidthAdapter'
+import { FormattedMessage } from 'react-intl'
 import { useQuery } from 'react-query'
-import { Link } from 'react-router-dom'
 import ArticlesService from 'services/Articles'
 import styled from 'styled-components'
-
-const StyledCard = styled(Card)`
-width: 100%;
-`
-
-type ArticleCardProps = {
-  article: any
-}
-function ArticleCard ({ article }: ArticleCardProps) {
-  return (
-    <Link to={`/articles/${article.id}`}>
-      <StyledCard
-        size='small'
-        cover={
-          <ArticleImage article={article} />
-        }
-      >
-        <Card.Meta
-          title={article.title}
-          description={article.description}
-        />
-      </StyledCard>
-    </Link>
-  )
-}
 
 type ArticleListPerCategoryProps = {
   category: any
@@ -41,27 +16,39 @@ function ArticleListPerCategory ({ category }: ArticleListPerCategoryProps) {
   const articles: any[] = data?.data || []
   return (
     <Row gutter={[16, 16]} style={{ width: '100%' }}>
-      {articles.map((article) => (
-        <Col key={article.id} xs={24} sm={12} md={8} lg={8} xl={8} xxl={8}>
-          <ArticleCard article={article} />
-        </Col>
-      ))}
+      <Col span={24}>
+        <List
+          grid={{ gutter: 16, xs: 1, sm: 2, md: 2, lg: 3, xl: 4, xxl: 4 }}
+          dataSource={articles}
+          renderItem={article => (
+            <List.Item>
+              <ArticleCard article={article} />
+            </List.Item>
+          )}
+          />
+      </Col>
     </Row>
   )
 }
+
+const ArticleListContainer = styled.div`
+background: #F2EDED;
+padding: 24px 0 24px 0;
+`
 
 export default function ArticleList () {
   const { data } = useQuery('articles.categories[]', () => ArticlesService.Categories.findMany())
   const categories: any[] = data?.data || []
   return (
-    <PageWidthAdapter>
-      <Tabs tabPosition='top'>
-        <Tabs.TabPane tab="All" key={0}><ArticleListPerCategory category={undefined} /></Tabs.TabPane>
-        {categories.map(cat => (
-          <Tabs.TabPane tab={cat.name} key={cat.id}><ArticleListPerCategory category={cat} /></Tabs.TabPane>
-        ))}
-      </Tabs>
-    </PageWidthAdapter>
-
+    <ArticleListContainer>
+      <PageWidthAdapter>
+        <Tabs tabPosition='top' tabBarExtraContent={<Typography.Text strong style={{ paddingLeft: 16 }}><FormattedMessage defaultMessage='List of Articles' /></Typography.Text>}>
+          <Tabs.TabPane tab="All" key={0}><ArticleListPerCategory category={undefined} /></Tabs.TabPane>
+          {categories.map(cat => (
+            <Tabs.TabPane tab={cat.name} key={cat.id}><ArticleListPerCategory category={cat} /></Tabs.TabPane>
+          ))}
+        </Tabs>
+      </PageWidthAdapter>
+    </ArticleListContainer>
   )
 }

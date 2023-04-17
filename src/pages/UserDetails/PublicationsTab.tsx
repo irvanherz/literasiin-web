@@ -1,14 +1,18 @@
 import { Button, Card, List, Space } from 'antd'
 import StoryCover from 'components/StoryCover'
+import useCurrentUser from 'hooks/useCurrentUser'
+import usePublications from 'hooks/usePublications'
 import { DEFAULT_IMAGE } from 'libs/variables'
-import { Link } from 'react-router-dom'
+import { FormattedMessage } from 'react-intl'
 import styled from 'styled-components'
+import PublicationCreateButton from './PublicationCreateButton'
 
 const PublicationItemWrapper = styled(List.Item)`
 
 `
 
-function PublicationItem () {
+type PublicationItemProps = { publication: any }
+function PublicationItem ({ publication }: PublicationItemProps) {
   return (
     <PublicationItemWrapper>
       <Card>
@@ -18,29 +22,38 @@ function PublicationItem () {
               <StoryCover src={DEFAULT_IMAGE}/>
             </div>
           }
-          title="Judul"
-          description="ddsadsasadsa"
+          title={publication?.title}
         />
       </Card>
     </PublicationItemWrapper>
   )
 }
 
-export default function PublicationsTab () {
+type PublicationsTabProps = { user: any}
+export default function PublicationsTab ({ user }: PublicationsTabProps) {
+  const currentUser = useCurrentUser()
+  const { data } = usePublications({ limit: 1000 })
+  const publications = data?.data || []
+
   return (
     <Space direction='vertical' style={{ width: '100%' }}>
-      <Card
-        bodyStyle={{ textAlign: 'center' }}
-      >
-        <Link to='/publications/create'>
-          <Button shape='round' type='primary'>Upload Naskah</Button>
-        </Link>
-      </Card>
+      {currentUser && currentUser?.id === user?.id
+        ? (
+          <Card
+            bodyStyle={{ textAlign: 'center' }}
+          >
+            <PublicationCreateButton>
+              <Button disabled shape='round' type='primary'><FormattedMessage defaultMessage='New Publication' /></Button>
+            </PublicationCreateButton>
+          </Card>
+          )
+        : null
+      }
       <List
         grid={{ gutter: 16, column: 1 }}
         split={false}
-        dataSource={[1, 1, 1, 1, 1]}
-        renderItem={pub => <PublicationItem />}
+        dataSource={publications}
+        renderItem={pub => <PublicationItem publication={pub} />}
       />
     </Space>
   )

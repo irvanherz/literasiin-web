@@ -1,10 +1,12 @@
 import { Avatar, List } from 'antd'
-import dayjs from 'dayjs'
+import RenderTimeFromNow from 'components/shared/RenderTimeFromNow'
 import useChatContext from 'hooks/useChatContext'
 import useChatRooms from 'hooks/useChatRooms'
 import useCurrentUser from 'hooks/useCurrentUser'
+import { DEFAULT_IMAGE } from 'libs/variables'
 import { useEffect, useMemo } from 'react'
 import InfiniteScroll from 'react-infinite-scroll-component'
+import { FormattedMessage } from 'react-intl'
 import { useNavigate, useParams } from 'react-router-dom'
 import styled from 'styled-components'
 
@@ -34,21 +36,28 @@ function ChatRoomListItem ({ room, active }:ChatRoomListItemProps) {
     navigate(`/chats/${room.id}`, { replace: true })
   }
 
-  const senderName = useMemo(() => {
-    const sender = room.members.find((member: any) => member.id !== currentUser?.id)
-    return sender?.fullName || 'Unknown'
+  const sender = useMemo(() => {
+    const sender = room?.members?.find?.((member: any) => member.id !== currentUser?.id)
+    return sender
   }, [room])
+
+  const senderPhotoUrl = useMemo(() => {
+    const image = sender?.photo
+    const objects: any[] = image?.meta?.objects || []
+    const md = objects.find(object => object.id === 'md')
+    return md?.url || DEFAULT_IMAGE
+  }, [sender])
 
   return (
     <ChatRoomListItemWrapper
       onClick={handleClick}
       className={active ? 'chatroom-list-item-active' : ''}
-      extra={dayjs(room.updatedAt).fromNow()}
+      extra={<RenderTimeFromNow timestamp={room?.updatedAt} />}
     >
       <List.Item.Meta
-        avatar={<Avatar size='large' />}
-        title={senderName}
-        description={'Last message'}
+        avatar={<Avatar size='large' src={senderPhotoUrl} />}
+        title={sender?.fullName}
+        description={<div style={{ overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis' }}><span>{room?.lastMessage?.user?.username}</span>: <span>{room?.lastMessage?.message}</span></div>}
       />
     </ChatRoomListItemWrapper>
 
@@ -76,7 +85,7 @@ export default function ChatRoomList () {
         dataLength={1}
         next={() => {}}
         hasMore={false}
-        loader={<div style={{ textAlign: 'center' }}>Loading...</div>}
+        loader={<div style={{ textAlign: 'center' }}><FormattedMessage defaultMessage="Loading" />...</div>}
         scrollableTarget="chatroom-list-wrapper"
       >
         <List

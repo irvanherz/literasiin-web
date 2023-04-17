@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 
 const StyledCard = styled(Card)`
+overflow: hidden;
 width: 100%;
 .ant-card-meta {
   text-align: center;
@@ -15,6 +16,9 @@ width: 100%;
 }
 .ant-card-meta-description {
   font-size: 0.9em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 `
 
@@ -43,7 +47,7 @@ export default function StoryCard ({ story }: StoryCardProps) {
       <StyledCard
         size='small'
         cover={
-          <StoryCover story={story} />
+          <StoryCover story={story} style={{ borderRadius: 8 }}/>
         }
       >
         <Card.Meta
@@ -52,6 +56,5 @@ export default function StoryCard ({ story }: StoryCardProps) {
         />
       </StyledCard>
     </Link>
-
   )
 }

@@ -2,18 +2,16 @@ import { Avatar, Drawer, Menu, Space } from 'antd'
 import useAuthContext from 'hooks/useAuthContext'
 import useCurrentUser from 'hooks/useCurrentUser'
 import { DEFAULT_PHOTO } from 'libs/variables'
-import { cloneElement, ReactElement, useState } from 'react'
+import { useState } from 'react'
+import { useIntl } from 'react-intl'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 
 const StyledDrawer = styled(Drawer)`
 
 `
-
-type ProfileMenuProps = {
-  children: ReactElement,
-}
-export default function ProfileMenu ({ children }: ProfileMenuProps) {
+export default function ProfileMenu () {
+  const intl = useIntl()
   const auth = useAuthContext()
   const [open, setOpen] = useState(false)
   const user = useCurrentUser()
@@ -30,7 +28,7 @@ export default function ProfileMenu ({ children }: ProfileMenuProps) {
 
   return (
     <>
-      { children && cloneElement(children, { onClick: handleClick })}
+      <Avatar src={md?.url || DEFAULT_PHOTO} onClick={handleClick} style={{ cursor: 'pointer' }}/>
       <StyledDrawer
         open={open}
         onClose={handleClick}
@@ -48,19 +46,23 @@ export default function ProfileMenu ({ children }: ProfileMenuProps) {
             items={[
               {
                 key: '/users/me',
-                label: <Link to={'/users/me'}>Profile</Link>
+                label: <Link to={'/users/me'}>{intl.formatMessage({ defaultMessage: 'Profile' })}</Link>
               },
               {
                 key: '/stories/mine',
-                label: <Link to={'/stories/mine'}>My Stories</Link>
+                label: <Link to={'/stories/mine'}>{intl.formatMessage({ defaultMessage: 'My Stories' })}</Link>
+              },
+              {
+                key: '/articles/mine',
+                label: <Link to={'/articles/mine'}>{intl.formatMessage({ defaultMessage: 'My Articles' })}</Link>
               },
               {
                 key: '/notifications',
-                label: <Link to={'/notifications'}>Notifications</Link>
+                label: <Link to={'/notifications'}>{intl.formatMessage({ defaultMessage: 'Notifications' })}</Link>
               },
               {
                 key: '/chats',
-                label: <Link to={'/chats'}>Chats</Link>
+                label: <Link to={'/chats'}>{intl.formatMessage({ defaultMessage: 'Chats' })}</Link>
               },
               // {
               //   key: '/users/me/settings',
@@ -68,7 +70,7 @@ export default function ProfileMenu ({ children }: ProfileMenuProps) {
               // },
               {
                 key: 'signout',
-                label: 'Sign Out',
+                label: intl.formatMessage({ defaultMessage: 'Sign Out' }),
                 onClick: handleSignout
               }
             ]}

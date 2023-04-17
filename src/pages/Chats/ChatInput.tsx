@@ -1,5 +1,6 @@
 import { Button, Input } from 'antd'
 import { useState } from 'react'
+import { FormattedMessage } from 'react-intl'
 import styled from 'styled-components'
 
 const Wrapper = styled.div`
@@ -39,7 +40,7 @@ export default function ChatInput ({ room, context }: ChatInputProps) {
         <Input onPressEnter={handleSend} disabled={isSending} value={message} onChange={e => setMessage(e.target.value)} placeholder='Message...' />
       </div>
       <div className="chat-input-right">
-        <Button loading={isSending} disabled={!message} onClick={handleSend}>Send</Button>
+        <Button loading={isSending} disabled={!message} onClick={handleSend}><FormattedMessage defaultMessage="Send" /></Button>
       </div>
     </Wrapper>
   )

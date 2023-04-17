@@ -1,34 +1,36 @@
+import { PlusOutlined } from '@ant-design/icons'
 import { Button, Tabs } from 'antd'
 import Layout from 'components/Layout'
 import RouteGuard from 'components/RouteGuard'
 import { Helmet } from 'react-helmet'
-import { Link } from 'react-router-dom'
+import { FormattedMessage, useIntl } from 'react-intl'
 import PendingInvitationSection from './PendingInvitationSection'
+import StoryCreateButton from './StoryCreateButton'
 import StoryListAny from './StoryListAny'
 import StoryListPublished from './StoryListPublished'
 
 export default function StoryListMine () {
+  const intl = useIntl()
   return (
     <RouteGuard require='authenticated'>
       <Layout.Default>
         <Layout.Scaffold
-          title="My Stories"
-          description="List of all my stories"
+          title={<FormattedMessage defaultMessage="My Stories" />}
+          description={<FormattedMessage defaultMessage="List of all my stories" />}
           actions={[
-            <Link to='/stories/create' key='create'>
-              <Button>Create New</Button>
-            </Link>
+            <StoryCreateButton key='crt'>
+              <Button icon={<PlusOutlined />} type='primary'>{intl.formatMessage({ defaultMessage: 'New Story' })}</Button>
+            </StoryCreateButton>
           ]}
       >
           <PendingInvitationSection />
-          <Tabs destroyInactiveTabPane>
-            <Tabs.TabPane tab="All Stories" tabKey="all" key='all'>
-              <StoryListAny />
-            </Tabs.TabPane>
-            <Tabs.TabPane tab="Published" tabKey="published" key='published'>
-              <StoryListPublished />
-            </Tabs.TabPane>
-          </Tabs>
+          <Tabs
+            destroyInactiveTabPane
+            items={[
+              { key: 'all', tabKey: 'all', label: <FormattedMessage defaultMessage='All Stories' />, children: <StoryListAny /> },
+              { key: 'published', tabKey: 'published', label: <FormattedMessage defaultMessage='Published' />, children: <StoryListPublished /> }
+            ]}
+          />
         </Layout.Scaffold>
         <Helmet>
           <title>My Stories - Literasiin</title>

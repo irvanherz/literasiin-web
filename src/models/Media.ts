@@ -3,8 +3,8 @@ export default class Media {
   meta?: any
 
   constructor (data: any) {
-    this.id = data.id
-    this.meta = data.meta
+    this.id = data?.id
+    this.meta = data?.meta
   }
 
   get sm () {

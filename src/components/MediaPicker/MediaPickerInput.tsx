@@ -49,7 +49,7 @@ type MediaPickerProps = {
   value?: any
   defaultValue?: any
   onChange?: (v: any) => void
-  preset?: 'photo' | 'story-cover'
+  preset?: 'photo' | 'story-cover' | 'article-image'
   cropProps?: Omit<ImgCropProps, 'children'>
 }
 

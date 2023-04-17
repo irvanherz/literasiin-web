@@ -1,68 +1,82 @@
-import { Button, Card, Input, message } from 'antd'
+import { Card, Dropdown, Form, message } from 'antd'
 import Layout from 'components/Layout'
 import RouteGuard from 'components/RouteGuard'
-import { useEffect, useState } from 'react'
-import { useMutation, useQuery } from 'react-query'
-import { useParams } from 'react-router-dom'
-import StoriesService from 'services/Stories'
-import { useEditor } from './AdvancedEditor'
-import './editor-theme.css'
+import useStoryChapter from 'hooks/useStoryChapter'
+import useStoryChapterUpdate from 'hooks/useStoryChapterUpdate'
+import { useEffect, useMemo } from 'react'
+import { useNavigate, useParams } from 'react-router-dom'
+import StoryChapterForm from './StoryChapterForm'
 
 export default function StoryChapterEdit () {
+  const [form] = Form.useForm()
+  const navigate = useNavigate()
   const params = useParams()
   const chapterId = +(params?.chapterId || 0)
-  const [title, setTitle] = useState('')
-  const [lastContent, setLastContent] = useState('')
-  const [editorRef, quill] = useEditor({ placeholder: 'Write story here...' })
-  const updater = useMutation<any, any, any>(payload => StoriesService.Chapters.updateById(chapterId, payload))
+  const updater = useStoryChapterUpdate(chapterId)
 
-  const { data } = useQuery(
-    `stories.chapters[${chapterId}]`,
-    () => StoriesService.Chapters.findById(chapterId),
-    { enabled: !!chapterId, refetchOnWindowFocus: false }
-  )
+  const { data, refetch } = useStoryChapter(chapterId)
 
   const chapter = data?.data
 
-  useEffect(() => {
-    if (chapter && quill) {
-      setTitle(chapter.title)
-      quill.root.innerHTML = chapter.content
-    }
-  }, [chapter, quill])
-
-  const canSubmit = !!title && !!lastContent
+  const initialValues = useMemo(() => {
+    return { ...chapter }
+  }, [chapter])
 
   useEffect(() => {
-    if (quill) {
-      quill.on('text-change', function (delta, oldDelta, source) {
-        setLastContent(quill.root.innerHTML)
+    form.resetFields()
+  }, [initialValues])
+
+  const handlePublish = async () => {
+    try {
+      const values: any = await form.validateFields()
+      values.status = 'published'
+      updater.mutate(values, {
+        onSuccess: (data) => {
+          message.success('Chapter published successfully')
+          navigate(`/stories/chapters/${chapterId}`)
+        },
+        onError: (err) => {
+          message.error(err.message)
+        }
       })
+    } catch (err) {
+      message.error('Check all fields then try again')
     }
-  }, [quill])
-
-  const handleSave = () => {
-    const payload = { title, content: quill?.root.innerHTML || '' }
-    updater.mutate(payload, {
-      onSuccess: () => {
-        message.success('Changes has saved')
-      },
-      onError: (err) => {
-        message.error(err?.message)
-      }
-    })
   }
 
-  const handlePublish = () => {
-    const payload = { title, content: quill?.root.innerHTML || '', status: 'published' }
-    updater.mutate(payload, {
-      onSuccess: () => {
-        message.success('Changes has saved & published')
-      },
-      onError: (err) => {
-        message.error(err?.message)
-      }
-    })
+  const handleRevertToDraft = async () => {
+    try {
+      const values: any = await form.validateFields()
+      values.status = 'draft'
+      updater.mutate(values, {
+        onSuccess: (data) => {
+          message.success('Article reverted to draft')
+          refetch()
+        },
+        onError: (err) => {
+          message.error(err.message)
+        }
+      })
+    } catch (err) {
+      message.error('Check all fields then try again')
+    }
+  }
+
+  const handleSave = async () => {
+    try {
+      const values: any = await form.validateFields()
+      updater.mutate(values, {
+        onSuccess: (data) => {
+          message.success('Changes has saved')
+          refetch()
+        },
+        onError: (err) => {
+          message.error(err.message)
+        }
+      })
+    } catch (err) {
+      message.error('Check all fields then try again')
+    }
   }
 
   return (
@@ -73,20 +87,27 @@ export default function StoryChapterEdit () {
           title="Edit Story Chapter"
           description="Edit your story"
           actions={[
-            <Button disabled={!canSubmit} type='primary' key="publish" onClick={handlePublish}>Publish</Button>,
-            <Button disabled={!canSubmit} key="save" onClick={handleSave}>Save</Button>
+            <Dropdown.Button
+              key='save'
+              type='primary'
+              onClick={handleSave}
+              menu={{
+                items: [
+                  { key: 'save', label: 'Save', onClick: handleSave },
+                  chapter?.status === 'published'
+                    ? { key: 'rev', label: 'Save & Revert to Draft', onClick: handleRevertToDraft }
+                    : { key: 'pub', label: 'Save & Publish', onClick: handlePublish }
+                ]
+              }}
+            >
+              Save
+            </Dropdown.Button>
           ]}
         >
           <Card size='small'>
-            <Input
-              size='large'
-              style={{ fontWeight: 'bold', fontSize: '1.5em', textAlign: 'center' }}
-              bordered={false}
-              placeholder='Chapter title...'
-              value={title}
-              onChange={e => setTitle(e.target.value)}
-            />
-            <div ref={editorRef}/>
+            <Form form={form} initialValues={initialValues} wrapperCol={{ span: 24 }} labelCol={{ span: 24 }}>
+              <StoryChapterForm />
+            </Form>
           </Card>
         </Layout.Scaffold>
       </Layout.Default>

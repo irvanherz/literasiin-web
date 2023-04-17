@@ -7,7 +7,6 @@ import { useQuery } from 'react-query'
 import { useParams } from 'react-router-dom'
 import StoriesService from 'services/Stories'
 import StoryDetailsEditTab from './StoryDetailsEditTab'
-import StorySettingsTab from './StorySettingsTab'
 import StoryWritersEditTab from './StoryWritersEditTab'
 
 export default function StoryEdit () {
@@ -34,8 +33,8 @@ export default function StoryEdit () {
           <Tabs
             items={[
               { key: 'edit', label: 'Edit Details', children: <StoryDetailsEditTab story={story} /> },
-              { key: 'writers', label: 'Writers', children: <StoryWritersEditTab story={story} /> },
-              { key: 'settings', label: 'Settings', children: <StorySettingsTab story={story} /> }
+              { key: 'writers', label: 'Writers', children: <StoryWritersEditTab story={story} /> }
+              // { key: 'settings', label: 'Settings', children: <StorySettingsTab story={story} /> }
             ]}
           />
         </Layout.Scaffold>

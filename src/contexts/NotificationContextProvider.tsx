@@ -1,5 +1,7 @@
+import { notification } from 'antd'
 import dayjs from 'dayjs'
 import useSocketContext from 'hooks/useSocketContext'
+import { translateNotification } from 'libs/notifications'
 import { ReactNode, useEffect, useReducer } from 'react'
 import NotificationContext, { NotificationState } from './NotificationContext'
 
@@ -90,7 +92,16 @@ export default function NotificationContextProvider ({ children }: NotificationC
 
   useEffect(() => {
     if (socket) {
-      socket.on('notifications.created', payload => dispatch({ type: 'notifications.created', payload }))
+      socket.on('notifications.created', payload => {
+        const translated = translateNotification(payload.data)
+        notification.info({
+          placement: 'topRight',
+          message: translated.title,
+          description: translated.description,
+          duration: 5
+        })
+        dispatch({ type: 'notifications.created', payload })
+      })
     }
   }, [socket])
 

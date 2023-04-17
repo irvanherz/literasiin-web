@@ -2,11 +2,13 @@ import { Select, SelectProps } from 'antd'
 import useCustomComponent from 'hooks/useCustomComponent'
 import { debounce } from 'lodash'
 import { useMemo, useState } from 'react'
+import { useIntl } from 'react-intl'
 import { useQuery } from 'react-query'
 import UsersService from 'services/Users'
 
 export type UserIdInputProps = SelectProps
 export default function UserIdInput ({ value, defaultValue, onChange, ...otherProps }:UserIdInputProps) {
+  const intl = useIntl()
   const [computedValue, triggerValueChange] = useCustomComponent({ value, defaultValue, onChange: onChange as any })
   const [search, setSearch] = useState('')
   const userQuery = useQuery(`users[${computedValue}]`, () => UsersService.findById(computedValue), { enabled: !!computedValue })
@@ -38,7 +40,7 @@ export default function UserIdInput ({ value, defaultValue, onChange, ...otherPr
       showSearch
       allowClear
       value={+computedValue || undefined}
-      placeholder="Find user..."
+      placeholder={intl.formatMessage({ defaultMessage: 'Find user...' })}
       defaultActiveFirstOption={false}
       showArrow={false}
       filterOption={false}

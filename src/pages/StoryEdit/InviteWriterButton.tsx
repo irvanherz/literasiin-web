@@ -1,6 +1,7 @@
 import { Alert, message, Modal, Space } from 'antd'
 import UserIdInput from 'components/shared/UserIdInput'
 import { cloneElement, ReactElement, useState } from 'react'
+import { FormattedMessage } from 'react-intl'
 import { useMutation } from 'react-query'
 import StoriesService from 'services/Stories'
 
@@ -31,7 +32,7 @@ export default function InviteWriterButton ({ children, story, afterCreated }: I
       {cloneElement(children, { onClick: handleOpen })}
       <Modal
         open={open}
-        title="Invite Writer"
+        title={<FormattedMessage defaultMessage="Invite Writer" />}
         centered
         onCancel={handleClose}
         closable={false}
@@ -41,7 +42,7 @@ export default function InviteWriterButton ({ children, story, afterCreated }: I
       >
         <Space direction='vertical' style={{ width: '100%' }}>
           <Alert
-            message="Invite people to join your story writing project"
+            message={<FormattedMessage defaultMessage="Invite your friend to join your story writing project" />}
           />
           <UserIdInput
             value={userId}

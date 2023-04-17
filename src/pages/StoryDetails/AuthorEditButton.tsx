@@ -13,7 +13,6 @@ export default function AuthorEditButton ({ story }: AuthorEditButtonProps) {
       <Link to={`/stories/${story?.id}/edit`}>
         <Button key='settings' shape='circle' icon={<EditFilled />} />
       </Link>
-
       )
     : null
 }

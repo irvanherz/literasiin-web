@@ -1,4 +1,5 @@
 import Layout from 'components/Layout'
+import RouteGuard from 'components/RouteGuard'
 import { Helmet } from 'react-helmet'
 import styled from 'styled-components'
 import ChatRoomDetails from './ChatRoomDetails'
@@ -21,18 +22,21 @@ background: #FFF;
 
 export default function Chats () {
   return (
-    <Layout.Chatbox>
-      <Wrapper>
-        <div className='chat-rooms'>
-          <ChatRoomList />
-        </div>
-        <div className='chat-details'>
-          <ChatRoomDetails />
-        </div>
-      </Wrapper>
-      <Helmet>
-        <title>Chats</title>
-      </Helmet>
-    </Layout.Chatbox>
+    <RouteGuard require='authenticated'>
+      <Layout.Chatbox>
+        <Wrapper>
+          <div className='chat-rooms'>
+            <ChatRoomList />
+          </div>
+          <div className='chat-details'>
+            <ChatRoomDetails />
+          </div>
+        </Wrapper>
+        <Helmet>
+          <title>Chats</title>
+        </Helmet>
+      </Layout.Chatbox>
+    </RouteGuard>
+
   )
 }

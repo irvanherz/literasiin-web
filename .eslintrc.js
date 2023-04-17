@@ -7,7 +7,8 @@ module.exports = {
   },
   plugins: [
     'react', 
-    '@typescript-eslint/eslint-plugin'
+    '@typescript-eslint/eslint-plugin',
+    'formatjs'
   ],
   extends: [
     'standard',
@@ -27,6 +28,7 @@ module.exports = {
     'react/react-in-jsx-scope': 'off',
     'react/jsx-indent': [2, 2, { checkAttributes: true, indentLogicalExpressions: true }],
     'react/jsx-indent-props': [2, 2],
+    "formatjs/no-offset": "error",
     semi: ['error', 'never']
   }
 }

@@ -1,9 +1,10 @@
 import { Alert, Button, List, message, Modal } from 'antd'
-import dayjs from 'dayjs'
+import RenderTimeFromNow from 'components/shared/RenderTimeFromNow'
 import useAcceptStoryWriterInvitation from 'hooks/useAcceptStoryWriterInvitation'
 import useRejectStoryWriterInvitation from 'hooks/useRejectStoryWriterInvitation'
 import useStoryWriterInvitations from 'hooks/useStoryWriterInvitations'
 import { useState } from 'react'
+import { FormattedMessage } from 'react-intl'
 
 type InvitationListItemProps = {
   invitation: any
@@ -39,13 +40,13 @@ function InvitationListItem ({ invitation, afterUpdated }: InvitationListItemPro
   return (
     <List.Item
       actions={[
-        <Button loading={acceptor.isLoading} key='accept' type='primary' onClick={handleAccept}>Accept</Button>,
-        <Button loading={rejector.isLoading} key='reject' onClick={handleReject}>Reject</Button>
+        <Button loading={acceptor.isLoading} key='accept' type='primary' onClick={handleAccept}><FormattedMessage defaultMessage="Accept" /></Button>,
+        <Button loading={rejector.isLoading} key='reject' onClick={handleReject}><FormattedMessage defaultMessage="Reject" /></Button>
       ]}
     >
       <List.Item.Meta
         title={`Invited to be ${invitation.role} for '${invitation.story?.title}'`}
-        description={dayjs(invitation.createdAt).fromNow()}
+        description={<RenderTimeFromNow timestamp={invitation.createdAt} />}
       />
     </List.Item>
   )
@@ -64,15 +65,15 @@ export default function PendingInvitationSection () {
       <>
         <Alert
           type='warning'
-          message='You have pending invitation'
-          description='Other user are inviting you to collaborate for their story.'
-          action={<Button type='primary' onClick={handleOpen}>Review</Button>}
+          message={<FormattedMessage defaultMessage='You have pending invitation' />}
+          description={<FormattedMessage defaultMessage='Other user are inviting you to collaborate for their story.' />}
+          action={<Button type='primary' onClick={handleOpen}>{<FormattedMessage defaultMessage='Review' />}</Button>}
           style={{ marginTop: 16 }}
         />
         <Modal
           centered
           open={open}
-          title="Pending Invitations"
+          title={<FormattedMessage defaultMessage="Pending Invitations" />}
           onCancel={handleClose}
           footer={null}
         >

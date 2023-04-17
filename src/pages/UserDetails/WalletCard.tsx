@@ -1,7 +1,9 @@
+import { SettingFilled } from '@ant-design/icons'
 import { Button, Card, Space } from 'antd'
-import TopupButton from 'components/shared/TopupButton'
 import useCurrentUser from 'hooks/useCurrentUser'
+import { FormattedMessage } from 'react-intl'
 import { useQuery } from 'react-query'
+import { Link } from 'react-router-dom'
 import WalletsService from 'services/Wallets'
 
 const formatter = new Intl.NumberFormat('id-ID')
@@ -22,12 +24,12 @@ export default function WalletCard ({ user }: WalletCardProps) {
         <Space style={{ width: '100%', justifyContent: 'space-between' }}>
           <div>
             <div style={{ fontWeight: 800 }}>{formattedBalance}</div>
-            <div>koin</div>
+            <div><FormattedMessage defaultMessage='coins' /></div>
           </div>
           <div>
-            <TopupButton>
-              <Button>Topup</Button>
-            </TopupButton>
+            <Link to='/wallets'>
+              <Button icon={<SettingFilled />} shape='circle'/>
+            </Link>
           </div>
         </Space>
       </Card>

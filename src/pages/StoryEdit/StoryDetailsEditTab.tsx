@@ -1,11 +1,12 @@
-import { PlusOutlined } from '@ant-design/icons'
+import { SaveOutlined } from '@ant-design/icons'
 import { Button, Card, Col, Form, message, Row, Space } from 'antd'
+import StoryForm from 'components/shared/StoryForm'
 import { useEffect } from 'react'
+import { FormattedMessage } from 'react-intl'
 import { useMutation } from 'react-query'
 import { useNavigate } from 'react-router-dom'
 import StoriesService from 'services/Stories'
 import StoryCoverInput from './StoryCoverInput'
-import StoryForm from './StoryForm'
 
 type StoryDetailsEditTabProps = { story: any }
 export default function StoryDetailsEditTab ({ story }: StoryDetailsEditTabProps) {
@@ -60,9 +61,9 @@ export default function StoryDetailsEditTab ({ story }: StoryDetailsEditTabProps
                 type='primary'
                 onClick={form.submit}
                 loading={updater.isLoading}
-                icon={<PlusOutlined />}
-                    >
-                Update Story
+                icon={<SaveOutlined />}
+              >
+                <FormattedMessage defaultMessage="Update Story" />
               </Button>
             </Space>
           </Card>

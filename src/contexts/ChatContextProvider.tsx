@@ -11,13 +11,14 @@ type ChatAction = {
 function reducer (state: ChatState, action: ChatAction): ChatState {
   const { type, payload } = action
   switch (type) {
+    case 'chats.rooms.updated':
     case 'chats.rooms.created': {
       const room = payload.data
       const id = room.id
 
       const roomById = {
         ...state.roomById,
-        [id]: payload
+        [id]: room
       }
       const roomIds = Object.keys(roomById).sort((a, b) => {
         const roomA = roomById[a]
@@ -56,7 +57,7 @@ function reducer (state: ChatState, action: ChatAction): ChatState {
         messageIdsByRoomId
       }
     }
-    case 'chats.rooms.fetchNext.started': {
+    case 'chats.rooms.findNext.started': {
       const metaByKey = {
         ...state.metaByKey,
         'rooms[]': {
@@ -68,7 +69,7 @@ function reducer (state: ChatState, action: ChatAction): ChatState {
         metaByKey
       }
     }
-    case 'chats.rooms.fetchNext.success': {
+    case 'chats.rooms.findNext.success': {
       const { data } = payload
 
       let rooms: any[] = Object.values(state.roomById)
@@ -95,7 +96,7 @@ function reducer (state: ChatState, action: ChatAction): ChatState {
         metaByKey
       }
     }
-    case 'chats.rooms.fetchNext.error': {
+    case 'chats.rooms.findNext.error': {
       const metaByKey = {
         ...state.metaByKey,
         'rooms[]': {
@@ -109,8 +110,7 @@ function reducer (state: ChatState, action: ChatAction): ChatState {
     }
 
     case 'chats.rooms.findById.started': {
-      const { params } = payload
-      const { id } = params
+      const { id } = payload
       const metaByKey = {
         ...state.metaByKey,
         [`rooms[${id}]`]: {
@@ -141,8 +141,7 @@ function reducer (state: ChatState, action: ChatAction): ChatState {
       }
     }
     case 'chats.rooms.findById.error': {
-      const { params } = payload
-      const { id } = params
+      const { id } = payload
       const metaByKey = {
         ...state.metaByKey,
         [`rooms[${id}]`]: {
@@ -155,7 +154,7 @@ function reducer (state: ChatState, action: ChatAction): ChatState {
       }
     }
 
-    case 'chats.messages.fetchNext.started': {
+    case 'chats.messages.findNext.started': {
       const { payload } = action
       const { roomId } = payload.params
 
@@ -170,7 +169,7 @@ function reducer (state: ChatState, action: ChatAction): ChatState {
         metaByKey
       }
     }
-    case 'chats.messages.fetchNext.success': {
+    case 'chats.messages.findNext.success': {
       const { params, data, meta } = payload
       const { roomId } = params
 
@@ -204,7 +203,7 @@ function reducer (state: ChatState, action: ChatAction): ChatState {
         messageIdsByRoomId
       }
     }
-    case 'chats.messages.fetchNext.error': {
+    case 'chats.messages.findNext.error': {
       const { params } = payload
       const { roomId } = params
 
@@ -238,17 +237,19 @@ export default function ChatContextProvider ({ children }: ChatContextProviderPr
     if (socket) {
       socket.on('chats.messages.created', payload => dispatch({ type: 'chats.messages.created', payload }))
       socket.on('chats.rooms.created', payload => dispatch({ type: 'chats.rooms.created', payload }))
+      socket.on('chats.rooms.updated', payload => dispatch({ type: 'chats.rooms.updated', payload }))
     }
   }, [socket])
 
-  const fetchNextRooms = async (afterId?: number) => {
+  const fetchNextRooms = async (afterUpdatedAt?: number) => {
     if (socket) {
+      const filter = { afterUpdatedAt }
       try {
-        dispatch({ type: 'chats.rooms.fetchNext.started', payload: null })
-        const result = await socket.emitWithAck('chats.rooms.findMany', { afterId })
-        dispatch({ type: 'chats.rooms.fetchNext.success', payload: result })
+        dispatch({ type: 'chats.rooms.findNext.started', payload: null })
+        const result = await socket.emitWithAck('chats.rooms.findNext', { filter })
+        dispatch({ type: 'chats.rooms.findNext.success', payload: result })
       } catch (err) {
-        dispatch({ type: 'chats.rooms.fetchNext.error', payload: err })
+        dispatch({ type: 'chats.rooms.findNext.error', payload: err })
       }
     }
   }
@@ -256,23 +257,26 @@ export default function ChatContextProvider ({ children }: ChatContextProviderPr
   const fetchRoomById = async (id: number) => {
     if (socket) {
       try {
-        dispatch({ type: 'chats.rooms.fetchById.started', payload: { params: { id } } })
-        const result = await socket.emitWithAck('chats.rooms.findMany', { id })
-        dispatch({ type: 'chats.rooms.fetchById.success', payload: result })
+        dispatch({ type: 'chats.rooms.findById.started', payload: { id } })
+        const result = await socket.emitWithAck('chats.rooms.findById', { id })
+        if (!result.success) throw new Error('Error loading data')
+        dispatch({ type: 'chats.rooms.findById.success', payload: result })
       } catch (error) {
-        dispatch({ type: 'chats.rooms.fetchById.error', payload: { error, params: { id } } })
+        dispatch({ type: 'chats.rooms.findById.error', payload: { error, id } })
       }
     }
   }
 
-  const fetchNextMessages = async (roomId: number, afterId?: number) => {
+  const fetchNextMessages = async (roomId: number, after?: any) => {
     if (socket) {
       try {
-        dispatch({ type: 'chats.messages.fetchNext.started', payload: { params: { roomId } } })
-        const result = await socket.emitWithAck('chats.messages.findMany', { roomId, afterId })
-        dispatch({ type: 'chats.messages.fetchNext.success', payload: { ...result, params: { roomId } } })
+        dispatch({ type: 'chats.messages.findNext.started', payload: { params: { roomId } } })
+        const result = await socket.emitWithAck('chats.messages.findNext', { filter: { roomId, after } })
+        console.log(result, 'aaaa')
+
+        dispatch({ type: 'chats.messages.findNext.success', payload: { ...result, params: { roomId } } })
       } catch (error) {
-        dispatch({ type: 'chats.messages.fetchNext.error', payload: { error, params: { roomId } } })
+        dispatch({ type: 'chats.messages.findNext.error', payload: { error, params: { roomId } } })
       }
     }
   }
@@ -280,7 +284,9 @@ export default function ChatContextProvider ({ children }: ChatContextProviderPr
   const sendMessage = async (payload: any) => {
     if (socket) {
       const result = await socket.emitWithAck('chats.messages.create', payload)
-      dispatch({ type: 'chats.messages.created', payload: result })
+      const { message, room } = result.data
+      dispatch({ type: 'chats.messages.created', payload: { data: message } })
+      dispatch({ type: 'chats.rooms.updated', payload: { data: room } })
       return result
     }
   }

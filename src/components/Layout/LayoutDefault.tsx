@@ -31,14 +31,15 @@ const StyledLayout = styled(Layout)`
 type LayoutDefaultProps = {
   children: ReactNode,
   searchComponent?: ReactNode,
+  style?: CSSProperties
   contentContainerStyle?: CSSProperties
 }
 
-export default function LayoutDefault ({ children, searchComponent, contentContainerStyle }: LayoutDefaultProps) {
+export default function LayoutDefault ({ children, searchComponent, style, contentContainerStyle }: LayoutDefaultProps) {
   const { token } = theme.useToken()
 
   return (
-    <StyledLayout>
+    <StyledLayout style={style}>
       <div className='layout-default-top'>
         <Layout.Header className='layout-default-header'>
           <Header searchComponent={searchComponent} />

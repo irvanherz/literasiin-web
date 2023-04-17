@@ -1,0 +1,575 @@
+{
+  "+0zv6g": {
+    "defaultMessage": "Image"
+  },
+  "+Fhc9c": {
+    "defaultMessage": "Color pages count is required!"
+  },
+  "+U6ozc": {
+    "defaultMessage": "Type"
+  },
+  "/+UbhB": {
+    "defaultMessage": "Add to reading list"
+  },
+  "/NdQ6E": {
+    "defaultMessage": "List of all my articles"
+  },
+  "/VnDMl": {
+    "defaultMessage": "Other"
+  },
+  "/oeivu": {
+    "defaultMessage": "Confirm password..."
+  },
+  "00LcfG": {
+    "defaultMessage": "Load more"
+  },
+  "0ICwq5": {
+    "defaultMessage": "Last updated"
+  },
+  "18NL8H": {
+    "defaultMessage": "Username is required!"
+  },
+  "1EYCdR": {
+    "defaultMessage": "Tags"
+  },
+  "2W0f9h": {
+    "defaultMessage": "Bio"
+  },
+  "39AHJm": {
+    "defaultMessage": "Sign Up"
+  },
+  "3KNMbJ": {
+    "defaultMessage": "Articles"
+  },
+  "3kP3Of": {
+    "defaultMessage": "Announcements"
+  },
+  "3yk8fB": {
+    "defaultMessage": "Wallet"
+  },
+  "4giHuK": {
+    "defaultMessage": "Invite Other Writer"
+  },
+  "4jHKgO": {
+    "defaultMessage": "Full name..."
+  },
+  "5MEd9I": {
+    "defaultMessage": "coins"
+  },
+  "5lVaeB": {
+    "defaultMessage": "No description"
+  },
+  "5sg7KC": {
+    "defaultMessage": "Password"
+  },
+  "5wTZQP": {
+    "defaultMessage": "New Chapter"
+  },
+  "6T+ecJ": {
+    "defaultMessage": "The specified page that you requested was not found"
+  },
+  "6VGRlY": {
+    "defaultMessage": "Unvote"
+  },
+  "6cO87E": {
+    "defaultMessage": "Remove from reading list"
+  },
+  "6js9Xv": {
+    "defaultMessage": "Title is required!"
+  },
+  "6uEiaw": {
+    "defaultMessage": "Writer"
+  },
+  "7IoXeK": {
+    "defaultMessage": "Browse more stories"
+  },
+  "7hsGyA": {
+    "defaultMessage": "List of all my stories"
+  },
+  "8HJxXG": {
+    "defaultMessage": "Sign up"
+  },
+  "8HimVK": {
+    "defaultMessage": "Confirm password"
+  },
+  "8PL7mC": {
+    "defaultMessage": "New Article"
+  },
+  "8f63Y2": {
+    "defaultMessage": "Posted on category"
+  },
+  "9WRlF4": {
+    "defaultMessage": "Send"
+  },
+  "9a9+ww": {
+    "defaultMessage": "Title"
+  },
+  "9dKagp": {
+    "defaultMessage": "Share This Help"
+  },
+  "9gPn0D": {
+    "defaultMessage": "Description is required!"
+  },
+  "9jhHHp": {
+    "defaultMessage": "Revert to Draft"
+  },
+  "ABAQyo": {
+    "defaultMessage": "Chats"
+  },
+  "BWpuKl": {
+    "defaultMessage": "Update"
+  },
+  "BaHEh1": {
+    "defaultMessage": "Estimated balance after topup"
+  },
+  "Bgiitz": {
+    "defaultMessage": "Book title is required!"
+  },
+  "C6bKHQ": {
+    "defaultMessage": "Email is required!"
+  },
+  "CuXG65": {
+    "defaultMessage": "Please confirm your password!"
+  },
+  "DNHFwR": {
+    "defaultMessage": "DRAFT"
+  },
+  "Do1Pfd": {
+    "defaultMessage": "Chapters"
+  },
+  "Dzc2Pg": {
+    "defaultMessage": "Date of birth is required!"
+  },
+  "E4bjDE": {
+    "defaultMessage": "Frequently Asked Question"
+  },
+  "EK8E/S": {
+    "defaultMessage": "Downvote this article"
+  },
+  "F5PuB6": {
+    "defaultMessage": "You have downvoted this post"
+  },
+  "F62y+K": {
+    "defaultMessage": "Sign Out"
+  },
+  "FDD/jq": {
+    "defaultMessage": "Password is required!"
+  },
+  "FdO3pC": {
+    "defaultMessage": "Email or username is required!"
+  },
+  "FgydNe": {
+    "defaultMessage": "View"
+  },
+  "GFTdXw": {
+    "defaultMessage": "Date of birth"
+  },
+  "GZdAq0": {
+    "defaultMessage": "Strictly prohibit from uploading company data or other band files"
+  },
+  "HAlOn1": {
+    "defaultMessage": "Name"
+  },
+  "Hhkf+z": {
+    "defaultMessage": "Edit Bio"
+  },
+  "HkYlz5": {
+    "defaultMessage": "List of all notifications"
+  },
+  "I4FfPc": {
+    "defaultMessage": "Share This Story"
+  },
+  "IN75OC": {
+    "defaultMessage": "Royalty is required!"
+  },
+  "IuWpub": {
+    "defaultMessage": "Your email or username..."
+  },
+  "JCIgkj": {
+    "defaultMessage": "Username"
+  },
+  "JOk3yr": {
+    "defaultMessage": "Full name is required!"
+  },
+  "Jq3FDz": {
+    "defaultMessage": "Content"
+  },
+  "K3eIbc": {
+    "defaultMessage": "Reads"
+  },
+  "K3r6DQ": {
+    "defaultMessage": "Delete"
+  },
+  "K6Dfgw": {
+    "defaultMessage": "Mark as Completed"
+  },
+  "KRtZQo": {
+    "defaultMessage": "Write something about you..."
+  },
+  "Kc0XZR": {
+    "defaultMessage": "Document size is required!"
+  },
+  "Ldxym4": {
+    "defaultMessage": "Stories"
+  },
+  "Men2Jq": {
+    "defaultMessage": "Confirm your password..."
+  },
+  "Mz/gsa": {
+    "defaultMessage": "Page Not Found"
+  },
+  "NAidKb": {
+    "defaultMessage": "Notifications"
+  },
+  "NHdgEg": {
+    "defaultMessage": "Reading List"
+  },
+  "OKhRC6": {
+    "defaultMessage": "Share"
+  },
+  "PJvZEH": {
+    "defaultMessage": "CONTINUE PAYMENT"
+  },
+  "Q8Qw5B": {
+    "defaultMessage": "Description"
+  },
+  "QBVhd8": {
+    "defaultMessage": "Our Partners"
+  },
+  "Qj+fjH": {
+    "defaultMessage": "Read Now!"
+  },
+  "Qmuxyg": {
+    "defaultMessage": "Update Story"
+  },
+  "R+J5ox": {
+    "defaultMessage": "Review"
+  },
+  "Rlr8a8": {
+    "defaultMessage": "My Stories"
+  },
+  "SQJto2": {
+    "defaultMessage": "Sign in"
+  },
+  "SRCaJt": {
+    "defaultMessage": "Address..."
+  },
+  "SeFjuA": {
+    "defaultMessage": "Upvote this article"
+  },
+  "Sm3uRi": {
+    "defaultMessage": "Royalty..."
+  },
+  "Swfr7j": {
+    "defaultMessage": "Document size"
+  },
+  "TFoFtM": {
+    "defaultMessage": "Upvotes"
+  },
+  "Tc7W/h": {
+    "defaultMessage": "Please enter your email or username below to process. We will send you email for resetting your password."
+  },
+  "U1/uU/": {
+    "defaultMessage": "Update information about your article below"
+  },
+  "UDueEE": {
+    "defaultMessage": "Content is required!"
+  },
+  "Ub+AGc": {
+    "defaultMessage": "Sign In"
+  },
+  "UfTXut": {
+    "defaultMessage": "Gender is required!"
+  },
+  "V/JHlm": {
+    "defaultMessage": "Forgot password?"
+  },
+  "V/e4Rm": {
+    "defaultMessage": "Black-white pages is required!"
+  },
+  "VvvoCN": {
+    "defaultMessage": "FAILED"
+  },
+  "VzIOKf": {
+    "defaultMessage": "Reject"
+  },
+  "W8nHSd": {
+    "defaultMessage": "FAQ"
+  },
+  "WTEXVn": {
+    "defaultMessage": "Book Title"
+  },
+  "WTrOy3": {
+    "defaultMessage": "Chat"
+  },
+  "X7jl6w": {
+    "defaultMessage": "Orders"
+  },
+  "XLoCJx": {
+    "defaultMessage": "Publications"
+  },
+  "XObaE9": {
+    "defaultMessage": "Votes"
+  },
+  "Y6dihM": {
+    "defaultMessage": "Vote"
+  },
+  "YWS7oC": {
+    "defaultMessage": "Invite Writer"
+  },
+  "YYW/K1": {
+    "defaultMessage": "Share This Article"
+  },
+  "YoqGmo": {
+    "defaultMessage": "Color pages count"
+  },
+  "ZEUMJy": {
+    "defaultMessage": "Your chats will be shown here"
+  },
+  "ZZB2/o": {
+    "defaultMessage": "WAITING PAYMENT"
+  },
+  "a7snL2": {
+    "defaultMessage": "Username..."
+  },
+  "b1zuN9": {
+    "defaultMessage": "Price"
+  },
+  "bMBg+P": {
+    "defaultMessage": "Joined at"
+  },
+  "bc4/fw": {
+    "defaultMessage": "Description..."
+  },
+  "c2QMA+": {
+    "defaultMessage": "List of Articles"
+  },
+  "cDtZBq": {
+    "defaultMessage": "To be continued"
+  },
+  "cPIKU2": {
+    "defaultMessage": "Following"
+  },
+  "cT7ryY": {
+    "defaultMessage": "Other stories you may like"
+  },
+  "ccXLVi": {
+    "defaultMessage": "Category"
+  },
+  "cyR7Kh": {
+    "defaultMessage": "Back"
+  },
+  "e6Ph5+": {
+    "defaultMessage": "Address"
+  },
+  "eZy16U": {
+    "defaultMessage": "Select category..."
+  },
+  "eiJoWq": {
+    "defaultMessage": "Title..."
+  },
+  "fX+1X1": {
+    "defaultMessage": "You have upvoted this post"
+  },
+  "fcgN3N": {
+    "defaultMessage": "Username or email"
+  },
+  "fweqXg": {
+    "defaultMessage": "Process Topup"
+  },
+  "g+77Q0": {
+    "defaultMessage": "All Articles"
+  },
+  "gJGXwy": {
+    "defaultMessage": "Latest information from Literasiin"
+  },
+  "hAGxD3": {
+    "defaultMessage": "Other user are inviting you to collaborate for their story."
+  },
+  "hYOLSG": {
+    "defaultMessage": "Edit Story Details"
+  },
+  "hkBLkb": {
+    "defaultMessage": "Black-white pages count"
+  },
+  "hvmr7D": {
+    "defaultMessage": "Empty bio"
+  },
+  "i46AeV": {
+    "defaultMessage": "Find user..."
+  },
+  "iFsDVR": {
+    "defaultMessage": "Loading"
+  },
+  "iO050q": {
+    "defaultMessage": "Uncategorized"
+  },
+  "iUAgi/": {
+    "defaultMessage": "Back to story list"
+  },
+  "ieGrWo": {
+    "defaultMessage": "Follow"
+  },
+  "ipcQV8": {
+    "defaultMessage": "Manage my wallets"
+  },
+  "itPgxd": {
+    "defaultMessage": "Profile"
+  },
+  "izWS4J": {
+    "defaultMessage": "Unfollow"
+  },
+  "lU8u1O": {
+    "defaultMessage": "Book title..."
+  },
+  "lbsnnF": {
+    "defaultMessage": "Click or drag file to this area to upload"
+  },
+  "luFfuT": {
+    "defaultMessage": "Estimated payment amount (excluding tax)"
+  },
+  "lzheFI": {
+    "defaultMessage": "Type..."
+  },
+  "m8/n8c": {
+    "defaultMessage": "Gender"
+  },
+  "meVSJa": {
+    "defaultMessage": "Your password..."
+  },
+  "mwchjd": {
+    "defaultMessage": "Username or email is required!"
+  },
+  "nGBrvw": {
+    "defaultMessage": "Bookmarks"
+  },
+  "nnqeEl": {
+    "defaultMessage": "Name is required!"
+  },
+  "o+OSu2": {
+    "defaultMessage": "Find more!"
+  },
+  "oAh3TU": {
+    "defaultMessage": "Password..."
+  },
+  "oUrU61": {
+    "defaultMessage": "Category is required!"
+  },
+  "oZPIFV": {
+    "defaultMessage": "Edit Article"
+  },
+  "ojk81t": {
+    "defaultMessage": "Mark as Uncompleted"
+  },
+  "pUL5PU": {
+    "defaultMessage": "Document size..."
+  },
+  "ped+KD": {
+    "defaultMessage": "My Articles"
+  },
+  "pzTOmv": {
+    "defaultMessage": "Followers"
+  },
+  "q6oOii": {
+    "defaultMessage": "Please signin to post comment"
+  },
+  "qP9ylY": {
+    "defaultMessage": "Update your profile details"
+  },
+  "qQwKSd": {
+    "defaultMessage": "Does not have an account?"
+  },
+  "rl+odZ": {
+    "defaultMessage": "This story has no writers"
+  },
+  "ro+ucj": {
+    "defaultMessage": "New Story"
+  },
+  "sf4RZL": {
+    "defaultMessage": "Address is required!"
+  },
+  "sgw0uW": {
+    "defaultMessage": "Type is required!"
+  },
+  "sjzLbX": {
+    "defaultMessage": "Accept"
+  },
+  "sy+pv5": {
+    "defaultMessage": "Email"
+  },
+  "syEQFE": {
+    "defaultMessage": "Publish"
+  },
+  "t2qllp": {
+    "defaultMessage": "You have pending invitation"
+  },
+  "tWkQ2J": {
+    "defaultMessage": "Author"
+  },
+  "tZPgDR": {
+    "defaultMessage": "Recommended Stories"
+  },
+  "uCk8r+": {
+    "defaultMessage": "Already have an account?"
+  },
+  "ualFki": {
+    "defaultMessage": "ALREADY PAID"
+  },
+  "usAvMr": {
+    "defaultMessage": "Edit Profile"
+  },
+  "vAucKD": {
+    "defaultMessage": "Select date..."
+  },
+  "vTUL12": {
+    "defaultMessage": "Royalty"
+  },
+  "w7tf2z": {
+    "defaultMessage": "Published"
+  },
+  "wCgTu5": {
+    "defaultMessage": "Comments"
+  },
+  "wDhibm": {
+    "defaultMessage": "Deposit amount..."
+  },
+  "wEQDC6": {
+    "defaultMessage": "Edit"
+  },
+  "wSZR47": {
+    "defaultMessage": "Submit"
+  },
+  "ws0LXi": {
+    "defaultMessage": "All Stories"
+  },
+  "x+pm3J": {
+    "defaultMessage": "Pending Invitations"
+  },
+  "x5TH99": {
+    "defaultMessage": "New Publication"
+  },
+  "xEyyUq": {
+    "defaultMessage": "Please verify your password!"
+  },
+  "xFre7h": {
+    "defaultMessage": "End of story"
+  },
+  "xrKGlC": {
+    "defaultMessage": "Invite your friend to join your story writing project"
+  },
+  "xxGlS9": {
+    "defaultMessage": "COINS"
+  },
+  "y5n28W": {
+    "defaultMessage": "Black-white pages..."
+  },
+  "y76O10": {
+    "defaultMessage": "Select gender..."
+  },
+  "yk4PT9": {
+    "defaultMessage": "Full name"
+  },
+  "ys0XhD": {
+    "defaultMessage": "Email..."
+  }
+}

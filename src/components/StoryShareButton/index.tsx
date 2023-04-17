@@ -1,6 +1,7 @@
 import { Modal } from 'antd'
 import StoryShareSegment from 'components/StoryShareSegment'
 import { cloneElement, ReactElement, useState } from 'react'
+import { FormattedMessage } from 'react-intl'
 import styled from 'styled-components'
 
 const StyledModal = styled(Modal)`
@@ -25,7 +26,7 @@ export default function StoryShareButton ({ story, children }: StoryShareButtonP
       {cloneElement(children, { onClick: handleOpen })}
       <StyledModal
         open={open}
-        title="Share This Story"
+        title={<FormattedMessage defaultMessage='Share This Story'/>}
         centered
         footer={null}
         onCancel={handleClose}

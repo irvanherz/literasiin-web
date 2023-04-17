@@ -1,20 +1,26 @@
 import { ConfigProvider, theme } from 'antd'
 import ArticleDetails from 'pages/ArticleDetails'
+import ArticleEdit from 'pages/ArticleEdit'
+import ArticleListMine from 'pages/ArticleListMine'
+import ForgotPassword from 'pages/Auth/ForgotPassword'
+import ResetPassword from 'pages/Auth/ResetPassword'
+import Signin from 'pages/Auth/Signin'
+import Signup from 'pages/Auth/Signup'
 import Chats from 'pages/Chats'
 import KbDetails from 'pages/KbDetails'
-import KbExplore from 'pages/KbExplore'
 import KbHome from 'pages/KbHome'
+import KbPerCategory from 'pages/KbPerCategory'
 import Notifications from 'pages/Notifications'
 import PublicationCreate from 'pages/PublicationCreate'
 import StoryChapterDetails from 'pages/StoryChapterDetails'
 import StoryChapterEdit from 'pages/StoryChapterEdit'
-import StoryCreate from 'pages/StoryCreate'
 import StoryDetails from 'pages/StoryDetails'
 import StoryEdit from 'pages/StoryEdit'
+import StoryExplore from 'pages/StoryExplore'
 import StoryListMine from 'pages/StoryListMine'
 import UserProfileEdit from 'pages/UserProfileEdit'
+import Wallets from 'pages/Wallets'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
-import Auth from './pages/Auth'
 import Home from './pages/Home'
 import NotFound from './pages/NotFound'
 import UserDetails from './pages/UserDetails'
@@ -31,9 +37,24 @@ const router = createBrowserRouter([
     element: <Notifications />
   },
   {
-    id: '/auth/:sectionId',
-    path: '/auth/:sectionId',
-    element: <Auth />
+    id: '/auth/signin',
+    path: '/auth/signin',
+    element: <Signin />
+  },
+  {
+    id: '/auth/signup',
+    path: '/auth/signup',
+    element: <Signup />
+  },
+  {
+    id: '/auth/reset-password',
+    path: '/auth/reset-password',
+    element: <ResetPassword />
+  },
+  {
+    id: '/auth/forgot-password',
+    path: '/auth/forgot-password',
+    element: <ForgotPassword />
   },
   {
     id: '/users/:username',
@@ -51,9 +72,9 @@ const router = createBrowserRouter([
     element: <StoryListMine />
   },
   {
-    id: '/stories/create',
-    path: '/stories/create',
-    element: <StoryCreate />
+    id: '/stories/explore',
+    path: '/stories/explore',
+    element: <StoryExplore />
   },
   {
     id: '/stories/:storyId',
@@ -76,9 +97,19 @@ const router = createBrowserRouter([
     element: <StoryChapterEdit />
   },
   {
+    id: '/articles/mine',
+    path: '/articles/mine',
+    element: <ArticleListMine />
+  },
+  {
     id: '/articles/:articleId',
     path: '/articles/:articleId',
     element: <ArticleDetails />
+  },
+  {
+    id: '/articles/:articleId/edit',
+    path: '/articles/:articleId/edit',
+    element: <ArticleEdit />
   },
   {
     id: '/hc',
@@ -88,12 +119,7 @@ const router = createBrowserRouter([
   {
     id: '/hc/:categoryId',
     path: '/hc/:categoryId',
-    element: <KbExplore />
-  },
-  {
-    id: '/hc/explore',
-    path: '/hc/explore',
-    element: <KbExplore />
+    element: <KbPerCategory />
   },
   {
     id: '/hc/:categoryId/:kbId',
@@ -114,6 +140,11 @@ const router = createBrowserRouter([
     id: '/publications/create',
     path: '/publications/create',
     element: <PublicationCreate />
+  },
+  {
+    id: '/wallets',
+    path: '/wallets',
+    element: <Wallets />
   },
   {
     id: '*',

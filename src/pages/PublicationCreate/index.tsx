@@ -1,5 +1,6 @@
-import { Form } from 'antd'
+import { Button, Divider, Form, Space } from 'antd'
 import Layout from 'components/Layout'
+import PublicationFilesManager from 'components/shared/PublicationFilesManager'
 import PublicationForm from 'components/shared/PublicationForm'
 import { Helmet } from 'react-helmet'
 
@@ -15,17 +16,25 @@ export default function PublicationCreate () {
       <Layout.Scaffold
         bodyStyle={{ padding: '16px 0' }}
         title="Publish"
-        description="Publish your story"
+        description="Publish your book"
       >
-        <Form
-          form={form}
-          wrapperCol={{ span: 24 }}
-          labelCol={{ span: 24 }}
-          onFinish={handleFinish}
-          onFinishFailed={handleFinishFailed}
-          >
-          <PublicationForm />
-        </Form>
+        <Space direction='vertical' style={{ width: '100%' }}>
+          <Form
+            form={form}
+            wrapperCol={{ span: 24 }}
+            labelCol={{ span: 24 }}
+            onFinish={handleFinish}
+            onFinishFailed={handleFinishFailed}
+            >
+            <PublicationForm />
+          </Form>
+          <Divider>Upload File</Divider>
+          <PublicationFilesManager />
+          <Divider />
+          <div style={{ textAlign: 'center' }}>
+            <Button type='primary'>Process Publication</Button>
+          </div>
+        </Space>
       </Layout.Scaffold>
       <Helmet>
         <title>Publish a Book - Literasiin</title>

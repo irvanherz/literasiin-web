@@ -242,6 +242,53 @@ class Categories {
   }
 }
 
+class Comments {
+  static async create (payload: any) {
+    try {
+      const resp = await axiosInstance.post(`${BASEURL}/stories/comments`, payload)
+      return ApiData.fromResponse(resp)
+    } catch (err: any) {
+      throw new ApiError(err)
+    }
+  }
+
+  static async findMany (params: any = {}) {
+    try {
+      const resp = await axiosInstance.get(`${BASEURL}/stories/comments`, { params })
+      return ApiData.fromResponse(resp)
+    } catch (err: any) {
+      throw new ApiError(err)
+    }
+  }
+
+  static async findById (id: number) {
+    try {
+      const resp = await axiosInstance.get(`${BASEURL}/stories/comments/${id}`)
+      return ApiData.fromResponse(resp)
+    } catch (err: any) {
+      throw new ApiError(err)
+    }
+  }
+
+  static async updateById (id: number, payload: any) {
+    try {
+      const resp = await axiosInstance.patch(`${BASEURL}/stories/comments/${id}`, payload)
+      return ApiData.fromResponse(resp)
+    } catch (err: any) {
+      throw new ApiError(err)
+    }
+  }
+
+  static async deleteById (id: number) {
+    try {
+      const resp = await axiosInstance.delete(`${BASEURL}/stories/comments/${id}`)
+      return ApiData.fromResponse(resp)
+    } catch (err: any) {
+      throw new ApiError(err)
+    }
+  }
+}
+
 class Chapters {
   static Readers = ChapterReaders
   static async create (payload: any) {
@@ -314,6 +361,8 @@ export default class StoriesService {
   static Chapters = Chapters
   static Writers = Writers
   static Readers = Readers
+  static Comments = Comments
+
   static async create (payload: any) {
     try {
       const resp = await axiosInstance.post(`${BASEURL}/stories`, payload)
@@ -332,9 +381,9 @@ export default class StoriesService {
     }
   }
 
-  static async findById (id: number) {
+  static async findById (id: number, params: any = {}) {
     try {
-      const resp = await axiosInstance.get(`${BASEURL}/stories/${id}`)
+      const resp = await axiosInstance.get(`${BASEURL}/stories/${id}`, { params })
       return ApiData.fromResponse(resp)
     } catch (err: any) {
       throw new ApiError(err)

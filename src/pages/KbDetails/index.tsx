@@ -1,9 +1,13 @@
-import { Col, Row, Space, Typography } from 'antd'
+import { ShareAltOutlined } from '@ant-design/icons'
+import { Button, Card, Col, Row, Space, Typography } from 'antd'
+import KbShareButton from 'components/KbShareButton'
 import Layout from 'components/Layout'
 import PageWidthAdapter from 'components/PageWidthAdapter'
 import { useQuery } from 'react-query'
 import { useParams } from 'react-router-dom'
 import KbsService from 'services/Kbs'
+import KbOtherMessage from './KbOtherMessage'
+import KbRelatedList from './KbRelatedList'
 
 export default function KbDetails () {
   const params = useParams()
@@ -13,20 +17,30 @@ export default function KbDetails () {
 
   return (
     <Layout.Default>
-      <PageWidthAdapter style={{ maxWidth: 920 }}>
-        <div style={{ padding: '24px 0' }}>
-          <Row gutter={[16, 16]}>
-            <Col span={24}>
-              <Space direction='vertical' style={{ width: '100%', textAlign: 'center' }}>
-                <Typography.Title level={2}>{kb?.title}</Typography.Title>
+      <PageWidthAdapter>
+        <Row gutter={[16, 16]} style={{ padding: '24px 0' }}>
+          <Col xs={24} sm={24} md={16} lg={16} xl={16} xxl={16}>
+            <Card
+              actions={[
+                <KbShareButton key='share' kb={kb}>
+                  <Button type='link' icon={<ShareAltOutlined />}>Share</Button>
+                </KbShareButton>
+              ]}
+            >
+              <Space direction='vertical' style={{ width: '100%' }}>
+                <Typography.Title level={2} style={{ margin: 0 }}>{kb?.title}</Typography.Title>
                 <Typography.Paragraph>{kb?.description}</Typography.Paragraph>
+                <div dangerouslySetInnerHTML={{ __html: kb?.content }}></div>
               </Space>
-            </Col>
-            <Col span={24}>
-              <div dangerouslySetInnerHTML={{ __html: kb?.content }}></div>
-            </Col>
-          </Row>
-        </div>
+            </Card>
+          </Col>
+          <Col xs={24} sm={24} md={8} lg={8} xl={8} xxl={8}>
+            <KbRelatedList kb={kb} />
+          </Col>
+          <Col span={24}>
+            <KbOtherMessage />
+          </Col>
+        </Row>
       </PageWidthAdapter>
     </Layout.Default>
   )

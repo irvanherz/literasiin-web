@@ -1,6 +1,7 @@
 import { TagOutlined } from '@ant-design/icons'
 import { Card, Space, Tag, Typography } from 'antd'
-import dayjs from 'dayjs'
+import RenderTimeFromNow from 'components/shared/RenderTimeFromNow'
+import { FormattedMessage } from 'react-intl'
 
 type SummaryProps = {
   story: any
@@ -12,12 +13,12 @@ export default function Summary ({ story }:SummaryProps) {
       title="About this story"
       actions={[
         <div key='a'>
-          <div>Category</div>
+          <div><FormattedMessage defaultMessage='Category' /></div>
           <div style={{ fontWeight: 900 }}>{story?.category?.name || 'Uncategorized'}</div>
         </div>,
         <div key='b'>
-          <div>Last Update</div>
-          <div style={{ fontWeight: 900 }}>{dayjs(story?.createdAt).fromNow()}</div>
+          <div><FormattedMessage defaultMessage='Last updated' /></div>
+          <div style={{ fontWeight: 900 }}><RenderTimeFromNow timestamp={story?.createdAt} /></div>
         </div>
       ]}
     >

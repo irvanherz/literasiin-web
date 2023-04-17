@@ -5,6 +5,7 @@ import UserProfileForm from 'components/shared/UserProfileForm'
 import dayjs from 'dayjs'
 import { useMemo } from 'react'
 import { Helmet } from 'react-helmet'
+import { FormattedMessage } from 'react-intl'
 import { useMutation, useQuery, useQueryClient } from 'react-query'
 import { useParams } from 'react-router-dom'
 import UsersService from 'services/Users'
@@ -50,8 +51,8 @@ export default function UserProfileEdit () {
     <RouteGuard require='authenticated'>
       <Layout.Default>
         <Layout.Scaffold
-          title="Edit Profile"
-          description="Update your profile details"
+          title={<FormattedMessage defaultMessage="Edit Profile" />}
+          description={<FormattedMessage defaultMessage="Update your profile details" />}
           bodyStyle={{ padding: '24px 0' }}
       >
           <Form
@@ -64,7 +65,7 @@ export default function UserProfileEdit () {
         >
             <UserProfileForm />
           </Form>
-          <Button loading={updater.isLoading} onClick={form.submit}>Update</Button>
+          <Button loading={updater.isLoading} onClick={form.submit}><FormattedMessage defaultMessage='Update' /></Button>
         </Layout.Scaffold>
         <Helmet>
           <title>Edit Profile - Literasiin</title>

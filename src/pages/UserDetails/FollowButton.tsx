@@ -1,7 +1,10 @@
 import { UserAddOutlined, UserDeleteOutlined } from '@ant-design/icons'
 import { Button, message } from 'antd'
 import useCurrentUser from 'hooks/useCurrentUser'
+import qs from 'qs'
+import { useIntl } from 'react-intl'
 import { useMutation } from 'react-query'
+import { useLocation, useNavigate } from 'react-router-dom'
 import UsersService from 'services/Users'
 
 type FollowButtonProps = {
@@ -10,11 +13,15 @@ type FollowButtonProps = {
   afterUpdated?: () => void
 }
 export default function FollowButton ({ user, context, afterUpdated }: FollowButtonProps) {
+  const intl = useIntl()
+  const navigate = useNavigate()
+  const location = useLocation()
   const currentUser = useCurrentUser()
   const follower = useMutation(() => UsersService.followById(user?.id))
   const unfollower = useMutation(() => UsersService.unfollowById(user?.id))
 
   const handleFollow = () => {
+    if (!currentUser) navigate('/auth/signin' + qs.stringify({ redirect: location.pathname }, { addQueryPrefix: true }))
     follower.mutate(undefined, {
       onSuccess: () => {
         afterUpdated && afterUpdated()
@@ -37,8 +44,8 @@ export default function FollowButton ({ user, context, afterUpdated }: FollowBut
   }
   if (user?.id === currentUser?.id) return null
   if (context?.hasFollowing) {
-    return <Button size='small' onClick={handleUnfollow} loading={unfollower.isLoading} icon={<UserDeleteOutlined />}>Unfollow</Button>
+    return <Button size='small' onClick={handleUnfollow} loading={unfollower.isLoading} icon={<UserDeleteOutlined />}>{intl.formatMessage({ defaultMessage: 'Unfollow' })}</Button>
   } else {
-    return <Button size='small' onClick={handleFollow} loading={follower.isLoading} icon={<UserAddOutlined />}>Follow</Button>
+    return <Button size='small' onClick={handleFollow} loading={follower.isLoading} icon={<UserAddOutlined />}>{intl.formatMessage({ defaultMessage: 'Follow' })}</Button>
   }
 }

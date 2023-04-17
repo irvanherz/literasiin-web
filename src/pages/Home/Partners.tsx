@@ -1,6 +1,7 @@
 import { Avatar, Space, Typography } from 'antd'
 import PageWidthAdapter from 'components/PageWidthAdapter'
 import { DEFAULT_PHOTO } from 'libs/variables'
+import { FormattedMessage } from 'react-intl'
 import styled from 'styled-components'
 
 const Wrapper = styled.div`
@@ -26,7 +27,7 @@ export default function Partners ({ config }: PartnersProps) {
   return (
     <Wrapper>
       <div className='section-1'>
-        <Typography.Title>Partner Kami:</Typography.Title>
+        <Typography.Title><FormattedMessage defaultMessage='Our Partners' />:</Typography.Title>
       </div>
       <div className='section-2'>
         <PageWidthAdapter>

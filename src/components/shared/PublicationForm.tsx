@@ -1,111 +1,116 @@
 /* eslint-disable prefer-promise-reject-errors */
-import { Affix, Card, Col, Divider, Form, Input, Row, Select } from 'antd'
-import { useState } from 'react'
-
-const FORM_ITEM_HELPS = {
-  default: {
-    title: 'Publishing',
-    description: 'Publish your book in an affordable price'
-  },
-  title: {
-    title: 'Book Title',
-    description: 'Judul buku sangat penting. Buat semenarik mungkin'
-  },
-  author: {
-    title: 'Author',
-    description: 'Nama buku yang dicantumkan sebagai pengarang'
-  },
-  type: {
-    title: 'Type',
-    description: 'Pilih penerbit buku'
-  },
-  address: {
-    title: 'Address',
-    description: 'Ini adalah alamat'
-  },
-  size: {
-    title: 'Document Size',
-    description: 'Ini adalah doccsz'
-  }
-}
+import { Col, Divider, Form, Input, InputNumber, Row, Select } from 'antd'
+import { useIntl } from 'react-intl'
+import StoryCoverInput from './StoryCoverInput'
 
 export default function PublicationForm () {
-  const [activeFormItem, setActiveFormItem] = useState<keyof typeof FORM_ITEM_HELPS>('default')
-  const activeHelp = FORM_ITEM_HELPS[activeFormItem] || FORM_ITEM_HELPS.default
-
+  const intl = useIntl()
   return (
     <Form.Provider>
       <Row gutter={16}>
-        <Col span={12}>
+        <Col span={16}>
           <Form.Item
-            label="Book Title"
+            label={intl.formatMessage({ defaultMessage: 'Book Title' })}
             name='title'
-            rules={[{ required: true, message: 'Book title is required' }]}
-      >
-            <Input
-              placeholder="Book title..."
-              maxLength={255}
-              onFocus={() => setActiveFormItem('title')}
-            />
-          </Form.Item>
-          <Form.Item
-            label="Author"
-            name='author'
-            rules={[{ required: true, message: 'Book title is required' }]}
+            tooltip="Judul buku sangat penting. Buat semenarik mungkin"
+            rules={[{ required: true, message: intl.formatMessage({ defaultMessage: 'Book title is required!' }) }]}
           >
             <Input
-              placeholder="Book title..."
+              placeholder={intl.formatMessage({ defaultMessage: 'Book title...' })}
               maxLength={255}
-              onFocus={() => setActiveFormItem('author')}
             />
           </Form.Item>
           <Form.Item
-            label="Type"
+            label={intl.formatMessage({ defaultMessage: 'Author' })}
+            name='author'
+            tooltip='Nama yang dicantumkan sebagai pengarang'
+            rules={[{ required: true, message: intl.formatMessage({ defaultMessage: 'Book title is required!' }) }]}
+          >
+            <Input
+              placeholder={intl.formatMessage({ defaultMessage: 'Book title...' })}
+              maxLength={255}
+            />
+          </Form.Item>
+          <Form.Item
+            label={intl.formatMessage({ defaultMessage: 'Type' })}
             name='type'
-            rules={[{ required: true, message: 'Type is required' }]}
+            tooltip='Pilih penerbit buku'
+            rules={[{ required: true, message: intl.formatMessage({ defaultMessage: 'Type is required!' }) }]}
           >
             <Select
-              placeholder="Type..."
+              placeholder={intl.formatMessage({ defaultMessage: 'Type...' })}
               options={[
                 { value: 'self-publishing', label: 'Self Publishing' },
                 { value: 'indie-publishing', label: 'Indie Publishing' }
               ]}
-              onFocus={() => setActiveFormItem('type')}
             />
           </Form.Item>
           <Form.Item
-            label="Address"
+            label={intl.formatMessage({ defaultMessage: 'Address' })}
             name='address'
-            rules={[{ required: true, message: 'Address is required' }]}
+            tooltip='Alamat pengiriman buku cetak'
+            rules={[{ required: true, message: intl.formatMessage({ defaultMessage: 'Address is required!' }) }]}
           >
             <Input
-              placeholder="Address..."
+              placeholder={intl.formatMessage({ defaultMessage: 'Address...' })}
               maxLength={255}
-              onFocus={() => setActiveFormItem('address')}
             />
           </Form.Item>
           <Divider />
           <Form.Item
-            label="Document size"
+            label={intl.formatMessage({ defaultMessage: 'Document size' })}
             name='size'
-            rules={[{ required: true, message: 'Document size is required' }]}
+            tooltip='Ukuran buku cetak'
+            rules={[{ required: true, message: intl.formatMessage({ defaultMessage: 'Document size is required!' }) }]}
           >
             <Select
-              placeholder="Document size..."
+              placeholder={intl.formatMessage({ defaultMessage: 'Document size...' })}
               options={[{ value: 'a4', label: 'A4 (21 x 29.7cm)' }, { value: 'a5', label: 'A5 (13 x 19cm)' }]}
-              onFocus={() => setActiveFormItem('size')}
+            />
+          </Form.Item>
+          <Form.Item
+            label={intl.formatMessage({ defaultMessage: 'Black-white pages count' })}
+            name='numBwPages'
+            tooltip='Jumlah halaman hitam putih'
+            rules={[{ required: true, message: intl.formatMessage({ defaultMessage: 'Black-white pages is required!' }) }]}
+          >
+            <InputNumber
+              placeholder={intl.formatMessage({ defaultMessage: 'Black-white pages...' })}
+              min={0}
+              max={1000}
+            />
+          </Form.Item>
+          <Form.Item
+            label={intl.formatMessage({ defaultMessage: 'Color pages count' })}
+            name='numColorPages'
+            tooltip='Jumlah halaman berwarna'
+            rules={[{ required: true, message: intl.formatMessage({ defaultMessage: 'Color pages count is required!' }) }]}
+          >
+            <InputNumber
+              placeholder={intl.formatMessage({ defaultMessage: 'Black-white pages...' })}
+              min={0}
+              max={1000}
+            />
+          </Form.Item>
+          <Form.Item
+            label={intl.formatMessage({ defaultMessage: 'Royalty' })}
+            name='royalty'
+            tooltip='Royalti penjualan buku'
+            rules={[{ required: true, message: intl.formatMessage({ defaultMessage: 'Royalty is required!' }) }]}
+          >
+            <InputNumber
+              placeholder={intl.formatMessage({ defaultMessage: 'Royalty...' })}
+              min={0}
+              max={100000}
             />
           </Form.Item>
         </Col>
-        <Col span={12}>
-          <Affix offsetTop={76}>
-            <Card>
-              <Card.Meta
-                title={activeHelp?.title}
-                description={activeHelp?.description}
-              />
-            </Card>
-          </Affix>
+        <Col span={8}>
+          <Form.Item
+            name='cover'
+          >
+            <StoryCoverInput />
+          </Form.Item>
         </Col>
       </Row>
     </Form.Provider>

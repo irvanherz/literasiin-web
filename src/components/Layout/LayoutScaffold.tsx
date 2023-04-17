@@ -2,6 +2,7 @@ import { ArrowLeftOutlined } from '@ant-design/icons'
 import { Space, theme, Typography } from 'antd'
 import classNames from 'classnames'
 import { ReactNode } from 'react'
+import { FormattedMessage } from 'react-intl'
 import { useNavigate } from 'react-router-dom'
 import styled, { CSSProperties } from 'styled-components'
 import PageWidthAdapter from '../PageWidthAdapter'
@@ -68,7 +69,7 @@ export default function LayoutScaffold ({ withHeader = true, headerStyle, header
             <div style={{ flex: 1 }}>
               <button className='back-button' style={{ color: token.colorTextBase, marginBottom: token.marginSM }} onClick={handleBack}>
                 <span className='back-button-icon' style={{ paddingRight: token.padding }}><ArrowLeftOutlined /></span>
-                <span className='back-button-text'>Back</span>
+                <span className='back-button-text'><FormattedMessage defaultMessage='Back' /></span>
               </button>
               <Typography.Title level={2} className='scaffold-header-title'>{title}</Typography.Title>
               <Typography.Paragraph className='scaffold-header-description'>{description}</Typography.Paragraph>

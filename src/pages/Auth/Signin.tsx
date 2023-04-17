@@ -1,11 +1,15 @@
-import { Button, Form, message, Space } from 'antd'
+import { Button, Card, Divider, Form, message, Space } from 'antd'
+import Layout from 'components/Layout'
+import RouteGuard from 'components/RouteGuard'
 import { getMessaging, getToken } from 'firebase/messaging'
 import useAuthContext from 'hooks/useAuthContext'
 import { useEffect } from 'react'
 import { Helmet } from 'react-helmet'
+import { FormattedMessage } from 'react-intl'
 import { useMutation } from 'react-query'
 import { Link, useNavigate, useSearchParams } from 'react-router-dom'
 import AuthService from 'services/Auth'
+import ContinueWithGoogleButton from './ContinueWithGoogleButton'
 import SigninForm from './SigninForm'
 
 export default function Signin () {
@@ -24,6 +28,7 @@ export default function Signin () {
       return null
     }
   }
+
   const handleSubmit = async (values: any) => {
     const notificationToken = await getNotificationToken()
     const payload = {
@@ -51,25 +56,42 @@ export default function Signin () {
     }
   }, [auth.status])
 
+  const handleTabChange = (tab: string) => {
+    navigate(`/auth/${tab}`, { replace: true })
+  }
+
   return (
-    <div>
-      <Form
-        form={form}
-        wrapperCol={{ span: 24 }} labelCol={{ span: 24 }}
-        onFinish={handleSubmit}
-        style={{ textAlign: 'left' }}
+    <RouteGuard require='unauthenticated'>
+      <Layout.Blank contentStyle={{ display: 'flex' }}>
+        <Card
+          onTabChange={handleTabChange}
+          tabList={[{ key: 'signin', tab: <FormattedMessage defaultMessage='Sign in' /> }, { key: 'signup', tab: <FormattedMessage defaultMessage='Sign up' /> }]}
+          activeTabKey='signin'
+          style={{ width: '100%', maxWidth: 500, margin: 'auto' }}
       >
-        <SigninForm />
-      </Form>
-      <Space style={{ width: '100%', justifyContent: 'space-between' }}>
-        <Button type="primary" onClick={form.submit} loading={signin.isLoading}>Sign In</Button>
-        <Link to='/auth/signup' replace={true}>
-          <Button type="link">Does not have an account? Sign Up</Button>
-        </Link>
-      </Space>
-      <Helmet>
-        <title>Sign in - Literasiin</title>
-      </Helmet>
-    </div>
+          <Form
+            form={form}
+            wrapperCol={{ span: 24 }} labelCol={{ span: 24 }}
+            onFinish={handleSubmit}
+            style={{ textAlign: 'left' }}
+          >
+            <SigninForm />
+          </Form>
+          <Space style={{ width: '100%', justifyContent: 'space-between' }}>
+            <Button type="primary" onClick={form.submit} loading={signin.isLoading}><FormattedMessage defaultMessage="Sign In" /></Button>
+            <Link to='/auth/signup' replace={true}>
+              <Button type="link"><FormattedMessage defaultMessage="Does not have an account?" /></Button>
+            </Link>
+          </Space>
+          <Divider>or</Divider>
+          <div style={{ textAlign: 'center' }}>
+            <ContinueWithGoogleButton />
+          </div>
+          <Helmet>
+            <title>Sign in - Literasiin</title>
+          </Helmet>
+        </Card>
+      </Layout.Blank>
+    </RouteGuard>
   )
 }

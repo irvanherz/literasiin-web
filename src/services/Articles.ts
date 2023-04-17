@@ -4,6 +4,44 @@ import ApiError from 'models/ApiError'
 
 const BASEURL = process.env.REACT_APP_API_BASEURL
 
+class Readers {
+  static async track (articleId: number) {
+    try {
+      const resp = await axiosInstance.post(`${BASEURL}/articles/${articleId}/readers/track`)
+      return ApiData.fromResponse(resp)
+    } catch (err: any) {
+      throw new ApiError(err)
+    }
+  }
+
+  static async bookmark (articleId: number) {
+    try {
+      const resp = await axiosInstance.post(`${BASEURL}/articles/${articleId}/readers/bookmark`)
+      return ApiData.fromResponse(resp)
+    } catch (err: any) {
+      throw new ApiError(err)
+    }
+  }
+
+  static async unbookmark (articleId: number) {
+    try {
+      const resp = await axiosInstance.delete(`${BASEURL}/articles/${articleId}/readers/bookmark`)
+      return ApiData.fromResponse(resp)
+    } catch (err: any) {
+      throw new ApiError(err)
+    }
+  }
+
+  static async vote (articleId: number, vote: number) {
+    try {
+      const resp = await axiosInstance.post(`${BASEURL}/articles/${articleId}/readers/vote`, { vote })
+      return ApiData.fromResponse(resp)
+    } catch (err: any) {
+      throw new ApiError(err)
+    }
+  }
+}
+
 class Categories {
   static async create (payload: any) {
     try {
@@ -62,6 +100,7 @@ class Categories {
 
 export default class ArticlesService {
   static Categories = Categories
+  static Readers = Readers
   static async create (payload: any) {
     try {
       const resp = await axiosInstance.post(`${BASEURL}/articles`, payload)
@@ -80,9 +119,9 @@ export default class ArticlesService {
     }
   }
 
-  static async findById (id: number) {
+  static async findById (id: number, params?: any) {
     try {
-      const resp = await axiosInstance.get(`${BASEURL}/articles/${id}`)
+      const resp = await axiosInstance.get(`${BASEURL}/articles/${id}`, { params })
       return ApiData.fromResponse(resp)
     } catch (err: any) {
       throw new ApiError(err)
@@ -101,6 +140,15 @@ export default class ArticlesService {
   static async deleteById (id: number) {
     try {
       const resp = await axiosInstance.delete(`${BASEURL}/articles/${id}`)
+      return ApiData.fromResponse(resp)
+    } catch (err: any) {
+      throw new ApiError(err)
+    }
+  }
+
+  static async findContextById (id: number) {
+    try {
+      const resp = await axiosInstance.get(`${BASEURL}/articles/${id}/context`)
       return ApiData.fromResponse(resp)
     } catch (err: any) {
       throw new ApiError(err)

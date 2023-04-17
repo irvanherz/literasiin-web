@@ -1,36 +1,38 @@
 import { HomeOutlined, LeftOutlined, PauseOutlined, RightOutlined, StopFilled } from '@ant-design/icons'
-import { Avatar, Card, Col, Row, Space } from 'antd'
+import { Card, Col, Row, Space } from 'antd'
 import ContentGateway from 'components/ContentGateway'
 import Layout from 'components/Layout'
 import StoryChapterShareSegment from 'components/StoryChapterShareSegment'
+import useStory from 'hooks/useStory'
+import useStoryChapter from 'hooks/useStoryChapter'
 import useStoryChapterContext from 'hooks/useStoryChapterContext'
-import { DEFAULT_PHOTO } from 'libs/variables'
-import Media from 'models/Media'
 import { useEffect, useMemo } from 'react'
 import { Helmet } from 'react-helmet'
-import { useMutation, useQuery } from 'react-query'
+import { FormattedMessage } from 'react-intl'
+import { useMutation } from 'react-query'
 import { Link, useParams } from 'react-router-dom'
 import StoriesService from 'services/Stories'
 import StoryChapterComments from './StoryChapterComments'
+import StoryChapterWriter from './StoryChapterWriter'
 import StoryRecommendations from './StoryRecommendations'
 import VoteButton from './VoteButton'
 
 export default function StoryChapterDetails () {
   const params = useParams()
   const chapterId = +(params?.chapterId || 0)
-  const { data, status, error } = useQuery<any, any, any>(`stories.chapters[${chapterId}]`, () => StoriesService.Chapters.findById(chapterId, { includeStory: true }))
+  const { data, status, error } = useStoryChapter(chapterId, { includeStory: true })
   const viewer = useMutation(() => StoriesService.Chapters.Readers.track(chapterId))
   const chapter = data?.data
-  const story = chapter?.story
-  const user = chapter?.story?.user
-  const avatar = new Media(user?.photo || {})
+  const storyId = chapter?.storyId
+  const { data: storyData } = useStory(storyId)
+  const story = storyData?.data
 
   const { data: contextData, refetch: refetchContext } = useStoryChapterContext(chapterId)
   const context = contextData?.data
 
   useEffect(() => {
-    if (status === 'success' && chapterId) viewer.mutate()
-  }, [status, chapterId])
+    if (chapterId) viewer.mutate()
+  }, [chapterId])
 
   const navActions = useMemo(() => {
     const res: any[] = []
@@ -45,7 +47,7 @@ export default function StoryChapterDetails () {
       res.push(
         <Link to={`/stories/${story?.id}`} className='story-chapter-nav-link'>
           <div className='story-chapter-nav-title'><HomeOutlined /></div>
-          <div className='story-chapter-nav-subtitle'>Back to story list</div>
+          <div className='story-chapter-nav-subtitle'><FormattedMessage defaultMessage='Back to story list' /></div>
         </Link>
       )
     }
@@ -57,18 +59,18 @@ export default function StoryChapterDetails () {
         </Link>
       )
     } else {
-      if (story.hasCompleted) {
+      if (story?.hasCompleted) {
         res.push(
           <div className='story-chapter-nav-link story-chapter-nav-link-disabled'>
             <div className='story-chapter-nav-title'><StopFilled /></div>
-            <div className='story-chapter-nav-subtitle'>End of Chapter</div>
+            <div className='story-chapter-nav-subtitle'><FormattedMessage defaultMessage='End of story' /></div>
           </div>
         )
       } else {
         res.push(
           <div className='story-chapter-nav-link story-chapter-nav-link-disabled'>
             <div className='story-chapter-nav-title'><PauseOutlined /></div>
-            <div className='story-chapter-nav-subtitle'>To be continued...</div>
+            <div className='story-chapter-nav-subtitle'><FormattedMessage defaultMessage='To be continued' />...</div>
           </div>
         )
       }
@@ -95,21 +97,20 @@ export default function StoryChapterDetails () {
                 >
                   <div dangerouslySetInnerHTML={{ __html: chapter?.content || '' }}></div>
                 </Card>
-                <StoryChapterComments />
+                <StoryChapterComments story={story} chapter={chapter} />
               </Space>
             </Col>
             <Col xs={24} sm={24} md={12} lg={8} xl={8} xxl={8}>
               <Space direction='vertical' style={{ width: '100%' }}>
-                <Card>
-                  <Card.Meta
-                    avatar={<Avatar src={avatar.md?.url || DEFAULT_PHOTO} />}
-                    title={user?.fullName || 'User'}
-                    description={'Writer'}
-                />
-                </Card>
-                <Card>
-                  <StoryChapterShareSegment story={story} chapter={chapter} />
-                </Card>
+                <StoryChapterWriter story={story} />
+                {story
+                  ? (
+                    <Card>
+                      <StoryChapterShareSegment story={story} chapter={chapter} />
+                    </Card>
+                    )
+                  : null}
+
               </Space>
             </Col>
             <Col span={24}>

@@ -1,7 +1,8 @@
-import { BookFilled, CalendarFilled, EditFilled } from '@ant-design/icons'
+import { CalendarFilled, EditFilled } from '@ant-design/icons'
 import { Button, Card, Divider, List } from 'antd'
 import ProfileShareSegment from 'components/ProfileShareSegment'
-import dayjs from 'dayjs'
+import RenderTimeFromNow from 'components/shared/RenderTimeFromNow'
+import { FormattedMessage } from 'react-intl'
 import styled from 'styled-components'
 import BioEditButton from './BioEditButton'
 
@@ -17,7 +18,6 @@ type ProfileCardProps = {
 }
 
 export default function ProfileCard ({ user, afterUpdated }: ProfileCardProps) {
-  const joinDate = dayjs(user?.createdAt).fromNow()
   return (
     <StyledCard>
       <List size='small' split>
@@ -30,24 +30,24 @@ export default function ProfileCard ({ user, afterUpdated }: ProfileCardProps) {
           }
         >
           <List.Item.Meta
-            title="Bio"
-            description={user?.bio || <i>Empty bio</i>}
+            title={<FormattedMessage defaultMessage='Bio' />}
+            description={user?.bio || <i><FormattedMessage defaultMessage='Empty bio' /></i>}
           />
         </List.Item>
-        <List.Item>
+        {/* <List.Item>
           <List.Item.Meta
             style={{ alignItems: 'center' }}
             avatar={<BookFilled />}
             title="Activity"
             description={'Reading 10 hours since then'}
           />
-        </List.Item>
+        </List.Item> */}
         <List.Item>
           <List.Item.Meta
             style={{ alignItems: 'center' }}
             avatar={<CalendarFilled />}
-            title="Joined at"
-            description={joinDate}
+            title={<FormattedMessage defaultMessage='Joined at' />}
+            description={<RenderTimeFromNow timestamp={user?.createdAt} />}
           />
         </List.Item>
       </List>

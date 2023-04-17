@@ -1,11 +1,12 @@
 import { InboxOutlined } from '@ant-design/icons'
 import { message, notification, Progress, Upload, UploadProps } from 'antd'
 import ImgCrop, { ImgCropProps } from 'antd-img-crop'
+import { FormattedMessage } from 'react-intl'
 import MediaService from 'services/Media'
 
 type MediaPickerUploaderProps = {
   afterUploadDone?: UploadProps['onChange']
-  preset?: 'photo' | 'story-cover'
+  preset?: 'photo' | 'story-cover' | 'article-image'
   cropProps?: Omit<ImgCropProps, 'children'>
 }
 export default function MediaPickerUploader ({ afterUploadDone, cropProps, preset = 'photo' }: MediaPickerUploaderProps) {
@@ -59,9 +60,9 @@ export default function MediaPickerUploader ({ afterUploadDone, cropProps, prese
         <p className="ant-upload-drag-icon">
           <InboxOutlined />
         </p>
-        <p className="ant-upload-text">Click or drag file to this area to upload</p>
+        <p className="ant-upload-text"><FormattedMessage defaultMessage='Click or drag file to this area to upload'/></p>
         <p className="ant-upload-hint">
-          Strictly prohibit from uploading company data or other band files
+          <FormattedMessage defaultMessage='Strictly prohibit from uploading company data or other band files'/>
         </p>
       </Upload.Dragger>
     </ImgCrop>

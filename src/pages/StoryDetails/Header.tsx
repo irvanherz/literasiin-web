@@ -1,10 +1,12 @@
 import { Space, Typography } from 'antd'
 import StoryCover from 'components/StoryCover'
 import { useMemo } from 'react'
+import { FormattedMessage } from 'react-intl'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 
 const Wrapper = styled.div`
+font-size: 14px;
 display: flex;
 width: 100%;
 gap: 16px;
@@ -76,15 +78,15 @@ export default function Header ({ story }:HeaderProps) {
           <Space style={{ textAlign: 'center' }} size={24}>
             <div>
               <div>{story?.meta?.numViews || 0}</div>
-              <div>Reads</div>
+              <Typography.Text type='secondary'><FormattedMessage defaultMessage='Reads' /></Typography.Text>
             </div>
             <div>
               <div>{story?.meta?.numVotes || 0}</div>
-              <div>Votes</div>
+              <Typography.Text type='secondary'><FormattedMessage defaultMessage='Votes' /></Typography.Text>
             </div>
             <div>
-              <div>{story?.numChapters}</div>
-              <div>Chapters</div>
+              <div>{story?.meta?.numPublishedChapters || 0}</div>
+              <Typography.Text type='secondary'><FormattedMessage defaultMessage='Chapters' /></Typography.Text>
             </div>
           </Space>
         </Space>

@@ -1,6 +1,7 @@
 import { Card, List, Space, Typography } from 'antd'
 import useArticles from 'hooks/useArticles'
 import useConfigurationByName from 'hooks/useConfigurationByName'
+import { FormattedMessage } from 'react-intl'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 
@@ -32,8 +33,8 @@ export default function AnnouncementsSection () {
       <AnnouncementsSectionWrapper
         title={
           <Space direction='vertical' style={{ width: '100%', padding: '16px, 0' }}>
-            <div style={{ fontSize: '1.6em', fontWeight: 900 }}>Announcements</div>
-            <div>Latest information from Literasiin</div>
+            <div style={{ fontSize: '1.6em', fontWeight: 900 }}><FormattedMessage defaultMessage="Announcements" /></div>
+            <div><FormattedMessage defaultMessage="Latest information from Literasiin" /></div>
           </Space>
         }
       >

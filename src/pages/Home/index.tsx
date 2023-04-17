@@ -15,7 +15,7 @@ export default function Home () {
   const config = data?.data?.value || {}
 
   return (
-    <Layout.Default>
+    <Layout.Default contentContainerStyle={{ background: '#FFF' }}>
       <Space direction='vertical' style={{ width: '100%' }}>
         <Header />
         <StoryList />

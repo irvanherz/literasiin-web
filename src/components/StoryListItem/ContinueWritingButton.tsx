@@ -1,8 +1,9 @@
 import { DeleteFilled, EditFilled, PlusOutlined } from '@ant-design/icons'
 import { Button, Card, Dropdown, List, MenuProps, message, Modal, Space, Tag, Typography } from 'antd'
+import RenderTimeFromNow from 'components/shared/RenderTimeFromNow'
 import StoryCover from 'components/StoryCover'
-import dayjs from 'dayjs'
 import { cloneElement, ReactElement, useState } from 'react'
+import { FormattedMessage } from 'react-intl'
 import { useMutation, useQuery } from 'react-query'
 import { Link, useNavigate } from 'react-router-dom'
 import StoriesService from 'services/Stories'
@@ -90,7 +91,7 @@ function ChaperItem ({ chapter, afterUpdated, afterDeleted }: ChapterItemProps) 
             {chapter?.status === 'draft' && (<Tag color='red'>DRAFT</Tag>)}
           </Space>
         }
-        description={`Last updated ${dayjs(chapter?.updatedAt).fromNow()}`}
+        description={<span><FormattedMessage defaultMessage='Last updated' /> <RenderTimeFromNow timestamp={chapter?.updatedAt} /></span>}
       />
     </List.Item>
   )
@@ -122,7 +123,7 @@ export default function ContinueWritingButton ({ children, story }: ContinueWrit
         <List
           header={
             <Card
-              actions={[<Link key='edit' to={`/stories/${storyId}/edit`}><span>Edit Story Details</span></Link>]}
+              actions={[<Link key='edit' to={`/stories/${storyId}/edit`}><span><FormattedMessage defaultMessage='Edit Story Details'/></span></Link>]}
             >
               <Card.Meta
                 avatar={
@@ -133,7 +134,7 @@ export default function ContinueWritingButton ({ children, story }: ContinueWrit
                 title={
                   <Space>
                     <span>{story.title}</span>
-                    {story?.status === 'draft' && (<Tag color='red'>DRAFT</Tag>)}
+                    {story?.status === 'draft' && (<Tag color='red'><FormattedMessage defaultMessage='DRAFT'/></Tag>)}
                   </Space>
                 }
                 description={<Typography.Paragraph ellipsis={{ rows: 3 }}>{story.description}</Typography.Paragraph>}
@@ -145,7 +146,7 @@ export default function ContinueWritingButton ({ children, story }: ContinueWrit
           footer={
             <div style={{ textAlign: 'center' }}>
               <CreateChapterButton story={story}>
-                <Button icon={<PlusOutlined />}>Create New Chapter</Button>
+                <Button icon={<PlusOutlined />} type='primary'><FormattedMessage defaultMessage='New Chapter'/></Button>
               </CreateChapterButton>
 
             </div>

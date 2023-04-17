@@ -1,16 +1,26 @@
-import { Button, Card, List, Result, Typography } from 'antd'
+import { MenuOutlined } from '@ant-design/icons'
+import { Button, Card, Dropdown, List, Result, Typography } from 'antd'
 import useChatContext from 'hooks/useChatContext'
 import useChatMessages from 'hooks/useChatMessages'
 import useChatRoom from 'hooks/useChatRoom'
 import useCurrentUser from 'hooks/useCurrentUser'
-import { useEffect, useMemo } from 'react'
-import { useParams } from 'react-router-dom'
+import { useEffect, useMemo, useRef } from 'react'
+import { FormattedMessage } from 'react-intl'
+import { useNavigate, useParams } from 'react-router-dom'
 import styled from 'styled-components'
 import ChatInput from './ChatInput'
 
 const ChatMessageWrapper = styled(List.Item)`
-&.chat-message-mine .ant-card {
-  background: #e6ffcf;
+text-align: left;
+.ant-card {
+  display: inline-block;
+  max-width: 500px;
+}
+&.chat-message-mine {
+  text-align: right;
+  .ant-card {
+    background: #e6ffcf;
+  }
 }
 `
 
@@ -33,17 +43,23 @@ function ChatMessage ({ message }: ChatMessageProps) {
   )
 }
 
-type ChatMessageListProps = { roomId: any}
-function ChatMessageList ({ roomId }: ChatMessageListProps) {
+type ChatMessageListProps = { room: any}
+function ChatMessageList ({ room }: ChatMessageListProps) {
   const ctx = useChatContext()
+  const navigate = useNavigate()
   const currentUser = useCurrentUser()
-  const { data: room, meta: roomMeta } = useChatRoom(roomId)
+  const containerRef = useRef<HTMLDivElement>(null)
+  const roomId = room?.id
   const { data: messages, meta } = useChatMessages(roomId)
 
   const handleLoadPrevious = () => {
-    const beforeId = meta?.lastId
-    ctx.fetchNextMessages(roomId, beforeId)
+    const after = meta?.after
+    ctx.fetchNextMessages(roomId, after)
   }
+
+  const sender = useMemo(() => {
+    return room?.members?.find((member: any) => member.id !== currentUser?.id)
+  }, [room])
 
   useEffect(() => {
     if (ctx.isReady && meta.status === 'idle') {
@@ -52,22 +68,29 @@ function ChatMessageList ({ roomId }: ChatMessageListProps) {
   }, [ctx.isReady, meta.status])
 
   useEffect(() => {
-    if (ctx.isReady && roomMeta.status === 'idle') {
-      ctx.fetchRoomById(roomId)
-    }
-  }, [ctx.isReady, roomMeta.status])
+    const { scrollHeight } = containerRef.current as HTMLDivElement
+    containerRef.current?.scrollTo({ behavior: 'smooth', top: scrollHeight })
+  }, [messages, containerRef.current])
 
-  const senderName = useMemo(() => {
-    const sender = room?.members?.find((member: any) => member.id !== currentUser?.id)
-    return sender?.fullName || 'Unknown'
-  }, [room])
+  const handleViewProfile = () => {
+    navigate(`/users/${sender?.username}`)
+  }
 
   return (
     <>
       <div className='chatroom-details-header'>
-        <Typography.Text strong>{senderName}</Typography.Text>
+        <div className='chatroom-details-header-1'>
+          <Typography.Text strong>{sender?.fullName}</Typography.Text>
+        </div>
+        <div className='chatroom-details-header-2'>
+          <Dropdown
+            menu={{ items: [{ key: 'a', label: 'View profile', onClick: handleViewProfile }] }}
+          >
+            <Button type='ghost' icon={<MenuOutlined />}></Button>
+          </Dropdown>
+        </div>
       </div>
-      <div className='chatroom-details-body'>
+      <div className='chatroom-details-body' ref={containerRef}>
         <div className='chatroom-details-body-inner'>
           {meta?.numItems > messages.length && (
             <div style={{ textAlign: 'center', paddingBottom: 16 }}>
@@ -97,7 +120,14 @@ height: 100%;
   flex: 0;
   padding: 32px 16px;
   border-bottom: 1px solid rgba(0,0,0,0.1);
-
+  display: flex;
+  align-items: center;
+  &-1 {
+    flex: 1;
+  }
+  &-2{
+    flex: 0;
+  }
 }
 .chatroom-details-body {
   flex: 1;
@@ -120,16 +150,24 @@ height: 100%;
 `
 export default function ChatRoomDetails () {
   const params = useParams()
+  const ctx = useChatContext()
   const roomId = +(params?.roomId || 0)
+  const { data: room, meta: roomMeta } = useChatRoom(roomId)
+
+  useEffect(() => {
+    if (ctx.isReady && roomMeta.status === 'idle') {
+      ctx.fetchRoomById(roomId)
+    }
+  }, [ctx.isReady, roomMeta.status])
 
   return (
     <ChatRoomDetailsWrapper>
-      {roomId
-        ? <ChatMessageList roomId={roomId} />
+      {room
+        ? <ChatMessageList room={room} />
         : <Result
             status='info'
-            title="Chat"
-            subTitle='Chaaat'
+            title={<FormattedMessage defaultMessage="Chat" />}
+            subTitle={<FormattedMessage defaultMessage='Your chats will be shown here' />}
           />
       }
     </ChatRoomDetailsWrapper>

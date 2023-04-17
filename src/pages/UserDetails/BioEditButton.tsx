@@ -1,6 +1,7 @@
 import { Input, message, Modal } from 'antd'
 import useCurrentUser from 'hooks/useCurrentUser'
 import { cloneElement, useEffect, useState } from 'react'
+import { FormattedMessage, useIntl } from 'react-intl'
 import { useMutation } from 'react-query'
 import UsersService from 'services/Users'
 
@@ -11,6 +12,7 @@ type BioEditButtonProps = {
 }
 
 export default function BioEditButton ({ children, user, afterUpdated }: BioEditButtonProps) {
+  const intl = useIntl()
   const currentUser = useCurrentUser()
   const userId = user?.id
   const updater = useMutation(`users[${userId}]`, (bio: string) => UsersService.updateById(userId, { bio }))
@@ -43,7 +45,7 @@ export default function BioEditButton ({ children, user, afterUpdated }: BioEdit
       <>
         {cloneElement(children, { onClick: handleOpen })}
         <Modal
-          title="Edit Bio"
+          title={<FormattedMessage defaultMessage="Edit Bio" />}
           centered
           open={open}
           onOk={handleUpdate}
@@ -54,7 +56,7 @@ export default function BioEditButton ({ children, user, afterUpdated }: BioEdit
             value={bio}
             maxLength={255}
             onChange={e => setBio(e.target.value)}
-            placeholder="Write something about you..."
+            placeholder={intl.formatMessage({ defaultMessage: 'Write something about you...' })}
             bordered={false}
         />
         </Modal>

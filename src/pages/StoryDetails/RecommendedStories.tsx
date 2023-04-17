@@ -2,6 +2,7 @@ import { StarFilled } from '@ant-design/icons'
 import { Card, List, Space } from 'antd'
 import StoryCover from 'components/StoryCover'
 import { useMemo } from 'react'
+import { FormattedMessage } from 'react-intl'
 import { useQuery } from 'react-query'
 import { Link } from 'react-router-dom'
 import StoriesService from 'services/Stories'
@@ -55,7 +56,7 @@ export default function RecommendedStories () {
   const stories: any[] = data?.data || []
 
   return (
-    <Card title="Recommended Stories">
+    <Card title={<FormattedMessage defaultMessage='Recommended Stories'/>}>
       <List
         dataSource={stories}
         renderItem={story => <StoryItem story={story} />}

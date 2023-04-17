@@ -1,20 +1,39 @@
-import AuthContextProvider from 'contexts/AuthContextProvider'
-import ReactDOM from 'react-dom/client'
-import { QueryClient, QueryClientProvider } from 'react-query'
-import App from './App'
-import reportWebVitals from './reportWebVitals'
-
+import { GoogleOAuthProvider } from '@react-oauth/google'
 import AxiosInterceptor from 'components/shared/AxiosInterceptor'
+import AuthContextProvider from 'contexts/AuthContextProvider'
 import ChatContextProvider from 'contexts/ChatContextProvider'
 import CurrentUserContextProvider from 'contexts/CurrentUserContextProvider'
+import LangContextProvider from 'contexts/LangContextProvider'
 import NotificationContextProvider from 'contexts/NotificationContextProvider'
 import SocketContextProvider from 'contexts/SocketContextProvider'
 import dayjs from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime'
 import { getAnalytics } from 'firebase/analytics'
 import { initializeApp } from 'firebase/app'
+import ReactDOM from 'react-dom/client'
+import { QueryClient, QueryClientProvider } from 'react-query'
+import { Quill } from 'react-quill'
+import 'react-quill/dist/quill.bubble.css'
+import App from './App'
+import reportWebVitals from './reportWebVitals'
 
 dayjs.extend(relativeTime)
+const BubbleTheme = Quill.import('themes/bubble')
+
+class ExtendBubbleTheme extends BubbleTheme {
+  constructor (quill: any, options: any) {
+    super(quill, options)
+
+    quill.on('selection-change', (range: any) => {
+      if (range) {
+        quill.theme.tooltip.show()
+        quill.theme.tooltip.position(quill.getBounds(range))
+      }
+    })
+  }
+}
+
+Quill.register('themes/bubble', ExtendBubbleTheme)
 
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
@@ -43,19 +62,24 @@ const queryClient = new QueryClient({ defaultOptions: { queries: { refetchOnWind
 root.render(
   // <React.StrictMode>
   <QueryClientProvider client={queryClient}>
-    <AuthContextProvider>
-      <AxiosInterceptor>
-        <CurrentUserContextProvider>
-          <SocketContextProvider>
-            <ChatContextProvider>
-              <NotificationContextProvider>
-                <App />
-              </NotificationContextProvider>
-            </ChatContextProvider>
-          </SocketContextProvider>
-        </CurrentUserContextProvider>
-      </AxiosInterceptor>
-    </AuthContextProvider>
+    <GoogleOAuthProvider clientId={process.env.REACT_APP_GOOGLE_OAUTH_CLIENT_ID!}>
+      <AuthContextProvider>
+        <AxiosInterceptor>
+          <CurrentUserContextProvider>
+            <LangContextProvider>
+              <SocketContextProvider>
+                <ChatContextProvider>
+                  <NotificationContextProvider>
+                    <App />
+                  </NotificationContextProvider>
+                </ChatContextProvider>
+              </SocketContextProvider>
+            </LangContextProvider>
+          </CurrentUserContextProvider>
+        </AxiosInterceptor>
+      </AuthContextProvider>
+    </GoogleOAuthProvider>
+
   </QueryClientProvider>
   // </React.StrictMode>
 )

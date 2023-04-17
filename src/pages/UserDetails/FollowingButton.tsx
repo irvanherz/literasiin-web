@@ -2,6 +2,7 @@ import { Avatar, Button, List, Modal } from 'antd'
 import { DEFAULT_PHOTO } from 'libs/variables'
 import { useState } from 'react'
 import InfiniteScroll from 'react-infinite-scroll-component'
+import { FormattedMessage } from 'react-intl'
 import { useInfiniteQuery } from 'react-query'
 import { useNavigate } from 'react-router-dom'
 import UsersService from 'services/Users'
@@ -68,7 +69,7 @@ export default function FollowingButton ({ user, context }: FollowingButtonProps
     <>
       <Button onClick={handleOpen} type='ghost' style={{ display: 'inline-block', height: 'auto' }}>
         <div>{context?.numFollowing || 0}</div>
-        <div>Following</div>
+        <div><FormattedMessage defaultMessage="Following" /></div>
       </Button>
       <Modal
         centered
@@ -80,9 +81,8 @@ export default function FollowingButton ({ user, context }: FollowingButtonProps
           dataLength={numMediaLoaded}
           next={fetchNextPage}
           hasMore={!!hasNextPage}
-          loader={<div style={{ textAlign: 'center' }}>Loading...</div>}
+          loader={<div style={{ textAlign: 'center' }}><FormattedMessage defaultMessage="Loading" />...</div>}
           scrollableTarget="scrollbar-target"
-        // endMessage={<Typography.Text></Typography.Text>}
         >
           <List
             size='small'

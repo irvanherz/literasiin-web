@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "@ant-design/icons": "^5.0.1",
+    "@react-oauth/google": "^0.9.0",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
@@ -11,20 +12,19 @@
     "@types/node": "^16.18.11",
     "@types/react": "^18.0.27",
     "@types/react-dom": "^18.0.10",
-    "antd": "^5.3.1",
-    "antd-img-crop": "^4.6.0",
+    "antd": "^5.4.2",
+    "antd-img-crop": "^4.12.2",
     "axios": "^1.2.6",
     "classnames": "^2.3.2",
     "dayjs": "^1.11.7",
     "firebase": "^9.17.1",
     "lodash": "^4.17.21",
-    "moment-timezone": "^0.5.40",
     "qs": "^6.11.0",
-    "quill": "^1.3.7",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-helmet": "^6.1.0",
     "react-infinite-scroll-component": "^6.1.0",
+    "react-intl": "^6.3.2",
     "react-query": "^3.39.3",
     "react-quill": "^2.0.0",
     "react-router-dom": "^6.9.0",
@@ -36,14 +36,18 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "env-cmd -f .env.local --use-shell \"node scripts/create-firebase-messaging-sw.js && react-scripts start\"",
-    "build": "env-cmd -f .env.local --use-shell \"node scripts/create-firebase-messaging-sw.js && react-scripts build\"",
-    "start:dev": "env-cmd -f .env.development --use-shell \"node scripts/create-firebase-messaging-sw.js && react-scripts start\"",
-    "build:dev": "env-cmd -f .env.development --use-shell \"node scripts/create-firebase-messaging-sw.js && react-scripts build\"",
-    "start:prod": "env-cmd -f .env.production --use-shell \"node scripts/create-firebase-messaging-sw.js && react-scripts start\"",
-    "build:prod": "env-cmd -f .env.production --use-shell \"node scripts/create-firebase-messaging-sw.js && react-scripts build\"",
+    "start": "env-cmd -f .env.local --use-shell \"node scripts/create-firebase-messaging-sw.js && craco start\"",
+    "build": "env-cmd -f .env.local --use-shell \"node scripts/create-firebase-messaging-sw.js && craco build\"",
+    "start:dev": "env-cmd -f .env.development --use-shell \"node scripts/create-firebase-messaging-sw.js && craco start\"",
+    "build:dev": "env-cmd -f .env.development --use-shell \"node scripts/create-firebase-messaging-sw.js && craco build\"",
+    "start:prod": "env-cmd -f .env.production --use-shell \"node scripts/create-firebase-messaging-sw.js && craco start\"",
+    "build:prod": "env-cmd -f .env.production --use-shell \"node scripts/create-firebase-messaging-sw.js && craco build\"",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "lang:extract": "formatjs extract 'src/**/*.ts*' --ignore='**/*.d.ts' --out-file langs/en.json --id-interpolation-pattern '[sha512:contenthash:base64:6]'",
+    "lang:compile": "formatjs compile langs/en.json --ast --out-file src/langs/en.json && formatjs compile langs/id.json --ast --out-file src/langs/id.json",
+    "lang:diff": "node scripts/create-lang-diff.js",
+    "lang:merge": "node scripts/merge-lang-diff.js"
   },
   "eslintConfig": {
     "extends": [
@@ -64,6 +68,9 @@
     ]
   },
   "devDependencies": {
+    "@craco/craco": "^7.1.0",
+    "@formatjs/cli": "^6.0.4",
+    "@formatjs/ts-transformer": "^3.12.0",
     "@types/lodash": "^4.14.191",
     "@types/qs": "^6.9.7",
     "@types/quill": "^2.0.10",
@@ -71,15 +78,18 @@
     "@types/styled-components": "^5.1.26",
     "@typescript-eslint/eslint-plugin": "^5.49.0",
     "@typescript-eslint/parser": "^5.49.0",
+    "babel-plugin-formatjs": "^10.4.0",
     "cra-append-sw": "^2.7.0",
     "env-cmd": "^10.1.0",
     "eslint": "^8.0.1",
     "eslint-config-prettier": "^8.6.0",
     "eslint-config-standard": "^17.0.0",
+    "eslint-plugin-formatjs": "^4.9.1",
     "eslint-plugin-import": "^2.25.2",
     "eslint-plugin-n": "^15.0.0",
     "eslint-plugin-promise": "^6.0.0",
     "eslint-plugin-react": "^7.32.2",
-    "prettier": "^2.8.3"
+    "prettier": "^2.8.3",
+    "ts-loader": "^9.4.2"
   }
 }

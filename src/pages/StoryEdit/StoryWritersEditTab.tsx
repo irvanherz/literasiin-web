@@ -1,5 +1,6 @@
-import { UserDeleteOutlined } from '@ant-design/icons'
+import { UserAddOutlined, UserDeleteOutlined } from '@ant-design/icons'
 import { Button, ConfigProvider, Empty, List, message, Modal } from 'antd'
+import { FormattedMessage } from 'react-intl'
 import { useMutation, useQuery } from 'react-query'
 import StoriesService from 'services/Stories'
 import InviteWriterButton from './InviteWriterButton'
@@ -48,7 +49,7 @@ export default function StoryWritersEditTab ({ story }: StoryWritersEditTabProps
       renderEmpty={() => (
         <Empty
           image={Empty.PRESENTED_IMAGE_SIMPLE}
-          description="This story has no writers"
+          description={<FormattedMessage defaultMessage="This story has no writers" />}
       />
       )}
     >
@@ -58,7 +59,7 @@ export default function StoryWritersEditTab ({ story }: StoryWritersEditTabProps
         footer={
           <div style={{ textAlign: 'center' }}>
             <InviteWriterButton story={story} afterCreated={refetch}>
-              <Button>Invite Other Writer</Button>
+              <Button icon={<UserAddOutlined />}><FormattedMessage defaultMessage="Invite Other Writer" /></Button>
             </InviteWriterButton>
           </div>
         }

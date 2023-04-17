@@ -4,16 +4,19 @@ import ApiError from 'models/ApiError'
 
 const BASEURL = process.env.REACT_APP_API_BASEURL
 
-export default class WalletsService {
-  // static async create (payload: any) {
-  //   try {
-  //     const resp = await axiosInstance.post(`${BASEURL}/wallets`, payload)
-  //     return ApiData.fromResponse(resp)
-  //   } catch (err: any) {
-  //     throw new ApiError(err)
-  //   }
-  // }
+class WalletTransactionsService {
+  static async findMany (params: any = {}) {
+    try {
+      const resp = await axiosInstance.get(`${BASEURL}/wallets/transactions`, { params })
+      return ApiData.fromResponse(resp)
+    } catch (err: any) {
+      throw new ApiError(err)
+    }
+  }
+}
 
+export default class WalletsService {
+  static Transactions = WalletTransactionsService
   static async findMany (params: any = {}) {
     try {
       const resp = await axiosInstance.get(`${BASEURL}/wallets`, { params })
@@ -32,21 +35,12 @@ export default class WalletsService {
     }
   }
 
-  // static async updateById (id: number, payload: any) {
-  //   try {
-  //     const resp = await axiosInstance.patch(`${BASEURL}/wallets/${id}`, payload)
-  //     return ApiData.fromResponse(resp)
-  //   } catch (err: any) {
-  //     throw new ApiError(err)
-  //   }
-  // }
-
-  // static async deleteById (id: number) {
-  //   try {
-  //     const resp = await axiosInstance.delete(`${BASEURL}/wallets/${id}`)
-  //     return ApiData.fromResponse(resp)
-  //   } catch (err: any) {
-  //     throw new ApiError(err)
-  //   }
-  // }
+  static async createDepositOrder (id: number, payload: any) {
+    try {
+      const resp = await axiosInstance.post(`${BASEURL}/wallets/${id}/deposit-order`, payload)
+      return ApiData.fromResponse(resp)
+    } catch (err: any) {
+      throw new ApiError(err)
+    }
+  }
 }

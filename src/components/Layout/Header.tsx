@@ -1,7 +1,8 @@
-import { UserOutlined } from '@ant-design/icons'
+import { BellOutlined, MessageOutlined } from '@ant-design/icons'
 import { Button, Space } from 'antd'
 import useAuthContext from 'hooks/useAuthContext'
 import { ReactNode } from 'react'
+import { FormattedMessage } from 'react-intl'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 import PageWidthAdapter from '../PageWidthAdapter'
@@ -12,18 +13,18 @@ function UserMenu () {
   return auth.status === 'authenticated'
     ? (
       <Space>
-        {/* <Link to='/cart'>
-          <Button shape='circle' icon={<ShoppingCartOutlined />} />
+        <Link to='/notifications'>
+          <Button shape='circle' icon={<BellOutlined />} />
         </Link>
         <Link to='/chats'>
           <Button shape='circle' icon={<MessageOutlined />} />
-        </Link> */}
-        <ProfileMenu><Button shape='round' icon={<UserOutlined />}>Menu</Button></ProfileMenu>
+        </Link>
+        <ProfileMenu />
       </Space>
       )
     : (
       <Link to="/auth/signin">
-        <Button>Sign in</Button>
+        <Button><FormattedMessage defaultMessage="Sign in" /></Button>
       </Link>
       )
 }
