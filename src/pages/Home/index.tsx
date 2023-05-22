@@ -1,4 +1,4 @@
-import { Space } from 'antd'
+import { Space, theme } from 'antd'
 import useConfigurationByName from 'hooks/useConfigurationByName'
 import { Helmet } from 'react-helmet'
 import Layout from '../../components/Layout'
@@ -13,9 +13,10 @@ import Testimonials from './Testimonials'
 export default function Home () {
   const { data } = useConfigurationByName('home-data')
   const config = data?.data?.value || {}
+  const { token } = theme.useToken()
 
   return (
-    <Layout.Default contentContainerStyle={{ background: '#FFF' }}>
+    <Layout.Default contentContainerStyle={{ background: token.colorBgContainer }}>
       <Space direction='vertical' style={{ width: '100%' }}>
         <Header />
         <StoryList />

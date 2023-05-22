@@ -30,5 +30,8 @@ module.exports = {
     'react/jsx-indent-props': [2, 2],
     "formatjs/no-offset": "error",
     semi: ['error', 'never']
+  },
+  globals: {
+    "google": "readonly"
   }
 }

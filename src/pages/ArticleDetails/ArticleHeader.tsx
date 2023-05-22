@@ -3,6 +3,7 @@ import { Avatar, List, Space, Typography } from 'antd'
 import { DEFAULT_PHOTO } from 'libs/variables'
 import { useMemo } from 'react'
 import { FormattedMessage } from 'react-intl'
+import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 
 const Wrapper = styled.div`
@@ -31,15 +32,17 @@ export default function ArticleHeader ({ article }: ArticleHeaderProps) {
           <Typography.Paragraph>{article?.description}</Typography.Paragraph>
         )}
         <List className='author-and-views'>
-          <List.Item
-            extra={<span><EyeFilled /> <span>{article?.meta?.numViews || 0}</span></span>}
-          >
-            <List.Item.Meta
-              avatar={<Avatar size='large' src={avatarSrc} />}
-              title={article?.user?.fullName}
-              description={<FormattedMessage defaultMessage="Writer" />}
-            />
-          </List.Item>
+          <Link to={`/users/${article?.user?.username}`}>
+            <List.Item
+              extra={<span><EyeFilled /> <span>{article?.meta?.numViews || 0}</span></span>}
+            >
+              <List.Item.Meta
+                avatar={<Avatar size='large' src={avatarSrc} />}
+                title={article?.user?.fullName}
+                description={<FormattedMessage defaultMessage="Writer" />}
+              />
+            </List.Item>
+          </Link>
         </List>
       </Space>
     </Wrapper>

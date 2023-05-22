@@ -1,4 +1,4 @@
-import { Col, Row } from 'antd'
+import { Col, Row, theme } from 'antd'
 import ArticleImage from 'components/ArticleImage'
 import Layout from 'components/Layout'
 import PageWidthAdapter from 'components/PageWidthAdapter'
@@ -18,6 +18,7 @@ padding: 24px 0;
 `
 
 export default function ArticleDetails () {
+  const { token } = theme.useToken()
   const params = useParams()
   const articleId = +(params?.articleId || 0)
   const { data, refetch } = useArticle(articleId)
@@ -35,7 +36,7 @@ export default function ArticleDetails () {
   }
 
   return (
-    <Layout.Default style={{ background: '#FFF' }}>
+    <Layout.Default style={{ background: token.colorBgBase }}>
       <PageWidthAdapter style={{ maxWidth: 920 }}>
         <Wrapper>
           <Row gutter={[16, 16]}>

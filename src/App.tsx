@@ -1,4 +1,3 @@
-import { ConfigProvider, theme } from 'antd'
 import ArticleDetails from 'pages/ArticleDetails'
 import ArticleEdit from 'pages/ArticleEdit'
 import ArticleListMine from 'pages/ArticleListMine'
@@ -12,6 +11,7 @@ import KbHome from 'pages/KbHome'
 import KbPerCategory from 'pages/KbPerCategory'
 import Notifications from 'pages/Notifications'
 import PublicationCreate from 'pages/PublicationCreate'
+import PublicationEdit from 'pages/PublicationEdit'
 import StoryChapterDetails from 'pages/StoryChapterDetails'
 import StoryChapterEdit from 'pages/StoryChapterEdit'
 import StoryDetails from 'pages/StoryDetails'
@@ -20,6 +20,7 @@ import StoryExplore from 'pages/StoryExplore'
 import StoryListMine from 'pages/StoryListMine'
 import UserProfileEdit from 'pages/UserProfileEdit'
 import Wallets from 'pages/Wallets'
+import WebinarDetails from 'pages/WebinarDetails'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import Home from './pages/Home'
 import NotFound from './pages/NotFound'
@@ -64,6 +65,11 @@ const router = createBrowserRouter([
   {
     id: '/users/:username/edit',
     path: '/users/:username/edit',
+    element: <UserProfileEdit />
+  },
+  {
+    id: '/users/:username/edit/:sectionId',
+    path: '/users/:username/edit/:sectionId',
     element: <UserProfileEdit />
   },
   {
@@ -142,9 +148,19 @@ const router = createBrowserRouter([
     element: <PublicationCreate />
   },
   {
+    id: '/publications/:publicationId/edit',
+    path: '/publications/:publicationId/edit',
+    element: <PublicationEdit />
+  },
+  {
     id: '/wallets',
     path: '/wallets',
     element: <Wallets />
+  },
+  {
+    id: '/webinars',
+    path: '/webinars/:sessionName/:sessionUsername',
+    element: <WebinarDetails />
   },
   {
     id: '*',
@@ -156,11 +172,7 @@ const router = createBrowserRouter([
 function App () {
   return (
     <div className="App">
-      <ConfigProvider
-        theme={{ algorithm: theme.defaultAlgorithm, token: { fontFamily: 'Roboto, sans-serif' } }}
-      >
-        <RouterProvider router={router} />
-      </ConfigProvider>
+      <RouterProvider router={router} />
     </div>
   )
 }

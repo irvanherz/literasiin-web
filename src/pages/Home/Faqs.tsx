@@ -1,4 +1,4 @@
-import { Collapse, Space, Typography } from 'antd'
+import { Collapse, Space, theme, Typography } from 'antd'
 import PageWidthAdapter from 'components/PageWidthAdapter'
 import { FormattedMessage } from 'react-intl'
 import styled from 'styled-components'
@@ -13,17 +13,18 @@ type FaqsProps = {
   config: any
 }
 export default function Faqs ({ config }: FaqsProps) {
+  const { token } = theme.useToken()
   const faqs = config?.faqs || []
 
   return (
-    <Space direction="vertical" style={{ width: '100%', background: '#FFF' }}>
+    <Space direction="vertical" style={{ width: '100%', background: token.colorBgBase }}>
       <div style={{ textAlign: 'center', padding: '30px 0' }}>
         <PageWidthAdapter>
           <Typography.Title style={{ margin: 0 }}><FormattedMessage defaultMessage='FAQ' /></Typography.Title>
           <Typography.Text><FormattedMessage defaultMessage='Frequently Asked Question' /></Typography.Text>
         </PageWidthAdapter>
       </div>
-      <div style={{ background: '#EEEEEE', padding: '20px 0' }}>
+      <div style={{ background: token.colorBgLayout, padding: '20px 0' }}>
         <PageWidthAdapter>
           <Space direction="vertical" style={{ width: '100%' }}>
             {faqs.map((faq: any) => (

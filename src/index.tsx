@@ -3,9 +3,12 @@ import AxiosInterceptor from 'components/shared/AxiosInterceptor'
 import AuthContextProvider from 'contexts/AuthContextProvider'
 import ChatContextProvider from 'contexts/ChatContextProvider'
 import CurrentUserContextProvider from 'contexts/CurrentUserContextProvider'
+import FcmContextProvider from 'contexts/FcmContextProvider'
+import GoogleMapsContextProvider from 'contexts/GoogleMapsContextProvider'
 import LangContextProvider from 'contexts/LangContextProvider'
 import NotificationContextProvider from 'contexts/NotificationContextProvider'
 import SocketContextProvider from 'contexts/SocketContextProvider'
+import ThemeContextProvider from 'contexts/ThemeContextProvider'
 import dayjs from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime'
 import { getAnalytics } from 'firebase/analytics'
@@ -61,26 +64,32 @@ const queryClient = new QueryClient({ defaultOptions: { queries: { refetchOnWind
 
 root.render(
   // <React.StrictMode>
-  <QueryClientProvider client={queryClient}>
-    <GoogleOAuthProvider clientId={process.env.REACT_APP_GOOGLE_OAUTH_CLIENT_ID!}>
-      <AuthContextProvider>
-        <AxiosInterceptor>
-          <CurrentUserContextProvider>
-            <LangContextProvider>
-              <SocketContextProvider>
-                <ChatContextProvider>
-                  <NotificationContextProvider>
-                    <App />
-                  </NotificationContextProvider>
-                </ChatContextProvider>
-              </SocketContextProvider>
-            </LangContextProvider>
-          </CurrentUserContextProvider>
-        </AxiosInterceptor>
-      </AuthContextProvider>
-    </GoogleOAuthProvider>
+  <FcmContextProvider>
+    <QueryClientProvider client={queryClient}>
+      <GoogleOAuthProvider clientId={process.env.REACT_APP_GOOGLE_OAUTH_CLIENT_ID!}>
+        <AuthContextProvider>
+          <AxiosInterceptor>
+            <CurrentUserContextProvider>
+              <LangContextProvider>
+                <SocketContextProvider>
+                  <ChatContextProvider>
+                    <NotificationContextProvider>
+                      <GoogleMapsContextProvider options={{ apiKey: process.env.REACT_APP_GOOGLE_MAPS_APIKEY!, language: 'id-ID', libraries: ['marker', 'places', 'drawing'] }}>
+                        <ThemeContextProvider>
+                          <App />
+                        </ThemeContextProvider>
+                      </GoogleMapsContextProvider>
+                    </NotificationContextProvider>
+                  </ChatContextProvider>
+                </SocketContextProvider>
+              </LangContextProvider>
+            </CurrentUserContextProvider>
+          </AxiosInterceptor>
+        </AuthContextProvider>
+      </GoogleOAuthProvider>
+    </QueryClientProvider>
+  </FcmContextProvider>
 
-  </QueryClientProvider>
   // </React.StrictMode>
 )
 

@@ -3,9 +3,7 @@ import { Upload } from 'antd'
 
 export default function PublicationFilesManager () {
   return (
-    <Upload.Dragger
-
-    >
+    <Upload.Dragger>
       <p className="ant-upload-drag-icon">
         <InboxOutlined />
       </p>

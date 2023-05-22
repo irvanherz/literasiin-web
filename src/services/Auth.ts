@@ -50,6 +50,15 @@ export default class AuthService {
     }
   }
 
+  static async changePassword (payload: any) {
+    try {
+      const resp = await axiosInstance.post(`${BASEURL}/auth/change-password`, payload)
+      return ApiData.fromResponse(resp)
+    } catch (err: any) {
+      throw new ApiError(err)
+    }
+  }
+
   static async checkPasswordResetToken (payload: any) {
     try {
       const resp = await axiosInstance.post(`${BASEURL}/auth/check-password-reset-token`, payload)

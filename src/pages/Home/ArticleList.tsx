@@ -1,4 +1,4 @@
-import { Col, List, Row, Tabs, Typography } from 'antd'
+import { Col, List, Row, Tabs, theme, Typography } from 'antd'
 import ArticleCard from 'components/ArticleCard'
 import PageWidthAdapter from 'components/PageWidthAdapter'
 import { FormattedMessage } from 'react-intl'
@@ -32,15 +32,15 @@ function ArticleListPerCategory ({ category }: ArticleListPerCategoryProps) {
 }
 
 const ArticleListContainer = styled.div`
-background: #F2EDED;
 padding: 24px 0 24px 0;
 `
 
 export default function ArticleList () {
+  const { token } = theme.useToken()
   const { data } = useQuery('articles.categories[]', () => ArticlesService.Categories.findMany())
   const categories: any[] = data?.data || []
   return (
-    <ArticleListContainer>
+    <ArticleListContainer style={{ background: token.colorBgLayout }}>
       <PageWidthAdapter>
         <Tabs tabPosition='top' tabBarExtraContent={<Typography.Text strong style={{ paddingLeft: 16 }}><FormattedMessage defaultMessage='List of Articles' /></Typography.Text>}>
           <Tabs.TabPane tab="All" key={0}><ArticleListPerCategory category={undefined} /></Tabs.TabPane>

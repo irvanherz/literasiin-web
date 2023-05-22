@@ -1,8 +1,9 @@
-import { Button, Card, Divider, Form, message, Space } from 'antd'
+import { Button, Card, Col, Divider, Form, message, Row, Space } from 'antd'
 import Layout from 'components/Layout'
+import PageWidthAdapter from 'components/PageWidthAdapter'
 import RouteGuard from 'components/RouteGuard'
-import { getMessaging, getToken } from 'firebase/messaging'
 import useAuthContext from 'hooks/useAuthContext'
+import useFcmContext from 'hooks/useFcmContext'
 import { useEffect } from 'react'
 import { Helmet } from 'react-helmet'
 import { FormattedMessage } from 'react-intl'
@@ -18,24 +19,14 @@ export default function Signin () {
   const [searchParams] = useSearchParams()
   const [form] = Form.useForm()
   const signin = useMutation<any, any, any>(AuthService.signin)
-
-  const getNotificationToken = async () => {
-    try {
-      const messaging = getMessaging()
-      const token = await getToken(messaging).catch(() => undefined)
-      return token
-    } catch (err) {
-      return null
-    }
-  }
+  const fcm = useFcmContext()
 
   const handleSubmit = async (values: any) => {
-    const notificationToken = await getNotificationToken()
     const payload = {
       ...values,
       deviceType: 'web',
       deviceId: window.navigator.userAgent,
-      notificationToken
+      notificationToken: fcm.token || ''
     }
 
     signin.mutate(payload, {
@@ -62,36 +53,43 @@ export default function Signin () {
 
   return (
     <RouteGuard require='unauthenticated'>
-      <Layout.Blank contentStyle={{ display: 'flex' }}>
-        <Card
-          onTabChange={handleTabChange}
-          tabList={[{ key: 'signin', tab: <FormattedMessage defaultMessage='Sign in' /> }, { key: 'signup', tab: <FormattedMessage defaultMessage='Sign up' /> }]}
-          activeTabKey='signin'
-          style={{ width: '100%', maxWidth: 500, margin: 'auto' }}
-      >
-          <Form
-            form={form}
-            wrapperCol={{ span: 24 }} labelCol={{ span: 24 }}
-            onFinish={handleSubmit}
-            style={{ textAlign: 'left' }}
-          >
-            <SigninForm />
-          </Form>
-          <Space style={{ width: '100%', justifyContent: 'space-between' }}>
-            <Button type="primary" onClick={form.submit} loading={signin.isLoading}><FormattedMessage defaultMessage="Sign In" /></Button>
-            <Link to='/auth/signup' replace={true}>
-              <Button type="link"><FormattedMessage defaultMessage="Does not have an account?" /></Button>
-            </Link>
-          </Space>
-          <Divider>or</Divider>
-          <div style={{ textAlign: 'center' }}>
-            <ContinueWithGoogleButton />
-          </div>
-          <Helmet>
-            <title>Sign in - Literasiin</title>
-          </Helmet>
-        </Card>
-      </Layout.Blank>
+      <Layout.Default contentContainerStyle={{ padding: '32px 0' }} showUserMenu={false}>
+        <PageWidthAdapter>
+          <Row gutter={[16, 16]}>
+            <Col xs={0} sm={0} md={12} lg={14} xl={14} xxl={14}></Col>
+            <Col xs={24} sm={24} md={12} lg={10} xl={10} xxl={10}>
+              <Card
+                onTabChange={handleTabChange}
+                tabList={[{ key: 'signin', tab: <FormattedMessage defaultMessage='Sign in' /> }, { key: 'signup', tab: <FormattedMessage defaultMessage='Sign up' /> }]}
+                activeTabKey='signin'
+              >
+                <Form
+                  form={form}
+                  wrapperCol={{ span: 24 }} labelCol={{ span: 24 }}
+                  onFinish={handleSubmit}
+                  style={{ textAlign: 'left' }}
+                >
+                  <SigninForm />
+                  <Space style={{ width: '100%', justifyContent: 'space-between' }}>
+                    <Button htmlType='submit' type="primary" loading={signin.isLoading}><FormattedMessage defaultMessage="Sign In" /></Button>
+                    <Link to='/auth/signup' replace={true}>
+                      <Button loading={signin.isLoading} type="link"><FormattedMessage defaultMessage="Does not have an account?" /></Button>
+                    </Link>
+                  </Space>
+                </Form>
+                <Divider>or</Divider>
+                <div style={{ textAlign: 'center' }}>
+                  <ContinueWithGoogleButton />
+                </div>
+                <Helmet>
+                  <title>Sign in - Literasiin</title>
+                </Helmet>
+              </Card>
+            </Col>
+          </Row>
+        </PageWidthAdapter>
+
+      </Layout.Default>
     </RouteGuard>
   )
 }

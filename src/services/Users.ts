@@ -24,6 +24,53 @@ class Connections {
   }
 }
 
+class Addresses {
+  static async create (payload: any) {
+    try {
+      const resp = await axiosInstance.post(`${BASEURL}/users/addresses`, payload)
+      return ApiData.fromResponse(resp)
+    } catch (err: any) {
+      throw new ApiError(err)
+    }
+  }
+
+  static async findMany (params: any = {}) {
+    try {
+      const resp = await axiosInstance.get(`${BASEURL}/users/addresses`, { params })
+      return ApiData.fromResponse(resp)
+    } catch (err: any) {
+      throw new ApiError(err)
+    }
+  }
+
+  static async findById (id: number, params: any = {}) {
+    try {
+      const resp = await axiosInstance.get(`${BASEURL}/users/addresses/${id}`, { params })
+      return ApiData.fromResponse(resp)
+    } catch (err: any) {
+      throw new ApiError(err)
+    }
+  }
+
+  static async updateById (id: number, payload: any) {
+    try {
+      const resp = await axiosInstance.patch(`${BASEURL}/users/addresses/${id}`, payload)
+      return ApiData.fromResponse(resp)
+    } catch (err: any) {
+      throw new ApiError(err)
+    }
+  }
+
+  static async deleteById (id: number) {
+    try {
+      const resp = await axiosInstance.delete(`${BASEURL}/users/addresses/${id}`)
+      return ApiData.fromResponse(resp)
+    } catch (err: any) {
+      throw new ApiError(err)
+    }
+  }
+}
+
 class Identities {
   static async create (payload: any) {
     try {
@@ -74,6 +121,7 @@ class Identities {
 export default class UsersService {
   static Identities = Identities
   static Connections = Connections
+  static Addresses = Addresses
   static async create (payload: any) {
     try {
       const resp = await axiosInstance.post(`${BASEURL}/users`, payload)

@@ -35,3 +35,14 @@ export function copyToClipboard (text: string) {
     console.error('Async: Could not copy text: ', err)
   })
 }
+
+export function titleCase (s: string) {
+  if (!(typeof s === 'string' && s.length > 0)) return s
+  return s.replace(
+    /\w\S*/g,
+    function (txt) {
+      return txt.charAt(0).toUpperCase() + txt.substring(1).toLowerCase()
+    }
+  )
+}
+

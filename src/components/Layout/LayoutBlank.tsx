@@ -1,4 +1,4 @@
-import { Layout } from 'antd'
+import { Layout, theme } from 'antd'
 import { CSSProperties, ReactNode } from 'react'
 import styled from 'styled-components'
 
@@ -18,8 +18,9 @@ type LayoutBlankProps = {
 }
 
 export default function LayoutBlank ({ children, style, className, contentStyle, contentClassName }: LayoutBlankProps) {
+  const { token } = theme.useToken()
   return (
-    <StyledLayout style={style} className={className}>
+    <StyledLayout style={{ background: token.colorBgContainer, ...style }} className={className}>
       <Layout.Content style={contentStyle} className={contentClassName}>
         {children}
       </Layout.Content>

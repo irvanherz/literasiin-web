@@ -24,5 +24,8 @@
   "include": [
     "src",
     "craco.config.js"
+  ],
+  "types": [
+    "google.maps"
   ]
 }

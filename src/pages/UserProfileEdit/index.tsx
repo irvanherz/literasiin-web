@@ -1,52 +1,36 @@
-import { Button, Form, message } from 'antd'
+import { Card, CardProps } from 'antd'
 import Layout from 'components/Layout'
 import RouteGuard from 'components/RouteGuard'
-import UserProfileForm from 'components/shared/UserProfileForm'
-import dayjs from 'dayjs'
-import { useMemo } from 'react'
 import { Helmet } from 'react-helmet'
 import { FormattedMessage } from 'react-intl'
-import { useMutation, useQuery, useQueryClient } from 'react-query'
-import { useParams } from 'react-router-dom'
-import UsersService from 'services/Users'
+import { useNavigate, useParams } from 'react-router-dom'
+import EditAddresses from './EditAddresses'
+import EditDetails from './EditDetails'
+import EditSecurity from './EditSecurity'
 
 export default function UserProfileEdit () {
   const params = useParams()
-  const username = params?.username
-  const { data } = useQuery(`users[${username}]`, () => UsersService.findByUsername(username!), { enabled: !!username })
-  const user = data?.data
-  const queryClient = useQueryClient()
-  const updater = useMutation(payload => UsersService.updateById(user.id, payload))
-  const initialValues = useMemo(() => {
-    return user
-      ? {
-          ...user,
-          dob: user.dob ? dayjs(user.dob) : null
-        }
-      : {}
-  }, [user])
+  const sectionId = params.sectionId || 'profile'
+  const navigate = useNavigate()
 
-  const handleFinish = (values: any) => {
-    const { photo, ...payload } = values
-    payload.photoId = photo?.id || null
-    delete payload.email
-
-    updater.mutate(payload, {
-      onSuccess: () => {
-        queryClient.invalidateQueries('users[me]')
-        message.success('Profile updated')
-      },
-      onError: (err: any) => {
-        message.error(err?.message)
-      }
-    })
+  const handleTabChange: CardProps['onTabChange'] = (key) => {
+    navigate(`/users/me/edit/${key}`)
   }
+  const menuItems: CardProps['tabList'] = [
+    {
+      key: 'profile',
+      tab: 'Profile'
+    },
+    {
+      key: 'addresses',
+      tab: 'Address'
+    },
+    {
+      key: 'security',
+      tab: 'Security'
+    }
+  ]
 
-  const handleFinishFailed = () => {
-    message.error('Check all fields and then try again')
-  }
-
-  const [form] = Form.useForm()
   return (
     <RouteGuard require='authenticated'>
       <Layout.Default>
@@ -54,18 +38,23 @@ export default function UserProfileEdit () {
           title={<FormattedMessage defaultMessage="Edit Profile" />}
           description={<FormattedMessage defaultMessage="Update your profile details" />}
           bodyStyle={{ padding: '24px 0' }}
-      >
-          <Form
-            wrapperCol={{ span: 24 }}
-            labelCol={{ span: 24 }}
-            initialValues={initialValues}
-            form={form}
-            onFinish={handleFinish}
-            onFinishFailed={handleFinishFailed}
         >
-            <UserProfileForm />
-          </Form>
-          <Button loading={updater.isLoading} onClick={form.submit}><FormattedMessage defaultMessage='Update' /></Button>
+          <Card
+            type='inner'
+            activeTabKey={sectionId}
+            tabList={menuItems}
+            onTabChange={handleTabChange}
+          >
+            {sectionId === 'profile' && (
+              <EditDetails />
+            )}
+            {sectionId === 'addresses' && (
+              <EditAddresses />
+            )}
+            {sectionId === 'security' && (
+              <EditSecurity />
+            )}
+          </Card>
         </Layout.Scaffold>
         <Helmet>
           <title>Edit Profile - Literasiin</title>

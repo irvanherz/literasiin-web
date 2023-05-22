@@ -1,4 +1,5 @@
 import { Layout, theme } from 'antd'
+import Color from 'color'
 import ScrollToTop from 'components/utils/ScrollToTop'
 import { CSSProperties, ReactNode } from 'react'
 import styled from 'styled-components'
@@ -32,17 +33,18 @@ type LayoutDefaultProps = {
   children: ReactNode,
   searchComponent?: ReactNode,
   style?: CSSProperties
+  showUserMenu?: boolean
   contentContainerStyle?: CSSProperties
 }
 
-export default function LayoutDefault ({ children, searchComponent, style, contentContainerStyle }: LayoutDefaultProps) {
+export default function LayoutDefault ({ children, searchComponent, style, contentContainerStyle, showUserMenu = true }: LayoutDefaultProps) {
   const { token } = theme.useToken()
 
   return (
-    <StyledLayout style={style}>
+    <StyledLayout style={{ color: token.colorTextBase, ...style }}>
       <div className='layout-default-top'>
-        <Layout.Header className='layout-default-header'>
-          <Header searchComponent={searchComponent} />
+        <Layout.Header className='layout-default-header' style={{ background: Color(token.colorBgContainer).alpha(0.75).hexa(), borderBottom: `1px solid ${token.colorSplit}` }}>
+          <Header searchComponent={searchComponent} showUserMenu={showUserMenu} />
         </Layout.Header>
         <Layout.Content className='layout-default-content' style={contentContainerStyle}>
           {children}

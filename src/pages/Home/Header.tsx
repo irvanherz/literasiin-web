@@ -1,4 +1,4 @@
-import { Button, Col, Row, Space } from 'antd'
+import { Button, Col, Row, Space, theme } from 'antd'
 import PageWidthAdapter from 'components/PageWidthAdapter'
 import useAuthContext from 'hooks/useAuthContext'
 import { FormattedMessage } from 'react-intl'
@@ -8,7 +8,6 @@ import styled from 'styled-components'
 import image1 from './images/image1.png'
 
 const Wrapper = styled.div`
-background: #DCFF03;
 padding: 32px 0 64px 0;
 border-radius: 0 0 32px 32px;
 .text-1 {
@@ -28,8 +27,9 @@ border-radius: 0 0 32px 32px;
 
 export default function Header () {
   const auth = useAuthContext()
+  const { token } = theme.useToken()
   return (
-    <Wrapper>
+    <Wrapper style={{ background: token.colorPrimaryBg }}>
       <PageWidthAdapter>
         <Row style={{ alignItems: 'center' }}>
           <Col xs={24} sm={14}>

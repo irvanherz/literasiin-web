@@ -1,5 +1,5 @@
 import { LeftOutlined, RightOutlined } from '@ant-design/icons'
-import { Avatar, Button, Card, Carousel, CarouselProps, Col, List, Row, Space, Typography } from 'antd'
+import { Avatar, Button, Card, Carousel, CarouselProps, Col, List, Row, Space, theme, Typography } from 'antd'
 import PageWidthAdapter from 'components/PageWidthAdapter'
 import { DEFAULT_IMAGE } from 'libs/variables'
 import { FormattedMessage } from 'react-intl'
@@ -162,6 +162,7 @@ type KbsProps = {
 }
 
 export default function Kbs ({ config }: KbsProps) {
+  const { token } = theme.useToken()
   const kbs: any[] = config?.kbs || []
 
   return (
@@ -212,7 +213,7 @@ export default function Kbs ({ config }: KbsProps) {
           </Carousel>
         </PageWidthAdapter>
       </div>
-      <div className='kb-outro'>
+      <div className='kb-outro' style={{ background: token.colorErrorBg }}>
         <PageWidthAdapter>
           <Row style={{ alignItems: 'center' }}>
             <Col xs={24} sm={24} md={14}>

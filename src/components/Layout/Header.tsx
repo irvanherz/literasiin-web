@@ -33,6 +33,7 @@ const StyledPageWidthAdapter = styled(PageWidthAdapter)`
 display: flex;
 align-items: center;
 gap: 8px;
+height: 100%;
 .logo {
   display: flex;
   flex: 0;
@@ -47,9 +48,10 @@ gap: 8px;
 `
 type HeaderProps = {
   searchComponent?: ReactNode
+  showUserMenu?: boolean
 }
 
-export default function Header ({ searchComponent }: HeaderProps) {
+export default function Header ({ searchComponent, showUserMenu = true }: HeaderProps) {
   return (
     <StyledPageWidthAdapter className="adapter">
       <Link to="/" className="logo">
@@ -59,7 +61,7 @@ export default function Header ({ searchComponent }: HeaderProps) {
         {searchComponent}
       </div>
       <div className='user-menus'>
-        <UserMenu />
+        {showUserMenu && <UserMenu />}
       </div>
     </StyledPageWidthAdapter>
   )
