@@ -27,7 +27,7 @@ export default function ArticleForm () {
             name='title'
             rules={[{ required: true, message: intl.formatMessage({ defaultMessage: 'Title is required!' }) }]}
           >
-            <Input type="email" placeholder={intl.formatMessage({ defaultMessage: 'Title...' })} maxLength={255} />
+            <Input placeholder={intl.formatMessage({ defaultMessage: 'Title...' })} maxLength={255} />
           </Form.Item>
           <Form.Item
             label={intl.formatMessage({ defaultMessage: 'Description' })}

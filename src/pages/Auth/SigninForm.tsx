@@ -18,7 +18,7 @@ export default function SigninForm () {
           name='username'
           rules={[{ required: true, message: intl.formatMessage({ defaultMessage: 'Username or email is required!' }) }]}
         >
-          <Input type="email" placeholder={intl.formatMessage({ defaultMessage: 'Your email or username...' })} />
+          <Input placeholder={intl.formatMessage({ defaultMessage: 'Your email or username...' })} />
         </Form.Item>
         <Form.Item
           className='special'

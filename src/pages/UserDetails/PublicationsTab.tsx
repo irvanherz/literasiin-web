@@ -84,8 +84,8 @@ function PublicationItem ({ publication, afterDeleted }: PublicationItemProps) {
               <Descriptions.Item label="Author">{publication.author || <i>Not yet filled</i>}</Descriptions.Item>
               <Descriptions.Item label="Type">{renderedPublicationType}</Descriptions.Item>
               <Descriptions.Item label="Status">{renderedPublicationStatus}</Descriptions.Item>
-              <Descriptions.Item label="Address" span={3}>
-                No. 18, Wantang Road, Xihu District, Hangzhou, Zhejiang, China
+              <Descriptions.Item label="Shipping Address" span={3}>
+                {publication.address?.address || <i>Not yet selected</i>}
               </Descriptions.Item>
             </Descriptions>
           }
@@ -98,7 +98,7 @@ function PublicationItem ({ publication, afterDeleted }: PublicationItemProps) {
 type PublicationsTabProps = { user: any}
 export default function PublicationsTab ({ user }: PublicationsTabProps) {
   const currentUser = useCurrentUser()
-  const { data, refetch } = usePublications({ limit: 1000 })
+  const { data, refetch } = usePublications({ includeAddress: true, limit: 1000 })
   const publications = data?.data || []
 
   return (

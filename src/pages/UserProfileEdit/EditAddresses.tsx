@@ -1,5 +1,6 @@
-import { DeleteFilled } from '@ant-design/icons'
+import { DeleteFilled, PlusOutlined } from '@ant-design/icons'
 import { Button, List, message, Modal, Space } from 'antd'
+import AddressCreateButton from 'components/UserAddressInput/AddressCreateButton'
 import useUserAddressDelete from 'hooks/useUserAddressDelete'
 import useUserAddresses from 'hooks/useUserAddresses'
 
@@ -50,6 +51,13 @@ export default function EditAddresses () {
     <List
       dataSource={addresses}
       renderItem={(address: any) => <AddressItem address={address} afterDeleted={refetch} />}
+      footer={
+        <div style={{ textAlign: 'center' }}>
+          <AddressCreateButton afterCreated={refetch}>
+            <Button type='primary' icon={<PlusOutlined />}>Add new Address</Button>
+          </AddressCreateButton>
+        </div>
+      }
     />
   )
 }

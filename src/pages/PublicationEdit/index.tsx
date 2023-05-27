@@ -21,6 +21,7 @@ export default function PublicationEdit () {
   const { data: dataFiles, refetch: refetchFiles } = usePublicationFiles({ publicationId }, { enabled: !!publicationId })
   const publication = data?.data
   const files = dataFiles?.data || []
+
   const [step, setStep] = useState(0)
   const [form] = Form.useForm()
   const [checkedAgreement1, setCheckedAgreement1] = useState(false)

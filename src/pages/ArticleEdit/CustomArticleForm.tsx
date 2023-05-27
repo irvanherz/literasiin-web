@@ -38,7 +38,7 @@ export default function CustomArticleForm () {
               name='title'
               rules={[{ required: true, message: intl.formatMessage({ defaultMessage: 'Title is required!' }) }]}
             >
-              <Input type="email" placeholder={intl.formatMessage({ defaultMessage: 'Title...' })} maxLength={255} />
+              <Input placeholder={intl.formatMessage({ defaultMessage: 'Title...' })} maxLength={255} />
             </Form.Item>
             <Form.Item
               label={<FormattedMessage defaultMessage="Description" />}

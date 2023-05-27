@@ -39,10 +39,10 @@ export default function UserDetails () {
     const res = [
       { key: 'stories', tabKey: 'stories', label: <FormattedMessage defaultMessage="Stories" />, children: <UserStoriesTab user={user} /> },
       { key: 'articles', tabKey: 'articles', label: <FormattedMessage defaultMessage="Articles" />, children: <UserArticlesTab user={user}/> },
-      { key: 'reading-list', tabKey: 'reading-list', label: <FormattedMessage defaultMessage="Reading List" />, children: <ReadingListTab user={user} /> },
-      { key: 'publications', tabKey: 'publications', label: <FormattedMessage defaultMessage="Publications" />, children: <PublicationsTab user={user}/> }
+      { key: 'reading-list', tabKey: 'reading-list', label: <FormattedMessage defaultMessage="Reading List" />, children: <ReadingListTab user={user} /> }
     ]
-    if (currentUser && currentUser?.id && user?.id) {
+    if (currentUser && currentUser?.id === user?.id) {
+      res.push({ key: 'publications', tabKey: 'publications', label: <FormattedMessage defaultMessage="Publications" />, children: <PublicationsTab user={user}/> })
       res.push({ key: 'orders', tabKey: 'orders', label: <FormattedMessage defaultMessage="Orders" />, children: <UserOrdersTab user={user}/> })
     }
     return res

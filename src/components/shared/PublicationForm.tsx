@@ -2,6 +2,7 @@
 import { Col, Form, Input, InputNumber, List, Row, Select, Space } from 'antd'
 import IndiePublishingPackagePicker from 'components/IndiePublishingPackagePicker'
 import UserAddressInput from 'components/UserAddressInput'
+import useConfigurationByName from 'hooks/useConfigurationByName'
 import { useMemo } from 'react'
 import { useIntl } from 'react-intl'
 import StoryCoverInput from './StoryCoverInput'
@@ -9,6 +10,8 @@ import StoryCoverInput from './StoryCoverInput'
 const formatter = new Intl.NumberFormat('id-ID')
 
 export default function PublicationForm () {
+  const { data: dataConfig } = useConfigurationByName('publication-config')
+  const config = dataConfig?.data?.value || {}
   const intl = useIntl()
   const type = Form.useWatch('type')
 
@@ -17,9 +20,12 @@ export default function PublicationForm () {
   const numColorPages = Form.useWatch('numColorPages')
   const numCopies = Form.useWatch('numCopies')
 
+  const paperTypes: any[] = config?.paperTypes || []
+  const paperTypeConfig = paperTypes.find(paper => paper.id === paperType)
+
   const pricingSummary = useMemo(() => {
-    const bwPagePrice = 100
-    const colorPagePrice = 300
+    const bwPagePrice = paperTypeConfig?.bwPageUnitPrice || 0
+    const colorPagePrice = paperTypeConfig?.colorPageUnitPrice || 0
     const bwPagesTotalPrice = bwPagePrice * (numBwPages || 0)
     const colorPagesTotalPrice = colorPagePrice * (numColorPages || 0)
     const perCopyPrice = bwPagesTotalPrice + colorPagesTotalPrice
@@ -57,8 +63,9 @@ export default function PublicationForm () {
         </List>
       </Space>
     )
-  }, [paperType, numBwPages, numColorPages, numCopies])
+  }, [paperType, numBwPages, numColorPages, numCopies, paperTypeConfig])
 
+  const paperTypeOptions = paperTypes.map(paper => ({ value: paper.id, label: paper.name }))
   return (
     <Form.Provider>
       <Row gutter={16}>
@@ -136,8 +143,8 @@ export default function PublicationForm () {
                   rules={[{ required: true, message: intl.formatMessage({ defaultMessage: 'Paper type size is required!' }) }]}
                 >
                   <Select
-                    placeholder={intl.formatMessage({ defaultMessage: 'Document size...' })}
-                    options={[{ value: 'bookpaper', label: 'Book paper' }, { value: 'hvs', label: 'HVS' }]}
+                    placeholder={intl.formatMessage({ defaultMessage: 'Paper type...' })}
+                    options={paperTypeOptions}
                   />
                 </Form.Item>
                 <Form.Item
@@ -187,7 +194,7 @@ export default function PublicationForm () {
               name='packageId'
               rules={[{ required: true, message: intl.formatMessage({ defaultMessage: 'Package is required!' }) }]}
             >
-              <IndiePublishingPackagePicker />
+              <IndiePublishingPackagePicker config={config} />
             </Form.Item>
           )}
         </Col>

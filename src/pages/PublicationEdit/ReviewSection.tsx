@@ -35,7 +35,6 @@ export default function ReviewSection ({ publication }: ReviewSectionProps) {
           <List.Item key={item.name} extra={formatter.format(item.totalPrice)}>
             <List.Item.Meta
               title={item.name}
-              description="Apa yg didapat"
             />
           </List.Item>
         ))}
