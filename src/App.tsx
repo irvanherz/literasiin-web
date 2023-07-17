@@ -20,7 +20,6 @@ import StoryExplore from 'pages/StoryExplore'
 import StoryListMine from 'pages/StoryListMine'
 import UserProfileEdit from 'pages/UserProfileEdit'
 import Wallets from 'pages/Wallets'
-import WebinarDetails from 'pages/WebinarDetails'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import Home from './pages/Home'
 import NotFound from './pages/NotFound'
@@ -157,11 +156,21 @@ const router = createBrowserRouter([
     path: '/wallets',
     element: <Wallets />
   },
-  {
-    id: '/webinars',
-    path: '/webinars/:sessionName/:sessionUsername',
-    element: <WebinarDetails />
-  },
+  // {
+  //   id: '/storytellings/mine',
+  //   path: '/storytellings/mine',
+  //   element: <StorytellingsMine />
+  // },
+  // {
+  //   id: '/storytellings/explore',
+  //   path: '/storytellings/explore',
+  //   element: <StorytellingExplore />
+  // },
+  // {
+  //   id: '/storytellings/:storytellingId/edit',
+  //   path: '/storytellings/:storytellingId/edit',
+  //   element: <StorytellingEdit />
+  // },
   {
     id: '*',
     path: '*',

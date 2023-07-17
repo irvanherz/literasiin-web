@@ -1,13 +1,13 @@
 import { ConfigProvider, theme as antdTheme, ThemeConfig } from 'antd'
 import { ReactNode, useMemo, useState } from 'react'
-import { ThemeContext } from 'styled-components'
+import ThemeContext from './ThemeContext'
 
 type ThemeContextProviderProps = {
   children: ReactNode
 }
 
 export default function ThemeContextProvider ({ children }: ThemeContextProviderProps) {
-  const [theme, setTheme] = useState('light')
+  const [theme, setTheme] = useState(() => localStorage.getItem('theme') || 'light')
 
   const themeConfig: ThemeConfig = useMemo(() => {
     return theme === 'light'
@@ -15,11 +15,16 @@ export default function ThemeContextProvider ({ children }: ThemeContextProvider
       : { algorithm: antdTheme.darkAlgorithm, token: { fontFamily: 'Roboto, sans-serif', colorPrimary: '#00b96b' } }
   }, [theme])
 
+  const handleChangeTheme = (t: string) => {
+    localStorage.setItem('theme', t)
+    setTheme(t)
+  }
+
   return (
     <ThemeContext.Provider
       value={{
         theme,
-        setTheme
+        setTheme: handleChangeTheme
       }}
     >
       <ConfigProvider

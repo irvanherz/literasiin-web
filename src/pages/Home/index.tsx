@@ -16,7 +16,9 @@ export default function Home () {
   const { token } = theme.useToken()
 
   return (
-    <Layout.Default contentContainerStyle={{ background: token.colorBgContainer }}>
+    <Layout.Default
+      contentContainerStyle={{ background: token.colorBgContainer }}
+    >
       <Space direction='vertical' style={{ width: '100%' }}>
         <Header />
         <StoryList />

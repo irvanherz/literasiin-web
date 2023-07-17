@@ -1,5 +1,5 @@
 import { DeleteFilled, EditFilled, EyeFilled, FileDoneOutlined, FileOutlined, MoreOutlined, ShareAltOutlined } from '@ant-design/icons'
-import { Avatar, Button, Dropdown, List, MenuProps, message, Modal, Space, Tag, Typography } from 'antd'
+import { Avatar, Button, Descriptions, Dropdown, List, MenuProps, message, Modal, Space, Tag, Typography } from 'antd'
 import ArticleShareButton from 'components/ArticleShareButton'
 import RenderTimeFromNow from 'components/shared/RenderTimeFromNow'
 import { DEFAULT_IMAGE } from 'libs/variables'
@@ -10,51 +10,16 @@ import { useNavigate } from 'react-router-dom'
 import ArticlesService from 'services/Articles'
 import styled from 'styled-components'
 
-const ArticleMetaWrapper = styled.div`
-display: flex;
-flex-wrap: wrap;
-width: 100%;
-max-width: 500px;
-gap: 4px;
-@media only screen and (max-width: 500px) {
-  font-size: x-small;
-}
-.article-meta-item {
-  flex: 1;
-  &-title {
-    font-weight: 500;
-  }
-  &-desc {
-    font-weight: 800;
-    color: rgba(0,0,0,0.85);
-  }
-}
-`
 type ArticleMetaProps = { article: any }
 function ArticleMeta ({ article }: ArticleMetaProps) {
   return (
-    <ArticleMetaWrapper>
-      <div className='article-meta-item'>
-        <div className='article-meta-item-title'><FormattedMessage defaultMessage='Category'/></div>
-        <div className='article-meta-item-desc'>{article?.category?.name || <i><FormattedMessage defaultMessage='Uncategorized' /></i>}</div>
-      </div>
-      <div className='article-meta-item'>
-        <div className='article-meta-item-title'><FormattedMessage defaultMessage='Reads'/></div>
-        <div className='article-meta-item-desc'>{article?.meta?.numViews || 0}</div>
-      </div>
-      <div className='article-meta-item'>
-        <div className='article-meta-item-title'><FormattedMessage defaultMessage='Upvotes'/></div>
-        <div className='article-meta-item-desc'>{article?.meta?.numUpvotes || 0}</div>
-      </div>
-      <div className='article-meta-item'>
-        <div className='article-meta-item-title'><FormattedMessage defaultMessage='Bookmarks'/></div>
-        <div className='article-meta-item-desc'>{article?.meta?.numBookmarks || 0}</div>
-      </div>
-      <div className='article-meta-item'>
-        <div className='article-meta-item-title'><FormattedMessage defaultMessage='Last updated'/></div>
-        <div className='article-meta-item-desc'><RenderTimeFromNow timestamp={article?.updatedAt} /></div>
-      </div>
-    </ArticleMetaWrapper>
+    <Descriptions layout="vertical" colon={false} size='small' column={{ xs: 3, sm: 5, md: 5, lg: 5, xl: 5, xxl: 5 }}>
+      <Descriptions.Item label={<FormattedMessage defaultMessage='Category' />}>{article?.category?.name || <i><FormattedMessage defaultMessage='Uncategorized' /></i>}</Descriptions.Item>
+      <Descriptions.Item label={<FormattedMessage defaultMessage='Reads' />}>{article?.meta?.numViews || 0}</Descriptions.Item>
+      <Descriptions.Item label={<FormattedMessage defaultMessage='Upvotes' />}>{article?.meta?.numUpvotes || 0}</Descriptions.Item>
+      <Descriptions.Item label={<FormattedMessage defaultMessage='Bookmarks' />}>{article?.meta?.numBookmarks || 0}</Descriptions.Item>
+      <Descriptions.Item label={<FormattedMessage defaultMessage='Last updated' />}><RenderTimeFromNow timestamp={article?.updatedAt} /></Descriptions.Item>
+    </Descriptions>
   )
 }
 

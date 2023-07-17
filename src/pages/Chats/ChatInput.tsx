@@ -40,7 +40,7 @@ export default function ChatInput ({ room, context }: ChatInputProps) {
         <Input onPressEnter={handleSend} disabled={isSending} value={message} onChange={e => setMessage(e.target.value)} placeholder='Message...' />
       </div>
       <div className="chat-input-right">
-        <Button loading={isSending} disabled={!message} onClick={handleSend}><FormattedMessage defaultMessage="Send" /></Button>
+        <Button type='primary' loading={isSending} disabled={!message} onClick={handleSend}><FormattedMessage defaultMessage="Send" /></Button>
       </div>
     </Wrapper>
   )

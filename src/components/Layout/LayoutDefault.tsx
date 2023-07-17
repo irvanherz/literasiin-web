@@ -14,7 +14,6 @@ const StyledLayout = styled(Layout)`
   }
   .ant-layout-header {
     padding: 0;
-    background: rgba(255,255,255,0.5);
     position: sticky;
     top: 0;
     z-index: 9;

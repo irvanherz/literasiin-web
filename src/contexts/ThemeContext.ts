@@ -1,13 +1,13 @@
 import { createContext } from 'react'
 
 export type ThemeContextType = {
-  theme: 'light' | 'dark',
+  theme: string,
   setTheme: (theme: string) => void
 }
 
-const SocketContext = createContext<ThemeContextType>({
+const ThemeContext = createContext<ThemeContextType>({
   theme: 'light',
   setTheme: () => {}
 })
 
-export default SocketContext
+export default ThemeContext

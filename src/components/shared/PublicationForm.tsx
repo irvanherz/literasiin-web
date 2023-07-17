@@ -72,6 +72,7 @@ export default function PublicationForm () {
         <Col span={6}>
           <Form.Item
             name='cover'
+            rules={[{ required: true, message: intl.formatMessage({ defaultMessage: 'Book cover is required!' }) }]}
           >
             <StoryCoverInput />
           </Form.Item>

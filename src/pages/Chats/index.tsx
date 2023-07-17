@@ -1,3 +1,4 @@
+import { theme } from 'antd'
 import Layout from 'components/Layout'
 import RouteGuard from 'components/RouteGuard'
 import { Helmet } from 'react-helmet'
@@ -8,12 +9,11 @@ import ChatRoomList from './ChatRoomList'
 const Wrapper = styled.div`
 width: 100%;
 display: flex;
-border-left: 1px solid rgba(0,0,0,0.1);
-border-right: 1px solid rgba(0,0,0,0.1);
-background: #FFF;
+border-width: 0px 1px;
+border-style: solid;
 .chat-rooms {
   flex: 1;
-  border-right: 1px solid rgba(0,0,0,0.1);
+  border-right: 1px solid;
 }
 .chat-details {
   flex: 2;
@@ -21,11 +21,12 @@ background: #FFF;
 `
 
 export default function Chats () {
+  const { token } = theme.useToken()
   return (
     <RouteGuard require='authenticated'>
       <Layout.Chatbox>
-        <Wrapper>
-          <div className='chat-rooms'>
+        <Wrapper style={{ borderColor: token.colorSplit }}>
+          <div className='chat-rooms' style={{ borderColor: token.colorSplit }}>
             <ChatRoomList />
           </div>
           <div className='chat-details'>

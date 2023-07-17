@@ -1,5 +1,5 @@
 import { MenuOutlined } from '@ant-design/icons'
-import { Button, Card, Dropdown, List, Result, Typography } from 'antd'
+import { Button, Card, Dropdown, List, Result, theme, Typography } from 'antd'
 import useChatContext from 'hooks/useChatContext'
 import useChatMessages from 'hooks/useChatMessages'
 import useChatRoom from 'hooks/useChatRoom'
@@ -18,9 +18,6 @@ text-align: left;
 }
 &.chat-message-mine {
   text-align: right;
-  .ant-card {
-    background: #e6ffcf;
-  }
 }
 `
 
@@ -29,11 +26,12 @@ type ChatMessageProps = {
 }
 
 function ChatMessage ({ message }: ChatMessageProps) {
+  const { token } = theme.useToken()
   const currentUser = useCurrentUser()
-
+  const isMine = currentUser?.id === message.userId
   return (
-    <ChatMessageWrapper className={currentUser?.id === message.userId ? 'chat-message-mine' : ''}>
-      <Card size='small'>
+    <ChatMessageWrapper className={isMine ? 'chat-message-mine' : ''}>
+      <Card size='small' style={{ background: isMine ? token.colorPrimaryBg : token.colorBgBase }}>
         <Card.Meta
           title={message.user.fullName}
           description={message.message}
@@ -45,6 +43,7 @@ function ChatMessage ({ message }: ChatMessageProps) {
 
 type ChatMessageListProps = { room: any}
 function ChatMessageList ({ room }: ChatMessageListProps) {
+  const { token } = theme.useToken()
   const ctx = useChatContext()
   const navigate = useNavigate()
   const currentUser = useCurrentUser()
@@ -78,7 +77,7 @@ function ChatMessageList ({ room }: ChatMessageListProps) {
 
   return (
     <>
-      <div className='chatroom-details-header'>
+      <div className='chatroom-details-header' style={{ borderColor: token.colorSplit }}>
         <div className='chatroom-details-header-1'>
           <Typography.Text strong>{sender?.fullName}</Typography.Text>
         </div>
@@ -105,7 +104,7 @@ function ChatMessageList ({ room }: ChatMessageListProps) {
             />
         </div>
       </div>
-      <div className='chatroom-details-input'>
+      <div className='chatroom-details-input' style={{ borderColor: token.colorSplit }}>
         <ChatInput room={room} context={ctx} />
       </div>
     </>
@@ -119,7 +118,7 @@ height: 100%;
 .chatroom-details-header {
   flex: 0;
   padding: 32px 16px;
-  border-bottom: 1px solid rgba(0,0,0,0.1);
+  border-bottom: 1px solid;
   display: flex;
   align-items: center;
   &-1 {
@@ -145,7 +144,7 @@ height: 100%;
 .chatroom-details-input {
   flex: 0;
   padding: 32px 16px;
-  border-top: 1px solid rgba(0,0,0,0.1);
+  border-top: 1px solid;
 }
 `
 export default function ChatRoomDetails () {

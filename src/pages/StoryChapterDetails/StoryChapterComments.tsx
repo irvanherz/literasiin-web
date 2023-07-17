@@ -47,7 +47,12 @@ function CommentInput ({ story, chapter, afterCreated }: CommentInputProps) {
           description={
             <div style={{ display: 'flex', gap: 4 }}>
               <div style={{ flex: 1 }}>
-                <Input placeholder='Comment...' onPressEnter={handleSend} value={comment} onChange={e => setComment(e.target.value)}/>
+                <Input
+                  disabled={chapter?.commentStatus === 'disabled'}
+                  placeholder={chapter?.commentStatus === 'disabled' ? 'Comment is disabled' : 'Comment...'}
+                  onPressEnter={handleSend} value={comment}
+                  onChange={e => setComment(e.target.value)
+                }/>
               </div>
               <div style={{ flex: 0 }}>
                 <Button onClick={handleSend} loading={creator.isLoading} disabled={!comment}><FormattedMessage defaultMessage='Send' /></Button>

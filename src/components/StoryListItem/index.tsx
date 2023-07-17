@@ -1,5 +1,5 @@
 import { CheckOutlined, DeleteFilled, EditFilled, EllipsisOutlined, EyeFilled, FileDoneOutlined, FileOutlined, MoreOutlined, ShareAltOutlined } from '@ant-design/icons'
-import { Button, Dropdown, List, MenuProps, message, Modal, Space, Tag, Typography } from 'antd'
+import { Button, Descriptions, Dropdown, List, MenuProps, message, Modal, Space, Tag, Typography } from 'antd'
 import RenderTimeFromNow from 'components/shared/RenderTimeFromNow'
 import StoryCover from 'components/StoryCover'
 import StoryShareButton from 'components/StoryShareButton'
@@ -10,47 +10,15 @@ import StoriesService from 'services/Stories'
 import styled from 'styled-components'
 import ContinueWritingButton from './ContinueWritingButton'
 
-const StoryMetaWrapper = styled.div`
-display: flex;
-flex-wrap: wrap;
-width: 100%;
-max-width: 500px;
-gap: 4px;
-@media only screen and (max-width: 500px) {
-  font-size: x-small;
-}
-.article-meta-item {
-  flex: 1;
-  &-title {
-    font-weight: 500;
-  }
-  &-desc {
-    font-weight: 800;
-    color: rgba(0,0,0,0.85);
-  }
-}
-`
 type StoryMetaProps = { story: any }
 function StoryMeta ({ story }: StoryMetaProps) {
   return (
-    <StoryMetaWrapper>
-      <div className='article-meta-item'>
-        <div className='article-meta-item-title'><FormattedMessage defaultMessage='Category' /></div>
-        <div className='article-meta-item-desc'>{story?.category?.name || <i><FormattedMessage defaultMessage='Uncategorized' /></i>}</div>
-      </div>
-      <div className='article-meta-item'>
-        <div className='article-meta-item-title'><FormattedMessage defaultMessage='Reads' /></div>
-        <div className='article-meta-item-desc'>{story?.meta?.numViews || 0}</div>
-      </div>
-      <div className='article-meta-item'>
-        <div className='article-meta-item-title'><FormattedMessage defaultMessage='Votes' /></div>
-        <div className='article-meta-item-desc'>{story?.meta?.numVotes || 0}</div>
-      </div>
-      <div className='article-meta-item'>
-        <div className='article-meta-item-title'><FormattedMessage defaultMessage='Last updated' /></div>
-        <div className='article-meta-item-desc'><RenderTimeFromNow timestamp={story?.updatedAt} /></div>
-      </div>
-    </StoryMetaWrapper>
+    <Descriptions colon={false} layout="vertical" size='small' column={{ xs: 2, sm: 4, md: 4, lg: 4, xl: 4, xxl: 4 }}>
+      <Descriptions.Item label={<FormattedMessage defaultMessage='Category' />}>{story?.category?.name || <i><FormattedMessage defaultMessage='Uncategorized' /></i>}</Descriptions.Item>
+      <Descriptions.Item label={<FormattedMessage defaultMessage='Reads' />}>{story?.meta?.numViews || 0}</Descriptions.Item>
+      <Descriptions.Item label={<FormattedMessage defaultMessage='Votes' />}>{story?.meta?.numVotes || 0}</Descriptions.Item>
+      <Descriptions.Item label={<FormattedMessage defaultMessage='Last updated' />}><RenderTimeFromNow timestamp={story?.updatedAt} /></Descriptions.Item>
+    </Descriptions>
   )
 }
 

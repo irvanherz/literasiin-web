@@ -1,4 +1,5 @@
-import { Layout } from 'antd'
+import { Layout, theme } from 'antd'
+import Color from 'color'
 import PageWidthAdapter from 'components/PageWidthAdapter'
 import ScrollToTop from 'components/utils/ScrollToTop'
 import { CSSProperties, ReactNode } from 'react'
@@ -12,7 +13,6 @@ flex-direction: column;
 .layout-chatbox-header {
   flex: 0;
   padding: 0;
-  background: rgba(255,255,255,0.5);
   position: sticky;
   top: 0;
   z-index: 9;
@@ -39,9 +39,10 @@ type LayoutChatboxProps = {
 }
 
 export default function LayoutChatbox ({ children, searchComponent, contentContainerStyle }: LayoutChatboxProps) {
+  const { token } = theme.useToken()
   return (
-    <StyledLayout>
-      <Layout.Header className='layout-chatbox-header'>
+    <StyledLayout style={{ background: token.colorBgContainer }}>
+      <Layout.Header className='layout-chatbox-header' style={{ background: Color(token.colorBgContainer).alpha(0.75).hexa(), borderBottom: `1px solid ${token.colorSplit}` }}>
         <Header searchComponent={searchComponent} />
       </Layout.Header>
       <PageWidthAdapter className='layout-chatbox-content-outer'>
