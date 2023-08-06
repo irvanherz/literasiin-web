@@ -4,6 +4,7 @@ import Layout from 'components/Layout'
 import PageWidthAdapter from 'components/PageWidthAdapter'
 import useArticle from 'hooks/useArticle'
 import useArticleContext from 'hooks/useArticleContext'
+import analytics from 'libs/analytics'
 import { useEffect } from 'react'
 import { Helmet } from 'react-helmet'
 import { useMutation } from 'react-query'
@@ -26,9 +27,17 @@ export default function ArticleDetails () {
   const article: any = data?.data
   const context: any = contextData?.data
   const viewer = useMutation(() => ArticlesService.Readers.track(articleId))
+
   useEffect(() => {
     if (articleId) viewer.mutate()
   }, [articleId])
+
+  useEffect(() => {
+    analytics.page({
+      title: article?.title ? `${article.title} - Literasiin` : 'Literasiin',
+      url: window.location.href
+    })
+  }, [article])
 
   const handleAfterUpdated = () => {
     refetch()

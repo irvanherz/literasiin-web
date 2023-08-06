@@ -23,7 +23,8 @@
   },
   "include": [
     "src",
-    "craco.config.js"
+    "craco.config.js",
+    "analytics.d.ts"
   ],
   "types": [
     "google.maps"

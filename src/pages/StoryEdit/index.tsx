@@ -1,6 +1,7 @@
 import { Form, Tabs } from 'antd'
 import Layout from 'components/Layout'
 import RouteGuard from 'components/RouteGuard'
+import analytics from 'libs/analytics'
 import { useEffect } from 'react'
 import { Helmet } from 'react-helmet'
 import { useQuery } from 'react-query'
@@ -21,6 +22,13 @@ export default function StoryEdit () {
   useEffect(() => {
     form.resetFields()
   }, [initialValues])
+
+  useEffect(() => {
+    analytics.page({
+      title: 'Edit Story',
+      url: window.location.href
+    })
+  }, [])
 
   return (
     <RouteGuard require='authenticated'>

@@ -9,6 +9,7 @@ import usePublication from 'hooks/usePublication'
 import usePublicationCommit from 'hooks/usePublicationCommit'
 import usePublicationFiles from 'hooks/usePublicationFiles'
 import usePublicationUpdate from 'hooks/usePublicationUpdate'
+import analytics from 'libs/analytics'
 import { useEffect, useMemo, useState } from 'react'
 import { Helmet } from 'react-helmet'
 import { Link, useParams } from 'react-router-dom'
@@ -46,6 +47,13 @@ export default function PublicationEdit () {
     form.resetFields()
     setShipping(publication?.meta?.shipping)
   }, [publication, step])
+
+  useEffect(() => {
+    analytics.page({
+      title: 'Publish a Book - Literasiin',
+      url: window.location.href
+    })
+  }, [])
 
   const handleBasicInfoFinished = (values: any) => {
     const { packageId, paperType, numBwPages, numColorPages, numCopies, ...payload } = values

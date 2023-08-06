@@ -4,6 +4,7 @@ import PageWidthAdapter from 'components/PageWidthAdapter'
 import RouteGuard from 'components/RouteGuard'
 import useAuthContext from 'hooks/useAuthContext'
 import useFcmContext from 'hooks/useFcmContext'
+import analytics from 'libs/analytics'
 import { useEffect } from 'react'
 import { Helmet } from 'react-helmet'
 import { FormattedMessage } from 'react-intl'
@@ -34,6 +35,7 @@ export default function Signin () {
         message.error(e.message)
       },
       onSuccess: (result) => {
+        analytics.track('login', { method: 'email' })
         const { token, refreshToken } = result.meta
         auth.setToken(token, refreshToken)
       }
@@ -50,6 +52,13 @@ export default function Signin () {
   const handleTabChange = (tab: string) => {
     navigate(`/auth/${tab}`, { replace: true })
   }
+
+  useEffect(() => {
+    analytics.page({
+      title: 'Sign in - Literasiin',
+      url: window.location.href
+    })
+  }, [])
 
   return (
     <RouteGuard require='unauthenticated'>

@@ -2,6 +2,8 @@ import { PlusOutlined } from '@ant-design/icons'
 import { Button, Tabs } from 'antd'
 import Layout from 'components/Layout'
 import RouteGuard from 'components/RouteGuard'
+import analytics from 'libs/analytics'
+import { useEffect } from 'react'
 import { Helmet } from 'react-helmet'
 import { FormattedMessage } from 'react-intl'
 import ArticlesAny from './ArticlesAny'
@@ -9,6 +11,13 @@ import ArticlesPublished from './ArticlesPublished'
 import CreateArticleButton from './CreateArticleButton'
 
 export default function ArticleListMine () {
+  useEffect(() => {
+    analytics.page({
+      title: 'My Article - Literasiin',
+      url: window.location.href
+    })
+  }, [])
+
   return (
     <RouteGuard require='authenticated'>
       <Layout.Default>

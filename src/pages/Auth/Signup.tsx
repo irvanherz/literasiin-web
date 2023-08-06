@@ -4,6 +4,7 @@ import PageWidthAdapter from 'components/PageWidthAdapter'
 import RouteGuard from 'components/RouteGuard'
 import useAuthContext from 'hooks/useAuthContext'
 import useFcmContext from 'hooks/useFcmContext'
+import analytics from 'libs/analytics'
 import { useEffect } from 'react'
 import { Helmet } from 'react-helmet'
 import { FormattedMessage } from 'react-intl'
@@ -33,14 +34,12 @@ export default function Signup () {
         message.error(err?.message)
       },
       onSuccess: (result) => {
+        analytics.track('login', { method: 'email' })
+
         const { token, refreshToken } = result.meta
         auth.setToken(token, refreshToken)
       }
     })
-  }
-
-  const handleValidationFailed = () => {
-    message.error('Check all fields and then try again')
   }
 
   useEffect(() => {
@@ -49,6 +48,17 @@ export default function Signup () {
       navigate(redirect, { replace: true })
     }
   }, [auth.status])
+
+  useEffect(() => {
+    analytics.page({
+      title: 'Sign up - Literasiin',
+      url: window.location.href
+    })
+  }, [])
+
+  const handleValidationFailed = () => {
+    message.error('Check all fields and then try again')
+  }
 
   const handleTabChange = (tab: string) => {
     navigate(`/auth/${tab}`, { replace: true })

@@ -1,5 +1,7 @@
 import { Button, Result } from 'antd'
 import Layout from 'components/Layout'
+import analytics from 'libs/analytics'
+import { useEffect } from 'react'
 import { FormattedMessage } from 'react-intl'
 import { useNavigate } from 'react-router-dom'
 
@@ -8,6 +10,14 @@ export default function NotFound () {
   const handleBack = () => {
     navigate(-1)
   }
+
+  useEffect(() => {
+    analytics.page({
+      title: 'Not Found',
+      url: window.location.href
+    })
+  }, [])
+
   return (
     <Layout.Blank>
       <Result

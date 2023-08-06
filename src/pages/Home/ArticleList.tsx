@@ -1,6 +1,7 @@
-import { Col, List, Row, Tabs, theme, Typography } from 'antd'
+import { Button, Col, List, Row, Tabs, theme, Typography } from 'antd'
 import ArticleCard from 'components/ArticleCard'
 import PageWidthAdapter from 'components/PageWidthAdapter'
+import useArticlesInfinite from 'hooks/useArticlesInfinite'
 import { FormattedMessage } from 'react-intl'
 import { useQuery } from 'react-query'
 import ArticlesService from 'services/Articles'
@@ -12,8 +13,9 @@ type ArticleListPerCategoryProps = {
 
 function ArticleListPerCategory ({ category }: ArticleListPerCategoryProps) {
   const categoryId = +(category?.id || 0)
-  const { data } = useQuery(`articles[cat:${categoryId}][]`, () => ArticlesService.findMany({ categoryId: categoryId || undefined }))
-  const articles: any[] = data?.data || []
+  const { data, fetchNextPage, hasNextPage, isFetchingNextPage } = useArticlesInfinite({ categoryId: categoryId || undefined, limit: 12 })
+  const articles: any[] = data?.pages.reduce<any>((a, c) => [...a, ...c?.data], [])
+
   return (
     <Row gutter={[16, 16]} style={{ width: '100%' }}>
       <Col span={24}>
@@ -25,7 +27,12 @@ function ArticleListPerCategory ({ category }: ArticleListPerCategoryProps) {
               <ArticleCard article={article} />
             </List.Item>
           )}
-          />
+          footer={hasNextPage && (
+            <div style={{ textAlign: 'center' }}>
+              <Button onClick={() => fetchNextPage({})} loading={isFetchingNextPage}>Load More Articles</Button>
+            </div>
+          )}
+        />
       </Col>
     </Row>
   )

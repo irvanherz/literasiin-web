@@ -3,12 +3,21 @@ import Layout from 'components/Layout'
 import PageWidthAdapter from 'components/PageWidthAdapter'
 import RouteGuard from 'components/RouteGuard'
 import useStoryCategories from 'hooks/useStoryCategories'
+import analytics from 'libs/analytics'
+import { useEffect } from 'react'
 import { Helmet } from 'react-helmet'
 import StoriesPerCategory from './StoriesPerCategory'
 
 export default function StoryExplore () {
   const { data: categoriesData } = useStoryCategories()
   const categories: any[] = categoriesData?.data || []
+
+  useEffect(() => {
+    analytics.page({
+      title: 'Explore Stories',
+      url: window.location.href
+    })
+  }, [])
 
   return (
     <RouteGuard require='authenticated'>
@@ -26,7 +35,7 @@ export default function StoryExplore () {
           </Tabs>
         </PageWidthAdapter>
         <Helmet>
-          <title>My Stories - Literasiin</title>
+          <title>Explore Stories - Literasiin</title>
         </Helmet>
       </Layout.Default>
     </RouteGuard>

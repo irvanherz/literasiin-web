@@ -1,6 +1,8 @@
 import { Card, CardProps } from 'antd'
 import Layout from 'components/Layout'
 import RouteGuard from 'components/RouteGuard'
+import analytics from 'libs/analytics'
+import { useEffect } from 'react'
 import { Helmet } from 'react-helmet'
 import { FormattedMessage } from 'react-intl'
 import { useNavigate, useParams } from 'react-router-dom'
@@ -13,9 +15,17 @@ export default function UserProfileEdit () {
   const sectionId = params.sectionId || 'profile'
   const navigate = useNavigate()
 
+  useEffect(() => {
+    analytics.page({
+      title: 'Edit Profile - Literasiin',
+      url: window.location.href
+    })
+  }, [])
+
   const handleTabChange: CardProps['onTabChange'] = (key) => {
     navigate(`/users/me/edit/${key}`)
   }
+
   const menuItems: CardProps['tabList'] = [
     {
       key: 'profile',

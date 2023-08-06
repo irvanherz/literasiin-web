@@ -8,7 +8,8 @@ import RenderTimeFromNow from 'components/shared/RenderTimeFromNow'
 import useStoryChapter from 'hooks/useStoryChapter'
 import useStoryChapterUpdate from 'hooks/useStoryChapterUpdate'
 import { $getRoot, $isDecoratorNode, $isElementNode, LexicalEditor } from 'lexical'
-import { useLayoutEffect, useState } from 'react'
+import analytics from 'libs/analytics'
+import { useEffect, useLayoutEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import SettingsForm from './SettingsForm'
 
@@ -25,6 +26,13 @@ export default function StoryChapterEdit () {
   const { data, refetch } = useStoryChapter(chapterId)
 
   const chapter = data?.data
+
+  useEffect(() => {
+    analytics.page({
+      title: 'Edit Story',
+      url: window.location.href
+    })
+  }, [chapter])
 
   useLayoutEffect(() => {
     if (!chapter || !editor) return

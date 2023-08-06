@@ -4,6 +4,7 @@ import RouteGuard from 'components/RouteGuard'
 import RenderTimeFromNow from 'components/shared/RenderTimeFromNow'
 import useNotificationContext from 'hooks/useNotificationContext'
 import useNotifications from 'hooks/useNotifications'
+import analytics from 'libs/analytics'
 import { translateNotification } from 'libs/notifications'
 import { useEffect } from 'react'
 import { Helmet } from 'react-helmet'
@@ -39,7 +40,13 @@ export default function Notifications () {
       ctx.fetchNext()
     }
   }, [ctx.isReady, meta.status])
-  console.log(meta)
+
+  useEffect(() => {
+    analytics.page({
+      title: 'Notifications - Literasiin',
+      url: window.location.href
+    })
+  }, [])
 
   return (
     <RouteGuard require='authenticated'>

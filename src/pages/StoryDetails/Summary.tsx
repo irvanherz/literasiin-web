@@ -2,6 +2,7 @@ import { TagOutlined } from '@ant-design/icons'
 import { Card, Space, Tag, Typography } from 'antd'
 import RenderTimeFromNow from 'components/shared/RenderTimeFromNow'
 import { FormattedMessage } from 'react-intl'
+import ReactMarkdown from 'react-markdown'
 
 type SummaryProps = {
   story: any
@@ -23,7 +24,7 @@ export default function Summary ({ story }:SummaryProps) {
       ]}
     >
       <Space direction='vertical' style={{ maxWidth: '100%' }}>
-        <Typography.Paragraph>{story?.description}</Typography.Paragraph>
+        <Typography.Paragraph><ReactMarkdown>{story?.description || ''}</ReactMarkdown></Typography.Paragraph>
         <div>
           {(story?.tags || []).map((tag: any) => <Tag icon={<TagOutlined />} key={tag.name}>{tag.name}</Tag>)}
         </div>

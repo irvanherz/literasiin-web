@@ -2,6 +2,8 @@ import { Button, Divider, Form, Space } from 'antd'
 import Layout from 'components/Layout'
 import PublicationFilesManager from 'components/shared/PublicationFilesManager'
 import PublicationForm from 'components/shared/PublicationForm'
+import analytics from 'libs/analytics'
+import { useEffect } from 'react'
 import { Helmet } from 'react-helmet'
 
 export default function PublicationCreate () {
@@ -10,6 +12,13 @@ export default function PublicationCreate () {
   const handleFinish = () => {}
 
   const handleFinishFailed = () => {}
+
+  useEffect(() => {
+    analytics.page({
+      title: 'Publish a Book - Literasiin',
+      url: window.location.href
+    })
+  }, [])
 
   return (
     <Layout.Default>

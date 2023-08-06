@@ -2,6 +2,7 @@ import { CredentialResponse, GoogleLogin } from '@react-oauth/google'
 import { message } from 'antd'
 import { getMessaging, getToken } from 'firebase/messaging'
 import useAuthContext from 'hooks/useAuthContext'
+import analytics from 'libs/analytics'
 import { useMutation } from 'react-query'
 import AuthService from 'services/Auth'
 import styled from 'styled-components'
@@ -39,6 +40,8 @@ export default function ContinueWithGoogleButton () {
         message.error(e.message)
       },
       onSuccess: (result) => {
+        analytics.track('login', { method: 'google' })
+
         const { token, refreshToken } = result.meta
         auth.setToken(token, refreshToken)
       }

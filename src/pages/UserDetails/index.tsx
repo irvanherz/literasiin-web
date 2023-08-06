@@ -3,8 +3,9 @@ import { Avatar, Button, Col, Row, Space, Tabs } from 'antd'
 import Layout from 'components/Layout'
 import RouteGuard from 'components/RouteGuard'
 import useCurrentUser from 'hooks/useCurrentUser'
+import analytics from 'libs/analytics'
 import { DEFAULT_PHOTO } from 'libs/variables'
-import { useMemo } from 'react'
+import { useEffect, useMemo } from 'react'
 import { Helmet } from 'react-helmet'
 import { FormattedMessage } from 'react-intl'
 import { useQuery } from 'react-query'
@@ -47,6 +48,13 @@ export default function UserDetails () {
     }
     return res
   }, [user, currentUser])
+
+  useEffect(() => {
+    analytics.page({
+      title: user?.username ? `${user.fullName} (@${user.username}) - Literasiin` : 'Literasiin',
+      url: window.location.href
+    })
+  }, [user])
 
   return (
     <RouteGuard require={username === 'me' ? 'authenticated' : undefined}>

@@ -3,7 +3,8 @@ import ContentGateway from 'components/ContentGateway'
 import Layout from 'components/Layout'
 import StoryShareSegment from 'components/StoryShareSegment'
 import useStoryContext from 'hooks/useStoryContext'
-import { useEffect } from 'react'
+import analytics from 'libs/analytics'
+import { useEffect, useMemo } from 'react'
 import { Helmet } from 'react-helmet'
 import { useMutation, useQuery } from 'react-query'
 import { useParams } from 'react-router-dom'
@@ -27,6 +28,17 @@ export default function StoryDetails () {
   useEffect(() => {
     tracker.mutate()
   }, [storyId])
+
+  const documentTitle = useMemo(() => story?.title ? `${story.title} - Literasiin` : '', [story])
+
+  useEffect(() => {
+    if (documentTitle) {
+      analytics.page({
+        title: documentTitle,
+        url: window.location.href
+      })
+    }
+  }, [documentTitle])
 
   return (
     <Layout.Default>
@@ -61,7 +73,7 @@ export default function StoryDetails () {
         </Layout.Scaffold>
       </ContentGateway>
       <Helmet>
-        <title>{story?.title ? `${story.title} - Literasiin` : 'Literasiin'}</title>
+        <title>{documentTitle || 'Literasiin'}</title>
       </Helmet>
     </Layout.Default>
   )

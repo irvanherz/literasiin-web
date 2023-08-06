@@ -6,6 +6,7 @@ import StoryChapterShareSegment from 'components/StoryChapterShareSegment'
 import useStory from 'hooks/useStory'
 import useStoryChapter from 'hooks/useStoryChapter'
 import useStoryChapterContext from 'hooks/useStoryChapterContext'
+import analytics from 'libs/analytics'
 import { useEffect, useMemo } from 'react'
 import { Helmet } from 'react-helmet'
 import { FormattedMessage } from 'react-intl'
@@ -33,6 +34,13 @@ export default function StoryChapterDetails () {
   useEffect(() => {
     if (chapterId) viewer.mutate()
   }, [chapterId])
+
+  useEffect(() => {
+    analytics.page({
+      title: chapter?.title ? `${chapter.title} - Literasiin` : 'Literasiin',
+      url: window.location.href
+    })
+  }, [chapter])
 
   const navActions = useMemo(() => {
     const res: any[] = []

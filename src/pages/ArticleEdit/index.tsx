@@ -8,7 +8,8 @@ import useArticle from 'hooks/useArticle'
 import useArticleCategories from 'hooks/useArticleCategories'
 import useArticleUpdate from 'hooks/useArticleUpdate'
 import { $getRoot, $isDecoratorNode, $isElementNode, LexicalEditor } from 'lexical'
-import { useLayoutEffect, useState } from 'react'
+import analytics from 'libs/analytics'
+import { useEffect, useLayoutEffect, useState } from 'react'
 import { Helmet } from 'react-helmet'
 import { FormattedMessage, useIntl } from 'react-intl'
 import { useNavigate, useParams } from 'react-router-dom'
@@ -27,6 +28,13 @@ export default function ArticleEdit () {
   const { data: categoryData } = useArticleCategories({})
   const categories = categoryData?.data || []
   const categoryOptions: any[] = categories.map((cat: any) => ({ value: cat.id, label: cat.name }))
+
+  useEffect(() => {
+    analytics.page({
+      title: 'Edit Article - Literasiin',
+      url: window.location.href
+    })
+  }, [])
 
   useLayoutEffect(() => {
     if (!article || !editor) return

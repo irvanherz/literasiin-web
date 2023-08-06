@@ -2,6 +2,8 @@ import { PlusOutlined } from '@ant-design/icons'
 import { Button, Tabs } from 'antd'
 import Layout from 'components/Layout'
 import RouteGuard from 'components/RouteGuard'
+import analytics from 'libs/analytics'
+import { useEffect } from 'react'
 import { Helmet } from 'react-helmet'
 import { FormattedMessage, useIntl } from 'react-intl'
 import PendingInvitationSection from './PendingInvitationSection'
@@ -11,6 +13,14 @@ import StoryListPublished from './StoryListPublished'
 
 export default function StoryListMine () {
   const intl = useIntl()
+
+  useEffect(() => {
+    analytics.page({
+      title: 'My Stories',
+      url: window.location.href
+    })
+  }, [])
+
   return (
     <RouteGuard require='authenticated'>
       <Layout.Default>
