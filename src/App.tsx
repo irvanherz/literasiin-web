@@ -18,6 +18,10 @@ import StoryDetails from 'pages/StoryDetails'
 import StoryEdit from 'pages/StoryEdit'
 import StoryExplore from 'pages/StoryExplore'
 import StoryListMine from 'pages/StoryListMine'
+import StorytellingDetails from 'pages/StorytellingDetails'
+import StorytellingEdit from 'pages/StorytellingEdit'
+import StorytellingExplore from 'pages/StorytellingExplore'
+import StorytellingListMine from 'pages/StorytellingListMine'
 import UserProfileEdit from 'pages/UserProfileEdit'
 import Wallets from 'pages/Wallets'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
@@ -156,21 +160,26 @@ const router = createBrowserRouter([
     path: '/wallets',
     element: <Wallets />
   },
-  // {
-  //   id: '/storytellings/mine',
-  //   path: '/storytellings/mine',
-  //   element: <StorytellingsMine />
-  // },
-  // {
-  //   id: '/storytellings/explore',
-  //   path: '/storytellings/explore',
-  //   element: <StorytellingExplore />
-  // },
-  // {
-  //   id: '/storytellings/:storytellingId/edit',
-  //   path: '/storytellings/:storytellingId/edit',
-  //   element: <StorytellingEdit />
-  // },
+  {
+    id: '/storytellings/mine',
+    path: '/storytellings/mine',
+    element: <StorytellingListMine />
+  },
+  {
+    id: '/storytellings/explore',
+    path: '/storytellings/explore',
+    element: <StorytellingExplore />
+  },
+  {
+    id: '/storytellings/:storytellingId/edit',
+    path: '/storytellings/:storytellingId/edit',
+    element: <StorytellingEdit />
+  },
+  {
+    id: '/storytellings/:storytellingId',
+    path: '/storytellings/:storytellingId',
+    element: <StorytellingDetails />
+  },
   {
     id: '*',
     path: '*',

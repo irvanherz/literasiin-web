@@ -3,14 +3,14 @@ import UserIdInput from 'components/shared/UserIdInput'
 import { cloneElement, ReactElement, useState } from 'react'
 import { FormattedMessage } from 'react-intl'
 import { useMutation } from 'react-query'
-import StoriesService from 'services/Stories'
+import StorytellingsService from 'services/Storytellings'
 
-type InviteWriterButtonProps = { children: ReactElement, story: any, afterCreated?: () => void }
-export default function InviteWriterButton ({ children, story, afterCreated }: InviteWriterButtonProps) {
-  const storyId = story?.id
+type InviteAuthorButtonProps = { children: ReactElement, storytelling: any, afterCreated?: () => void }
+export default function InviteAuthorButton ({ children, storytelling, afterCreated }: InviteAuthorButtonProps) {
+  const storytellingId = storytelling?.id
   const [userId, setUserId] = useState(0)
   const [open, setOpen] = useState(false)
-  const creator = useMutation(() => StoriesService.Writers.create({ storyId, userId }))
+  const creator = useMutation(() => StorytellingsService.Authors.create({ storytellingId, userId }))
 
   const handleOpen = () => setOpen(true)
   const handleClose = () => setOpen(false)
@@ -32,7 +32,7 @@ export default function InviteWriterButton ({ children, story, afterCreated }: I
       {cloneElement(children, { onClick: handleOpen })}
       <Modal
         open={open}
-        title={<FormattedMessage defaultMessage="Invite Writer" />}
+        title={<FormattedMessage defaultMessage="Invite Author" />}
         centered
         onCancel={handleClose}
         closable={false}
@@ -42,7 +42,7 @@ export default function InviteWriterButton ({ children, story, afterCreated }: I
       >
         <Space direction='vertical' style={{ width: '100%' }}>
           <Alert
-            message={<FormattedMessage defaultMessage="Invite your friend to join your story writing project" />}
+            message={<FormattedMessage defaultMessage="Invite your friend to join your storytelling writing project" />}
           />
           <UserIdInput
             value={userId}

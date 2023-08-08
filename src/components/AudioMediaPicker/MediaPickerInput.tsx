@@ -93,7 +93,7 @@ export default function MediaPickerInput ({ filters = {}, value, defaultValue, o
         loader={<div style={{ textAlign: 'center' }}>Loading...</div>}
         scrollableTarget="scrollbar-target"
         // endMessage={<Typography.Text></Typography.Text>}
-        >
+      >
         <Row gutter={[16, 16]} style={{ width: '100%' }}>
           {data?.pages.map(page => {
             const mediaList = page.data || []

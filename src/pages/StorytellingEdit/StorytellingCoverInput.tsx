@@ -1,17 +1,17 @@
 import { Button, Modal, Space } from 'antd'
 import MediaPickerInput from 'components/MediaPicker/MediaPickerInput'
-import StoryCover from 'components/StoryCover'
+import StorytellingCover from 'components/StorytellingCover'
 import useCustomComponent from 'hooks/useCustomComponent'
 import { DEFAULT_IMAGE } from 'libs/variables'
 import { useState } from 'react'
 
-type StoryCoverInputProps = {
+type StorytellingCoverInputProps = {
   value?: any
   defaultValue?: any
   onChange?: (v: any) => void
 }
 
-export default function StoryCoverInput ({ value, defaultValue, onChange }: StoryCoverInputProps) {
+export default function StorytellingCoverInput ({ value, defaultValue, onChange }: StorytellingCoverInputProps) {
   const [open, setOpen] = useState(false)
   const [computedValue, triggerValueChange] = useCustomComponent({ value, defaultValue, onChange })
   const md = computedValue?.meta?.objects?.find((object: any) => object.id === 'md')
@@ -33,8 +33,8 @@ export default function StoryCoverInput ({ value, defaultValue, onChange }: Stor
   return (
     <>
       <Space direction='vertical' style={{ width: '100%', textAlign: 'center' }}>
-        <StoryCover src={md?.url || DEFAULT_IMAGE} />
-        <Button size='small' onClick={handleChange}>Change</Button>
+        <StorytellingCover src={md?.url || DEFAULT_IMAGE} style={{ borderRadius: 8 }} />
+        <Button style={{ width: '100%' }} onClick={handleChange}>Change</Button>
       </Space>
 
       <Modal
@@ -44,9 +44,9 @@ export default function StoryCoverInput ({ value, defaultValue, onChange }: Stor
         onOk={handleConfirmSelect}
       >
         <MediaPickerInput
-          preset='story-cover'
-          cropProps={{ aspect: 1 / 1.5 }}
-          filters={{ type: 'image', tag: 'story-cover' }}
+          preset='storytelling-cover'
+          cropProps={{ aspect: 1 }}
+          filters={{ type: 'image', tag: 'storytelling-cover' }}
           value={selected}
           onChange={setSelected}
         />

@@ -1,27 +1,44 @@
-import { Col, Row } from 'antd'
+import { Tabs } from 'antd'
 import Layout from 'components/Layout'
-import StoryEditor from 'components/LexicalEditor/StoryEditor'
 import PageWidthAdapter from 'components/PageWidthAdapter'
+import RouteGuard from 'components/RouteGuard'
+import useStorytellingCategories from 'hooks/useStorytellingCategories'
+import analytics from 'libs/analytics'
+import { useEffect } from 'react'
 import { Helmet } from 'react-helmet'
-import PopularStorytellers from './PopularStorytellers'
-import PopularStorytellings from './PopularStorytellings'
+import StorytellingsPerCategory from './StorytellingsPerCategory'
 
 export default function StorytellingExplore () {
+  const { data: categoriesData } = useStorytellingCategories()
+  const categories: any[] = categoriesData?.data || []
+
+  useEffect(() => {
+    analytics.page({
+      title: 'Explore Storytellings',
+      url: window.location.href
+    })
+  }, [])
+
   return (
-  // <RouteGuard require='authenticated'>
-    <Layout.Default>
-      <PageWidthAdapter>
-        <div>Header</div>
-        <Row gutter={[16, 16]}>
-          <Col span={24}><StoryEditor /></Col>
-          <Col span={18}><PopularStorytellings /></Col>
-          <Col span={6}><PopularStorytellers /></Col>
-        </Row>
-      </PageWidthAdapter>
-      <Helmet>
-        <title>My Stories - Literasiin</title>
-      </Helmet>
-    </Layout.Default>
-  // </RouteGuard>
+    <RouteGuard require='authenticated'>
+      <Layout.Default>
+        <PageWidthAdapter>
+          <Tabs destroyInactiveTabPane>
+            <Tabs.TabPane tab="All" tabKey="recommendations" key='recommendations'>
+              <StorytellingsPerCategory />
+            </Tabs.TabPane>
+            {categories.map(category => (
+              <Tabs.TabPane tab={category.name} tabKey={category.id} key={category.id}>
+                <StorytellingsPerCategory category={category} />
+              </Tabs.TabPane>
+            ))}
+          </Tabs>
+        </PageWidthAdapter>
+        <Helmet>
+          <title>Explore Storytellings - Literasiin</title>
+        </Helmet>
+      </Layout.Default>
+    </RouteGuard>
+
   )
 }

@@ -1,12 +1,12 @@
 import { SaveOutlined } from '@ant-design/icons'
 import { Button, Card, Col, Form, message, Row, Space } from 'antd'
+import StoryCoverInput from 'components/shared/StoryCoverInput'
 import StoryForm from 'components/shared/StoryForm'
 import { useEffect } from 'react'
 import { FormattedMessage } from 'react-intl'
 import { useMutation } from 'react-query'
 import { useNavigate } from 'react-router-dom'
 import StoriesService from 'services/Stories'
-import StoryCoverInput from './StoryCoverInput'
 
 type StoryDetailsEditTabProps = { story: any }
 export default function StoryDetailsEditTab ({ story }: StoryDetailsEditTabProps) {

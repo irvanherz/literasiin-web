@@ -33,8 +33,8 @@ export default function StoryCoverInput ({ value, defaultValue, onChange }: Stor
   return (
     <>
       <Space direction='vertical' style={{ width: '100%', textAlign: 'center' }}>
-        <StoryCover src={md?.url || DEFAULT_IMAGE} />
-        <Button size='small' onClick={handleChange}>Change</Button>
+        <StoryCover src={md?.url || DEFAULT_IMAGE} style={{ borderRadius: 8 }} />
+        <Button onClick={handleChange} style={{ width: '100%' }}>Change</Button>
       </Space>
 
       <Modal

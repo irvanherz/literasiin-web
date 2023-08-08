@@ -1,21 +1,21 @@
 import { SaveOutlined } from '@ant-design/icons'
 import { Button, Card, Col, Form, message, Row, Space } from 'antd'
-import StoryForm from 'components/shared/StoryForm'
+import StorytellingForm from 'components/shared/StorytellingForm'
 import { useEffect } from 'react'
 import { FormattedMessage } from 'react-intl'
 import { useMutation } from 'react-query'
 import { useNavigate } from 'react-router-dom'
-import StoriesService from 'services/Stories'
-import StoryCoverInput from './StoryCoverInput'
+import StorytellingsService from 'services/Storytellings'
+import StorytellingCoverInput from './StorytellingCoverInput'
 
-type StoryDetailsEditTabProps = { story: any }
-export default function StoryDetailsEditTab ({ story }: StoryDetailsEditTabProps) {
-  const storyId = story?.id
+type StorytellingDetailsEditTabProps = { storytelling: any }
+export default function StorytellingDetailsEditTab ({ storytelling }: StorytellingDetailsEditTabProps) {
+  const storytellingId = storytelling?.id
   const [form] = Form.useForm()
   const navigate = useNavigate()
-  const updater = useMutation<any, any, any>(payload => StoriesService.updateById(storyId, payload))
+  const updater = useMutation<any, any, any>(payload => StorytellingsService.updateById(storytellingId, payload))
 
-  const initialValues = story
+  const initialValues = storytelling
 
   useEffect(() => {
     form.resetFields()
@@ -26,7 +26,7 @@ export default function StoryDetailsEditTab ({ story }: StoryDetailsEditTabProps
     payload.coverId = cover?.id
     updater.mutate(payload, {
       onSuccess: () => {
-        navigate('/stories/mine')
+        navigate('/storytellings/mine')
       },
       onError: (err: any) => {
         message.error(err?.message)
@@ -46,24 +46,24 @@ export default function StoryDetailsEditTab ({ story }: StoryDetailsEditTabProps
       labelCol={{ span: 24 }}
       onFinish={handleSubmit}
       onFinishFailed={handleValidationFailed}
-          >
+    >
       <Row gutter={[16, 16]}>
         <Col span={8}>
           <Form.Item name="cover">
-            <StoryCoverInput />
+            <StorytellingCoverInput />
           </Form.Item>
         </Col>
         <Col span={16}>
           <Card>
             <Space direction='vertical' style={{ width: '100%' }}>
-              <StoryForm story={story} />
+              <StorytellingForm storytelling={storytelling} />
               <Button
                 type='primary'
                 onClick={form.submit}
                 loading={updater.isLoading}
                 icon={<SaveOutlined />}
               >
-                <FormattedMessage defaultMessage="Update Story" />
+                <FormattedMessage defaultMessage="Update Storytelling" />
               </Button>
             </Space>
           </Card>

@@ -61,10 +61,10 @@ export default function ProfileMenu () {
                   key: '/articles/mine',
                   label: <Link to={'/articles/mine'}>{intl.formatMessage({ defaultMessage: 'My Articles' })}</Link>
                 },
-                // {
-                //   key: '/storytellings/mine',
-                //   label: <Link to={'/storytellings/mine'}>{intl.formatMessage({ defaultMessage: 'My Storytellings' })}</Link>
-                // },
+                {
+                  key: '/storytellings/mine',
+                  label: <Link to={'/storytellings/mine'}>{intl.formatMessage({ defaultMessage: 'My Storytellings' })}</Link>
+                },
                 {
                   key: '/notifications',
                   label: <Link to={'/notifications'}>{intl.formatMessage({ defaultMessage: 'Notifications' })}</Link>
