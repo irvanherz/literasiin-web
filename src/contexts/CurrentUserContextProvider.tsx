@@ -44,8 +44,6 @@ export default function CurrentUserContextProvider ({ children }: CurrentUserCon
 
   useEffect(() => {
     if (auth.status !== 'idle') {
-      console.log('Load user', auth.status)
-
       const fun = async () => {
         try {
           setValue({ status: 'idle', data: undefined })

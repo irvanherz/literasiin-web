@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 import { $generateHtmlFromNodes, $generateNodesFromDOM } from '@lexical/html'
-import { Card, Col, Descriptions, Dropdown, Form, Input, message, Row, Space } from 'antd'
+import { Card, Col, Descriptions, Dropdown, Form, Input, Row, Space, message } from 'antd'
 import Layout from 'components/Layout'
 import StoryEditor from 'components/LexicalEditor/StoryEditor'
 import RouteGuard from 'components/RouteGuard'
@@ -84,7 +84,7 @@ export default function StoryChapterEdit () {
         }
       })
     } catch (err) {
-      console.log(err)
+      // console.log(err)
       message.error('Check all fields then try again')
     }
   }
@@ -115,7 +115,7 @@ export default function StoryChapterEdit () {
         }
       })
     } catch (err) {
-      console.log(err)
+      // console.log(err)
       message.error('Check all fields then try again')
     }
   }
@@ -146,7 +146,7 @@ export default function StoryChapterEdit () {
         }
       })
     } catch (err) {
-      console.log(err)
+      // console.log(err)
       message.error('Check all fields then try again')
     }
   }

@@ -1,5 +1,6 @@
 import { message, Space } from 'antd'
 import { copyToClipboard, HOME_URL } from 'libs/common'
+import { slugifyContentId } from 'libs/slug'
 import qs from 'qs'
 
 type StoryChapterShareSegmentProps = {
@@ -8,8 +9,7 @@ type StoryChapterShareSegmentProps = {
 }
 
 export default function StoryChapterShareSegment ({ story, chapter }: StoryChapterShareSegmentProps) {
-  const chapterId = chapter.id
-  const storyUrl = `${HOME_URL}/stories/chapters/${chapterId}`
+  const storyUrl = `${HOME_URL}/stories/chapters/${slugifyContentId(chapter)}`
   const whatsappUrl = 'https://api.whatsapp.com/send' + qs.stringify({ text: `Baca cerita "${story.title}: ${chapter.title}" di Literasiin. \n${storyUrl}` }, { addQueryPrefix: true })
   const facebookUrl = 'https://www.facebook.com/sharer/sharer.php' + qs.stringify({ u: storyUrl, quote: `Baca cerita "${story.title}: ${chapter.title}" di Literasiin` }, { addQueryPrefix: true })
   const twitterUrl = 'https://twitter.com/intent/tweet' + qs.stringify({ text: `Baca cerita "${story.title}: ${chapter.title}" di Literasiin. ${storyUrl}` }, { addQueryPrefix: true })

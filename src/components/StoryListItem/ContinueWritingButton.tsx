@@ -1,8 +1,9 @@
 import { DeleteFilled, EditFilled, PlusOutlined } from '@ant-design/icons'
-import { Button, Card, Dropdown, List, MenuProps, message, Modal, Space, Tag, Typography } from 'antd'
-import RenderTimeFromNow from 'components/shared/RenderTimeFromNow'
+import { Button, Card, Dropdown, List, MenuProps, Modal, Space, Tag, Typography, message } from 'antd'
 import StoryCover from 'components/StoryCover'
-import { cloneElement, ReactElement, useState } from 'react'
+import RenderTimeFromNow from 'components/shared/RenderTimeFromNow'
+import { slugifyContentId } from 'libs/slug'
+import { ReactElement, cloneElement, useState } from 'react'
 import { FormattedMessage } from 'react-intl'
 import { useMutation, useQuery } from 'react-query'
 import { Link, useNavigate } from 'react-router-dom'
@@ -123,7 +124,7 @@ export default function ContinueWritingButton ({ children, story }: ContinueWrit
         <List
           header={
             <Card
-              actions={[<Link key='edit' to={`/stories/${storyId}/edit`}><span><FormattedMessage defaultMessage='Edit Story Details'/></span></Link>]}
+              actions={[<Link key='edit' to={`/stories/${slugifyContentId(story)}/edit`}><span><FormattedMessage defaultMessage='Edit Story Details'/></span></Link>]}
             >
               <Card.Meta
                 avatar={

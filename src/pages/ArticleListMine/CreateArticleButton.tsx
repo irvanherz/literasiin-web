@@ -1,5 +1,6 @@
 import { message } from 'antd'
 import useArticleCreate from 'hooks/useArticleCreate'
+import { slugifyContentId } from 'libs/slug'
 import { cloneElement, ReactElement } from 'react'
 import { useNavigate } from 'react-router-dom'
 
@@ -11,8 +12,7 @@ export default function CreateArticleButton ({ children }: CreateArticleButtonPr
   const handleCreate = () => {
     creator.mutate({ title: 'Untitled Article' }, {
       onSuccess: data => {
-        const articleId = data.data?.id
-        navigate(`/articles/${articleId}/edit`)
+        navigate(`/articles/${slugifyContentId(data.data)}/edit`)
       },
       onError: (err) => {
         message.error(err.message)

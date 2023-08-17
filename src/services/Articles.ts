@@ -98,9 +98,57 @@ class Categories {
   }
 }
 
+class Comments {
+  static async create (payload: any) {
+    try {
+      const resp = await axiosInstance.post(`${BASEURL}/articles/comments`, payload)
+      return ApiData.fromResponse(resp)
+    } catch (err: any) {
+      throw new ApiError(err)
+    }
+  }
+
+  static async findMany (params: any = {}) {
+    try {
+      const resp = await axiosInstance.get(`${BASEURL}/articles/comments`, { params })
+      return ApiData.fromResponse(resp)
+    } catch (err: any) {
+      throw new ApiError(err)
+    }
+  }
+
+  static async findById (id: number) {
+    try {
+      const resp = await axiosInstance.get(`${BASEURL}/articles/comments/${id}`)
+      return ApiData.fromResponse(resp)
+    } catch (err: any) {
+      throw new ApiError(err)
+    }
+  }
+
+  static async updateById (id: number, payload: any) {
+    try {
+      const resp = await axiosInstance.patch(`${BASEURL}/articles/comments/${id}`, payload)
+      return ApiData.fromResponse(resp)
+    } catch (err: any) {
+      throw new ApiError(err)
+    }
+  }
+
+  static async deleteById (id: number) {
+    try {
+      const resp = await axiosInstance.delete(`${BASEURL}/articles/comments/${id}`)
+      return ApiData.fromResponse(resp)
+    } catch (err: any) {
+      throw new ApiError(err)
+    }
+  }
+}
+
 export default class ArticlesService {
   static Categories = Categories
   static Readers = Readers
+  static Comments = Comments
   static async create (payload: any) {
     try {
       const resp = await axiosInstance.post(`${BASEURL}/articles`, payload)

@@ -1,5 +1,6 @@
-import { DeleteFilled, EditFilled, PlayCircleFilled } from '@ant-design/icons'
+import { DeleteFilled, EditFilled } from '@ant-design/icons'
 import { Avatar, Button, Card, ConfigProvider, Empty, List, Space } from 'antd'
+import StorytellingPlayerButton from 'components/StorytellingPlayerButton'
 import useStorytellingEpisodes from 'hooks/useStorytellingEpisodes'
 import { DEFAULT_IMAGE } from 'libs/variables'
 import Media from 'models/Media'
@@ -27,7 +28,7 @@ function StorytellingEpisodeListItem ({ storytelling, episode, afterUpdated, aft
             style={{ width: '100%' }}
           />
           <Space>
-            <Button disabled type='primary' shape='circle' icon={<PlayCircleFilled />}/>
+            <StorytellingPlayerButton storytelling={storytelling} episode={episode} />
             <EditStorytellingEpisodeButton storytelling={storytelling} episode={episode} afterUpdated={afterUpdated}>
               <Button shape='circle' icon={<EditFilled />}/>
             </EditStorytellingEpisodeButton>

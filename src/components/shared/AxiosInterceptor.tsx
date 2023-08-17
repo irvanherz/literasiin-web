@@ -72,8 +72,8 @@ export default function AxiosInterceptor ({ children }: AxiosInterceptorProps) {
           isRefreshing = false
           onRrefreshed(newToken)
         },
-        onError: (err) => {
-          console.log(err)
+        onError: (_err) => {
+          // console.log(err)
           handleRefreshTokenFailed()
         }
       })

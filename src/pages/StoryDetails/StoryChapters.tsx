@@ -1,5 +1,6 @@
 import { EyeFilled } from '@ant-design/icons'
 import { Card, Empty, Menu, MenuProps } from 'antd'
+import { slugifyContentId } from 'libs/slug'
 import { useQuery } from 'react-query'
 import { useNavigate } from 'react-router-dom'
 import StoriesService from 'services/Stories'
@@ -40,7 +41,7 @@ export default function StoryChapters ({ story }:StoryChaptersProps) {
   const { data } = useQuery(`stories[${storyId}].chapters`, () => StoriesService.Chapters.findMany({ storyId }), { enabled: !!storyId })
   const chapters: any[] = data?.data || []
   const menuItems: MenuProps['items'] = chapters.map(chapter => ({
-    key: chapter.id,
+    key: slugifyContentId(chapter),
     label: <ChapterMenuItem chapter={chapter} />
   }))
 

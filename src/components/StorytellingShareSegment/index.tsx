@@ -1,6 +1,7 @@
 import { message, Space } from 'antd'
 import analytics from 'libs/analytics'
 import { copyToClipboard, HOME_URL } from 'libs/common'
+import { slugifyContentId } from 'libs/slug'
 import qs from 'qs'
 
 type StorytellingShareSegmentProps = {
@@ -9,7 +10,7 @@ type StorytellingShareSegmentProps = {
 
 export default function StorytellingShareSegment ({ storytelling }: StorytellingShareSegmentProps) {
   const storytellingId = storytelling.id
-  const storytellingUrl = `${HOME_URL}/storytellings/${storytellingId}`
+  const storytellingUrl = `${HOME_URL}/storytellings/${slugifyContentId(storytelling)}`
   const whatsappUrl = 'https://api.whatsapp.com/send' + qs.stringify({ text: `Baca cerita "${storytelling.title}" di Literasiin. ${storytellingUrl}` }, { addQueryPrefix: true })
   const facebookUrl = 'https://www.facebook.com/sharer/sharer.php' + qs.stringify({ u: storytellingUrl, quote: `Baca cerita "${storytelling.title}" di Literasiin.` }, { addQueryPrefix: true })
   const twitterUrl = 'https://twitter.com/intent/tweet' + qs.stringify({ text: `Baca cerita "${storytelling.title}" di Literasiin. ${storytellingUrl}` }, { addQueryPrefix: true })

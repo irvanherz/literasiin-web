@@ -1,7 +1,8 @@
 import { DeleteFilled, EditFilled, EyeFilled, FileDoneOutlined, FileOutlined, MoreOutlined, ShareAltOutlined } from '@ant-design/icons'
-import { Avatar, Button, Descriptions, Dropdown, List, MenuProps, message, Modal, Space, Tag, Typography } from 'antd'
+import { Avatar, Button, Descriptions, Dropdown, List, MenuProps, Modal, Space, Tag, Typography, message } from 'antd'
 import ArticleShareButton from 'components/ArticleShareButton'
 import RenderTimeFromNow from 'components/shared/RenderTimeFromNow'
+import { slugifyContentId } from 'libs/slug'
 import { DEFAULT_IMAGE } from 'libs/variables'
 import Media from 'models/Media'
 import { FormattedMessage } from 'react-intl'
@@ -52,8 +53,8 @@ export default function ArticleListItem ({ article, afterUpdated, afterDeleted }
   const updater = useMutation((payload: any) => ArticlesService.updateById(articleId, payload))
   const remover = useMutation(() => ArticlesService.deleteById(articleId))
 
-  const handleView = () => navigate(`/articles/${articleId}`)
-  const handleEdit = () => navigate(`/articles/${articleId}/edit`)
+  const handleView = () => navigate(`/articles/${slugifyContentId(article)}`)
+  const handleEdit = () => navigate(`/articles/${slugifyContentId(article)}/edit`)
   const handleDelete = () => {
     Modal.confirm({
       title: 'Confirm',

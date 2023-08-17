@@ -4,6 +4,7 @@ import Layout from 'components/Layout'
 import StoryShareSegment from 'components/StoryShareSegment'
 import useStoryContext from 'hooks/useStoryContext'
 import analytics from 'libs/analytics'
+import { contentIdFromSlug } from 'libs/slug'
 import { useEffect, useMemo } from 'react'
 import { Helmet } from 'react-helmet'
 import { useMutation, useQuery } from 'react-query'
@@ -18,7 +19,7 @@ import Summary from './Summary'
 
 export default function StoryDetails () {
   const params = useParams()
-  const storyId = +(params?.storyId || 0)
+  const storyId = contentIdFromSlug(params?.storyId || '')
   const tracker = useMutation(() => StoriesService.Readers.track(storyId))
   const { data, status, error } = useQuery<any, any, any>(`stories[${storyId}]`, () => StoriesService.findById(storyId))
   const { data: contextData, refetch: refetchContext } = useStoryContext(storyId)

@@ -1,5 +1,6 @@
 import { message } from 'antd'
 import useStorytellingCreate from 'hooks/useStorytellingCreate'
+import { slugifyContentId } from 'libs/slug'
 import { cloneElement, ReactElement } from 'react'
 import { useNavigate } from 'react-router-dom'
 
@@ -11,8 +12,8 @@ export default function StorytellingCreateButton ({ children }: StorytellingCrea
   const handleCreate = () => {
     creator.mutate({ title: 'Untitled Storytelling' }, {
       onSuccess: data => {
-        const storytellingId = data.data?.id
-        navigate(`/storytellings/${storytellingId}/edit`)
+        const storytelling = data.data
+        navigate(`/storytellings/${slugifyContentId(storytelling)}/edit`)
       },
       onError: (err) => {
         message.error(err.message)

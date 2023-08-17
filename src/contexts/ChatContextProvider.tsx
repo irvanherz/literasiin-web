@@ -272,8 +272,6 @@ export default function ChatContextProvider ({ children }: ChatContextProviderPr
       try {
         dispatch({ type: 'chats.messages.findNext.started', payload: { params: { roomId } } })
         const result = await socket.emitWithAck('chats.messages.findNext', { filter: { roomId, after } })
-        console.log(result, 'aaaa')
-
         dispatch({ type: 'chats.messages.findNext.success', payload: { ...result, params: { roomId } } })
       } catch (error) {
         dispatch({ type: 'chats.messages.findNext.error', payload: { error, params: { roomId } } })

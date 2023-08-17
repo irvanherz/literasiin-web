@@ -60,4 +60,14 @@ export default class MediaService {
     }
     return props
   }
+
+  static generateSpecificAntdUploadProps (type: string) {
+    const props: UploadProps = {
+      action: `${BASEURL}/media/${type}`,
+      method: 'post',
+      name: 'file',
+      headers: { Authorization: generateAuthorizationHeaderValue() as any }
+    }
+    return props
+  }
 }

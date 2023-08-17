@@ -7,6 +7,7 @@ import useStory from 'hooks/useStory'
 import useStoryChapter from 'hooks/useStoryChapter'
 import useStoryChapterContext from 'hooks/useStoryChapterContext'
 import analytics from 'libs/analytics'
+import { contentIdFromSlug, slugifyContentId } from 'libs/slug'
 import { useEffect, useMemo } from 'react'
 import { Helmet } from 'react-helmet'
 import { FormattedMessage } from 'react-intl'
@@ -20,7 +21,7 @@ import VoteButton from './VoteButton'
 
 export default function StoryChapterDetails () {
   const params = useParams()
-  const chapterId = +(params?.chapterId || 0)
+  const chapterId = contentIdFromSlug(params?.chapterId || '')
   const { data, status, error } = useStoryChapter(chapterId, { includeStory: true })
   const viewer = useMutation(() => StoriesService.Chapters.Readers.track(chapterId))
   const chapter = data?.data
@@ -53,7 +54,7 @@ export default function StoryChapterDetails () {
       )
     } else {
       res.push(
-        <Link to={`/stories/${story?.id}`} className='story-chapter-nav-link'>
+        <Link to={`/stories/${slugifyContentId(story)}`} className='story-chapter-nav-link'>
           <div className='story-chapter-nav-title'><HomeOutlined /></div>
           <div className='story-chapter-nav-subtitle'><FormattedMessage defaultMessage='Back to story list' /></div>
         </Link>

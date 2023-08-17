@@ -40,8 +40,6 @@ export default function PlacePicker ({ value, onChange, onMapChange }: PlacePick
 
   useEffect(() => {
     if (ctx.status === 'success' && ref.current && !map) {
-      console.log('OKE')
-
       const map = new google.maps.Map(ref.current!, {
         center: { lat: computedValue?.[0] || -6.200000, lng: computedValue?.[1] || 106.816666 },
         zoom: 10,

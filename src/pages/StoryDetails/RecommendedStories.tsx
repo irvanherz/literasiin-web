@@ -1,6 +1,7 @@
 import { StarFilled } from '@ant-design/icons'
 import { Card, List, Space } from 'antd'
 import StoryCover from 'components/StoryCover'
+import { slugifyContentId } from 'libs/slug'
 import { useMemo } from 'react'
 import { FormattedMessage } from 'react-intl'
 import { useQuery } from 'react-query'
@@ -28,7 +29,7 @@ function StoryItem ({ story }: StoryItemProps) {
   }, [story?.writers])
 
   return (
-    <Link to={`/stories/${story?.id}`}>
+    <Link to={`/stories/${slugifyContentId(story)}`}>
       <List.Item
         extra={
           <Space>

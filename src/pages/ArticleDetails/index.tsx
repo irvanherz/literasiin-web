@@ -5,12 +5,15 @@ import PageWidthAdapter from 'components/PageWidthAdapter'
 import useArticle from 'hooks/useArticle'
 import useArticleContext from 'hooks/useArticleContext'
 import analytics from 'libs/analytics'
+import { contentIdFromSlug } from 'libs/slug'
 import { useEffect } from 'react'
 import { Helmet } from 'react-helmet'
 import { useMutation } from 'react-query'
-import { useParams } from 'react-router-dom'
+import { useLocation, useParams } from 'react-router-dom'
+import { Element, scroller } from 'react-scroll'
 import ArticlesService from 'services/Articles'
 import styled from 'styled-components'
+import ArticleComments from './ArticleComments'
 import ArticleFooter from './ArticleFooter'
 import ArticleHeader from './ArticleHeader'
 
@@ -21,8 +24,9 @@ padding: 24px 0;
 export default function ArticleDetails () {
   const { token } = theme.useToken()
   const params = useParams()
-  const articleId = +(params?.articleId || 0)
-  const { data, refetch } = useArticle(articleId)
+  const { hash } = useLocation()
+  const articleId = contentIdFromSlug(params?.articleId || '')
+  const { status, data, refetch } = useArticle(articleId)
   const { data: contextData, refetch: refetchContext } = useArticleContext(articleId)
   const article: any = data?.data
   const context: any = contextData?.data
@@ -38,6 +42,12 @@ export default function ArticleDetails () {
       url: window.location.href
     })
   }, [article])
+
+  useEffect(() => {
+    if (hash === '#comments' && status === 'success') {
+      scroller.scrollTo('comments', { delay: 300 })
+    }
+  }, [status, hash])
 
   const handleAfterUpdated = () => {
     refetch()
@@ -60,6 +70,11 @@ export default function ArticleDetails () {
             </Col>
             <Col span={24}>
               <ArticleFooter article={article} context={context} afterUpdated={handleAfterUpdated} />
+            </Col>
+            <Col span={24}>
+              <Element name='comments'>
+                <ArticleComments article={article} />
+              </Element>
             </Col>
           </Row>
         </Wrapper>

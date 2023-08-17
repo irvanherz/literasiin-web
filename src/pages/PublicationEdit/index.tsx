@@ -10,6 +10,7 @@ import usePublicationCommit from 'hooks/usePublicationCommit'
 import usePublicationFiles from 'hooks/usePublicationFiles'
 import usePublicationUpdate from 'hooks/usePublicationUpdate'
 import analytics from 'libs/analytics'
+import { contentIdFromSlug } from 'libs/slug'
 import { useEffect, useMemo, useState } from 'react'
 import { Helmet } from 'react-helmet'
 import { Link, useParams } from 'react-router-dom'
@@ -17,7 +18,7 @@ import ReviewSection from './ReviewSection'
 
 export default function PublicationEdit () {
   const params = useParams()
-  const publicationId = +(params?.publicationId || 0)
+  const publicationId = contentIdFromSlug(params?.storyId || '')
   const { data, refetch } = usePublication(publicationId, { includeAddress: true })
   const { data: dataFiles, refetch: refetchFiles } = usePublicationFiles({ publicationId }, { enabled: !!publicationId })
   const publication = data?.data

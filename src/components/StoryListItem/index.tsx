@@ -1,8 +1,9 @@
 import { CheckOutlined, DeleteFilled, EditFilled, EllipsisOutlined, EyeFilled, FileDoneOutlined, FileOutlined, MoreOutlined, ShareAltOutlined } from '@ant-design/icons'
-import { Button, Descriptions, Dropdown, List, MenuProps, message, Modal, Space, Tag, Typography } from 'antd'
-import RenderTimeFromNow from 'components/shared/RenderTimeFromNow'
+import { Button, Descriptions, Dropdown, List, MenuProps, Modal, Space, Tag, Typography, message } from 'antd'
 import StoryCover from 'components/StoryCover'
 import StoryShareButton from 'components/StoryShareButton'
+import RenderTimeFromNow from 'components/shared/RenderTimeFromNow'
+import { slugifyContentId } from 'libs/slug'
 import { FormattedMessage, useIntl } from 'react-intl'
 import { useMutation } from 'react-query'
 import { useNavigate } from 'react-router-dom'
@@ -53,8 +54,8 @@ export default function StoryListItem ({ story, afterUpdated, afterDeleted }: St
   const updater = useMutation((payload: any) => StoriesService.updateById(storyId, payload))
   const remover = useMutation(() => StoriesService.deleteById(storyId))
 
-  const handleView = () => navigate(`/stories/${storyId}`)
-  const handleEdit = () => navigate(`/stories/${storyId}/edit`)
+  const handleView = () => navigate(`/stories/${slugifyContentId(story)}`)
+  const handleEdit = () => navigate(`/stories/${slugifyContentId(story)}/edit`)
   const handleDelete = () => {
     Modal.confirm({
       title: 'Confirm',

@@ -1,5 +1,6 @@
 import { Card } from 'antd'
 import StorytellingCover from 'components/StorytellingCover'
+import { slugifyContentId } from 'libs/slug'
 import { useMemo } from 'react'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
@@ -43,7 +44,7 @@ export default function StorytellingCard ({ storytelling }: StorytellingCardProp
     }, [])
   }, [storytelling?.authors])
   return (
-    <Link to={`/storytellings/${storytelling.id}`}>
+    <Link to={`/storytellings/${slugifyContentId(storytelling)}`}>
       <StyledCard
         size='small'
         cover={

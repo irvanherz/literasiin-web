@@ -1,5 +1,5 @@
 import { $generateHtmlFromNodes, $generateNodesFromDOM } from '@lexical/html'
-import { Card, Col, Dropdown, Form, Input, message, Row, Select } from 'antd'
+import { Card, Col, Dropdown, Form, Input, Row, Select, message } from 'antd'
 import Layout from 'components/Layout'
 import StoryEditor from 'components/LexicalEditor/StoryEditor'
 import RouteGuard from 'components/RouteGuard'
@@ -9,6 +9,7 @@ import useArticleCategories from 'hooks/useArticleCategories'
 import useArticleUpdate from 'hooks/useArticleUpdate'
 import { $getRoot, $isDecoratorNode, $isElementNode, LexicalEditor } from 'lexical'
 import analytics from 'libs/analytics'
+import { contentIdFromSlug, slugifyContentId } from 'libs/slug'
 import { useEffect, useLayoutEffect, useState } from 'react'
 import { Helmet } from 'react-helmet'
 import { FormattedMessage, useIntl } from 'react-intl'
@@ -17,7 +18,7 @@ import { useNavigate, useParams } from 'react-router-dom'
 export default function ArticleEdit () {
   const intl = useIntl()
   const params = useParams()
-  const articleId = +(params.articleId || 0)
+  const articleId = contentIdFromSlug(params.articleId || '')
   const navigate = useNavigate()
   const [form] = Form.useForm()
   const { data, refetch } = useArticle(articleId)
@@ -75,7 +76,7 @@ export default function ArticleEdit () {
       updater.mutate(values, {
         onSuccess: (data) => {
           message.success('Article published successfully')
-          navigate(`/articles/${articleId}`)
+          navigate(`/articles/${slugifyContentId(article)}`)
         },
         onError: (err) => {
           message.error(err.message)

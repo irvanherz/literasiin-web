@@ -3,6 +3,7 @@ import { Button, Descriptions, Dropdown, List, MenuProps, message, Modal, Space,
 import RenderTimeFromNow from 'components/shared/RenderTimeFromNow'
 import StorytellingCover from 'components/StorytellingCover'
 import StorytellingShareButton from 'components/StorytellingShareButton'
+import { slugifyContentId } from 'libs/slug'
 import { FormattedMessage, useIntl } from 'react-intl'
 import { useMutation } from 'react-query'
 import { Link, useNavigate } from 'react-router-dom'
@@ -53,8 +54,8 @@ export default function StorytellingListItem ({ storytelling, afterUpdated, afte
   const updater = useMutation((payload: any) => StorytellingsService.updateById(storytellingId, payload))
   const remover = useMutation(() => StorytellingsService.deleteById(storytellingId))
 
-  const handleView = () => navigate(`/storytellings/${storytellingId}`)
-  const handleEdit = () => navigate(`/storytellings/${storytellingId}/edit`)
+  const handleView = () => navigate(`/storytellings/${slugifyContentId(storytelling)}`)
+  const handleEdit = () => navigate(`/storytellings/${slugifyContentId(storytelling)}/edit`)
   const handleDelete = () => {
     Modal.confirm({
       title: 'Confirm',
@@ -137,7 +138,7 @@ export default function StorytellingListItem ({ storytelling, afterUpdated, afte
       extra={
         <div className='list-item-actions'>
           <Space>
-            <Link to={`/storytellings/${storytelling.id}/edit`}>
+            <Link to={`/storytellings/${slugifyContentId(storytelling)}/edit`}>
               <Button shape='circle' icon={<EditFilled />} />
             </Link>
             <StorytellingShareButton storytelling={storytelling}>

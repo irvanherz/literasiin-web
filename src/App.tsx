@@ -176,6 +176,11 @@ const router = createBrowserRouter([
     element: <StorytellingEdit />
   },
   {
+    id: '/storytellings/:storytellingId/edit/:sectionId',
+    path: '/storytellings/:storytellingId/edit/:sectionId',
+    element: <StorytellingEdit />
+  },
+  {
     id: '/storytellings/:storytellingId',
     path: '/storytellings/:storytellingId',
     element: <StorytellingDetails />

@@ -390,6 +390,15 @@ export default class StorytellingsService {
     }
   }
 
+  static async findTracksById (id: number, params: any = {}) {
+    try {
+      const resp = await axiosInstance.get(`${BASEURL}/storytellings/${id}/tracks`, { params })
+      return ApiData.fromResponse(resp)
+    } catch (err: any) {
+      throw new ApiError(err)
+    }
+  }
+
   static async updateById (id: number, payload: any) {
     try {
       const resp = await axiosInstance.patch(`${BASEURL}/storytellings/${id}`, payload)

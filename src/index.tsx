@@ -8,6 +8,7 @@ import GoogleMapsContextProvider from 'contexts/GoogleMapsContextProvider'
 import LangContextProvider from 'contexts/LangContextProvider'
 import NotificationContextProvider from 'contexts/NotificationContextProvider'
 import SocketContextProvider from 'contexts/SocketContextProvider'
+import StorytellingPlayerContextProvider from 'contexts/StorytellingPlayerContextProvider'
 import ThemeContextProvider from 'contexts/ThemeContextProvider'
 import dayjs from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime'
@@ -76,7 +77,9 @@ root.render(
                     <NotificationContextProvider>
                       <GoogleMapsContextProvider options={{ apiKey: process.env.REACT_APP_GOOGLE_MAPS_APIKEY!, language: 'id-ID', libraries: ['marker', 'places', 'drawing'] }}>
                         <ThemeContextProvider>
-                          <App />
+                          <StorytellingPlayerContextProvider>
+                            <App />
+                          </StorytellingPlayerContextProvider>
                         </ThemeContextProvider>
                       </GoogleMapsContextProvider>
                     </NotificationContextProvider>

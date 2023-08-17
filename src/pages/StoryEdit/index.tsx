@@ -2,6 +2,7 @@ import { Form, Tabs } from 'antd'
 import Layout from 'components/Layout'
 import RouteGuard from 'components/RouteGuard'
 import analytics from 'libs/analytics'
+import { contentIdFromSlug } from 'libs/slug'
 import { useEffect } from 'react'
 import { Helmet } from 'react-helmet'
 import { useQuery } from 'react-query'
@@ -12,7 +13,7 @@ import StoryWritersEditTab from './StoryWritersEditTab'
 
 export default function StoryEdit () {
   const params = useParams()
-  const storyId = +(params.storyId || 0)
+  const storyId = contentIdFromSlug(params?.storyId || '')
   const [form] = Form.useForm()
   const { data } = useQuery(`stories[${storyId}]`, () => StoriesService.findById(storyId), { enabled: !!storyId })
   const story = data?.data
