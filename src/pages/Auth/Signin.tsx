@@ -11,6 +11,7 @@ import { FormattedMessage } from 'react-intl'
 import { useMutation } from 'react-query'
 import { Link, useNavigate, useSearchParams } from 'react-router-dom'
 import AuthService from 'services/Auth'
+import ContinueWithFacebookButton from './ContinueWithFacebookButton'
 import ContinueWithGoogleButton from './ContinueWithGoogleButton'
 import SigninForm from './SigninForm'
 
@@ -87,9 +88,10 @@ export default function Signin () {
                   </Space>
                 </Form>
                 <Divider>or</Divider>
-                <div style={{ textAlign: 'center' }}>
+                <Space direction='vertical' style={{ width: '100%', textAlign: 'center' }}>
                   <ContinueWithGoogleButton />
-                </div>
+                  <ContinueWithFacebookButton />
+                </Space>
                 <Helmet>
                   <title>Sign in - Literasiin</title>
                 </Helmet>

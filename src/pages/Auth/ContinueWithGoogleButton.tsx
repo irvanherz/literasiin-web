@@ -1,62 +1,12 @@
-import { CredentialResponse, GoogleLogin } from '@react-oauth/google'
-import { message } from 'antd'
-import { getMessaging, getToken } from 'firebase/messaging'
-import useAuthContext from 'hooks/useAuthContext'
-import analytics from 'libs/analytics'
-import { useMutation } from 'react-query'
-import AuthService from 'services/Auth'
-import styled from 'styled-components'
+import { GoogleOutlined } from '@ant-design/icons'
+import { Button } from 'antd'
+import { API_BASE_URL } from 'libs/variables'
+import { Link } from 'react-router-dom'
 
-const Wrapper = styled.div`
-iframe {
-  display: inherit !important;
-  margin: auto !important;
-}
-`
 export default function ContinueWithGoogleButton () {
-  const auth = useAuthContext()
-  const signin = useMutation<any, any, any>(AuthService.authWithGoogle)
-
-  const getNotificationToken = async () => {
-    try {
-      const messaging = getMessaging()
-      const token = await getToken(messaging).catch(() => undefined)
-      return token
-    } catch (err) {
-      return null
-    }
-  }
-  const handleSubmit = async (response: CredentialResponse) => {
-    const notificationToken = await getNotificationToken()
-    const payload = {
-      idToken: response.credential,
-      deviceType: 'web',
-      deviceId: window.navigator.userAgent,
-      notificationToken
-    }
-
-    signin.mutate(payload, {
-      onError: (e) => {
-        message.error(e.message)
-      },
-      onSuccess: (result) => {
-        analytics.track('login', { method: 'google' })
-
-        const { token, refreshToken } = result.meta
-        auth.setToken(token, refreshToken)
-      }
-    })
-  }
-
   return (
-    <Wrapper>
-      <GoogleLogin
-        shape='circle'
-        onSuccess={handleSubmit}
-        onError={() => {
-          message.error('Something went wrong')
-        }}
-      />
-    </Wrapper>
+    <Link to={`${API_BASE_URL}/auth/google`}>
+      <Button type='default' style={{ width: '100%' }} icon={<GoogleOutlined />}>Continue With Google</Button>
+    </Link>
   )
 }

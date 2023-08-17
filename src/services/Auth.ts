@@ -81,9 +81,27 @@ export default class AuthService {
     }
   }
 
+  // static async authWithGoogle (payload: any) {
+  //   try {
+  //     const resp = await axiosInstance.post(`${BASEURL}/auth/google`, payload)
+  //     return ApiData.fromResponse(resp)
+  //   } catch (err: any) {
+  //     throw new ApiError(err)
+  //   }
+  // }
+
   static async authWithGoogle (payload: any) {
     try {
-      const resp = await axiosInstance.post(`${BASEURL}/auth/google`, payload)
+      const resp = await axiosInstance.post(`${BASEURL}/auth/with-google`, payload)
+      return ApiData.fromResponse(resp)
+    } catch (err: any) {
+      throw new ApiError(err)
+    }
+  }
+
+  static async authWithFacebook (payload: any) {
+    try {
+      const resp = await axiosInstance.post(`${BASEURL}/auth/with-facebook`, payload)
       return ApiData.fromResponse(resp)
     } catch (err: any) {
       throw new ApiError(err)

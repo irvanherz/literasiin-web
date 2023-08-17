@@ -1,4 +1,4 @@
-import { Button, Card, Col, Form, message, Row, Space } from 'antd'
+import { Button, Card, Col, Divider, Form, message, Row, Space } from 'antd'
 import Layout from 'components/Layout'
 import PageWidthAdapter from 'components/PageWidthAdapter'
 import RouteGuard from 'components/RouteGuard'
@@ -11,6 +11,8 @@ import { FormattedMessage } from 'react-intl'
 import { useMutation } from 'react-query'
 import { Link, useNavigate, useSearchParams } from 'react-router-dom'
 import AuthService from 'services/Auth'
+import ContinueWithFacebookButton from './ContinueWithFacebookButton'
+import ContinueWithGoogleButton from './ContinueWithGoogleButton'
 import SignupForm from './SignupForm'
 
 export default function Signup () {
@@ -92,6 +94,11 @@ export default function Signup () {
                     </Link>
                   </Space>
                 </Form>
+                <Divider>or</Divider>
+                <Space direction='vertical' style={{ width: '100%', textAlign: 'center' }}>
+                  <ContinueWithGoogleButton />
+                  <ContinueWithFacebookButton />
+                </Space>
                 <Helmet>
                   <title>Sign up - Literasiin</title>
                 </Helmet>

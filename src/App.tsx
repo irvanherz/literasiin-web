@@ -1,7 +1,9 @@
 import ArticleDetails from 'pages/ArticleDetails'
 import ArticleEdit from 'pages/ArticleEdit'
 import ArticleListMine from 'pages/ArticleListMine'
+import FacebookAuthCallback from 'pages/Auth/FacebookAuthCallback'
 import ForgotPassword from 'pages/Auth/ForgotPassword'
+import GoogleAuthCallback from 'pages/Auth/GoogleAuthCallback'
 import ResetPassword from 'pages/Auth/ResetPassword'
 import Signin from 'pages/Auth/Signin'
 import Signup from 'pages/Auth/Signup'
@@ -59,6 +61,16 @@ const router = createBrowserRouter([
     id: '/auth/forgot-password',
     path: '/auth/forgot-password',
     element: <ForgotPassword />
+  },
+  {
+    id: '/auth/google/redirect',
+    path: '/auth/google/redirect',
+    element: <GoogleAuthCallback />
+  },
+  {
+    id: '/auth/facebook/redirect',
+    path: '/auth/facebook/redirect',
+    element: <FacebookAuthCallback />
   },
   {
     id: '/users/:username',
