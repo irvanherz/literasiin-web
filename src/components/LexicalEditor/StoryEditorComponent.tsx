@@ -11,33 +11,29 @@ import { AutoFocusPlugin } from '@lexical/react/LexicalAutoFocusPlugin'
 import LexicalErrorBoundary from '@lexical/react/LexicalErrorBoundary'
 import { HistoryPlugin } from '@lexical/react/LexicalHistoryPlugin'
 // import { HorizontalRulePlugin } from '@lexical/react/LexicalHorizontalRulePlugin'
+import { ListPlugin } from '@lexical/react/LexicalListPlugin'
 import { RichTextPlugin } from '@lexical/react/LexicalRichTextPlugin'
 // import { TabIndentationPlugin } from '@lexical/react/LexicalTabIndentationPlugin'
 // import useLexicalEditable from '@lexical/react/useLexicalEditable'
 import { JSX, useEffect, useState } from 'react'
 import { CAN_USE_DOM } from './shared/canUseDOM'
 
+import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext'
+import { OnChangePlugin } from '@lexical/react/LexicalOnChangePlugin'
+import { EditorState, LexicalEditor } from 'lexical'
 import { useSharedHistoryContext } from './context/SharedHistoryContext'
+import './index.scss'
 import AutocompletePlugin from './plugins/AutocompletePlugin'
 import ComponentPickerPlugin from './plugins/ComponentPickerPlugin'
 import DragDropPaste from './plugins/DragDropPastePlugin'
 import DraggableBlockPlugin from './plugins/DraggableBlockPlugin'
 import EmojiPickerPlugin from './plugins/EmojiPickerPlugin'
 import EmojisPlugin from './plugins/EmojisPlugin'
-// import EquationsPlugin from './plugins/EquationsPlugin'
-// import ExcalidrawPlugin from './plugins/ExcalidrawPlugin'
-// import FigmaPlugin from './plugins/FigmaPlugin'
-import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext'
-import { OnChangePlugin } from '@lexical/react/LexicalOnChangePlugin'
-import { EditorState, LexicalEditor } from 'lexical'
-import './index.scss'
 import StoryEditorFloatingTextFormatToolbarPlugin from './plugins/FloatingTextFormatToolbarPlugin/StoryEditorFloatingTextFormatToolbarPlugin'
 import KeywordsPlugin from './plugins/KeywordsPlugin'
 import ListMaxIndentLevelPlugin from './plugins/ListMaxIndentLevelPlugin'
 import { MaxLengthPlugin } from './plugins/MaxLengthPlugin'
-import SpeechToTextPlugin from './plugins/SpeechToTextPlugin'
 import StoryEditorToolbarPlugin from './plugins/ToolbarPlugin/StoryEditorToolbarPlugin'
-import './setupEnv'
 import ContentEditable from './ui/ContentEditable'
 import Placeholder from './ui/Placeholder'
 
@@ -46,6 +42,7 @@ export type StoryEditorComponentProps = {
   onChange: (props: { editorState: EditorState, editor: LexicalEditor, tags: Set<string> }) => void
 }
 export default function StoryEditorComponent ({ onReady, onChange }: StoryEditorComponentProps): JSX.Element {
+  // const currentUser = useCurrentUser()
   const { historyState } = useSharedHistoryContext()
   const [floatingAnchorElem, setFloatingAnchorElem] = useState<HTMLDivElement | null>(null)
   const [isSmallWidthViewport, setIsSmallWidthViewport] = useState<boolean>(false)
@@ -94,11 +91,24 @@ export default function StoryEditorComponent ({ onReady, onChange }: StoryEditor
         <EmojiPickerPlugin />
         <EmojisPlugin />
         <KeywordsPlugin />
-        <SpeechToTextPlugin />
         {/* <CollaborationPlugin
           id="main"
-          providerFactory={createWebsocketProvider}
-          shouldBootstrap={!skipCollaborationInit}
+          username={currentUser?.username || 'User'}
+          providerFactory={(id, yjsDocMap) => {
+            const doc = new Y.Doc()
+            yjsDocMap.set(id, doc)
+
+            console.log(id, yjsDocMap)
+
+            const provider = new WebsocketProvider(
+              'ws://localhost:7778',
+              id,
+              doc
+            )
+
+            return provider as any
+          }}
+          shouldBootstrap={true}
         /> */}
         <HistoryPlugin externalHistoryState={historyState} />
         <RichTextPlugin
@@ -112,13 +122,12 @@ export default function StoryEditorComponent ({ onReady, onChange }: StoryEditor
           placeholder={<Placeholder>Input your story...</Placeholder>}
           ErrorBoundary={LexicalErrorBoundary}
         />
+        <ListPlugin />
         <ListMaxIndentLevelPlugin maxDepth={7} />
         {floatingAnchorElem && !isSmallWidthViewport && (
           <>
             <DraggableBlockPlugin anchorElem={floatingAnchorElem} />
-            <StoryEditorFloatingTextFormatToolbarPlugin
-              anchorElem={floatingAnchorElem}
-          />
+            <StoryEditorFloatingTextFormatToolbarPlugin anchorElem={floatingAnchorElem} />
           </>
         )}
         <AutocompletePlugin />

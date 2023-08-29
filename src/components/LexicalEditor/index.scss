@@ -6,20 +6,16 @@
  *
  */
 
-@import 'https://fonts.googleapis.com/css?family=Reenie+Beanie';
-
+.editor-shell.editor-shell-theme-dark {
+  filter: invert(0.9);
+}
 .editor-shell {
+  color: #000;
   border-radius: 2px;
   max-width: 1100px;
   position: relative;
   line-height: 1.7;
   font-weight: 400;
-  &.editor-shell-theme-dark {
-    .editor-container {
-      background: #111;
-    }
-  }
-
   .editor-container {
     background: #fff;
     position: relative;
@@ -438,6 +434,14 @@ i.tweet {
 
 i.youtube {
   background-image: url(images/icons/youtube.svg);
+}
+
+i.grammarfix {
+  background-image: url(images/icons/robot-grammarfix.svg);
+}
+
+i.paraphraser {
+  background-image: url(images/icons/robot-paraphraser.svg);
 }
 
 .icon.left-align,

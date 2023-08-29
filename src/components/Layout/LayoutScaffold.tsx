@@ -62,7 +62,7 @@ export default function LayoutScaffold ({ withHeader = true, headerStyle, header
     <ScaffoldContainer style={style}>
       {withHeader && (
         <div
-          style={{ background: token.colorBgContainer, ...headerStyle }}
+          style={{ borderBottom: `1px solid ${token.colorBorderSecondary}`, background: token.colorBgContainer, ...headerStyle }}
           className={classNames('scaffold-header', headerClassName)}
         >
           <PageWidthAdapter style={{ display: 'flex' }}>
@@ -80,7 +80,7 @@ export default function LayoutScaffold ({ withHeader = true, headerStyle, header
       )}
 
       {extra && (
-        <div style={{ background: token.colorBgContainerDisabled, ...extraStyle }} className={classNames('scaffold-extra', extraClassName)}>
+        <div style={{ borderBottom: `1px solid ${token.colorBorderSecondary}`, ...extraStyle }} className={classNames('scaffold-extra', extraClassName)}>
           <PageWidthAdapter>
             {extra}
           </PageWidthAdapter>

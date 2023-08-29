@@ -81,10 +81,10 @@ class Authors {
   }
 }
 
-class Readers {
+class Audiences {
   static async track (storytellingId: number) {
     try {
-      const resp = await axiosInstance.post(`${BASEURL}/storytellings/${storytellingId}/readers/track`)
+      const resp = await axiosInstance.post(`${BASEURL}/storytellings/${storytellingId}/audiences/track`)
       return ApiData.fromResponse(resp)
     } catch (err: any) {
       throw new ApiError(err)
@@ -93,7 +93,7 @@ class Readers {
 
   static async bookmark (storytellingId: number) {
     try {
-      const resp = await axiosInstance.post(`${BASEURL}/storytellings/${storytellingId}/readers/bookmark`)
+      const resp = await axiosInstance.post(`${BASEURL}/storytellings/${storytellingId}/audiences/bookmark`)
       return ApiData.fromResponse(resp)
     } catch (err: any) {
       throw new ApiError(err)
@@ -102,7 +102,16 @@ class Readers {
 
   static async unbookmark (storytellingId: number) {
     try {
-      const resp = await axiosInstance.delete(`${BASEURL}/storytellings/${storytellingId}/readers/bookmark`)
+      const resp = await axiosInstance.delete(`${BASEURL}/storytellings/${storytellingId}/audiences/bookmark`)
+      return ApiData.fromResponse(resp)
+    } catch (err: any) {
+      throw new ApiError(err)
+    }
+  }
+
+  static async findContextById (id: number) {
+    try {
+      const resp = await axiosInstance.get(`${BASEURL}/storytellings/${id}/audiences/context`)
       return ApiData.fromResponse(resp)
     } catch (err: any) {
       throw new ApiError(err)
@@ -110,10 +119,10 @@ class Readers {
   }
 }
 
-class EpisodeReaders {
+class EpisodeAudiences {
   static async track (episodeId: number) {
     try {
-      const resp = await axiosInstance.post(`${BASEURL}/storytellings/episodes/${episodeId}/readers/track`)
+      const resp = await axiosInstance.post(`${BASEURL}/storytellings/episodes/${episodeId}/audiences/track`)
       return ApiData.fromResponse(resp)
     } catch (err: any) {
       throw new ApiError(err)
@@ -122,7 +131,7 @@ class EpisodeReaders {
 
   static async vote (episodeId: number) {
     try {
-      const resp = await axiosInstance.post(`${BASEURL}/storytellings/episodes/${episodeId}/readers/vote`)
+      const resp = await axiosInstance.post(`${BASEURL}/storytellings/episodes/${episodeId}/audiences/vote`)
       return ApiData.fromResponse(resp)
     } catch (err: any) {
       throw new ApiError(err)
@@ -131,7 +140,7 @@ class EpisodeReaders {
 
   static async devote (episodeId: number) {
     try {
-      const resp = await axiosInstance.delete(`${BASEURL}/storytellings/episodes/${episodeId}/readers/vote`)
+      const resp = await axiosInstance.delete(`${BASEURL}/storytellings/episodes/${episodeId}/audiences/vote`)
       return ApiData.fromResponse(resp)
     } catch (err: any) {
       throw new ApiError(err)
@@ -290,7 +299,7 @@ class Comments {
 }
 
 class Episodes {
-  static Readers = EpisodeReaders
+  static Audiences = EpisodeAudiences
   static async create (payload: any) {
     try {
       const resp = await axiosInstance.post(`${BASEURL}/storytellings/episodes`, payload)
@@ -318,9 +327,9 @@ class Episodes {
     }
   }
 
-  static async findContextById (id: number) {
+  static async findTrackById (id: number, params: any = {}) {
     try {
-      const resp = await axiosInstance.get(`${BASEURL}/storytellings/episodes/${id}/context`)
+      const resp = await axiosInstance.get(`${BASEURL}/storytellings/episodes/${id}/track`, { params })
       return ApiData.fromResponse(resp)
     } catch (err: any) {
       throw new ApiError(err)
@@ -360,7 +369,7 @@ export default class StorytellingsService {
   static Categories = Categories
   static Episodes = Episodes
   static Authors = Authors
-  static Readers = Readers
+  static Audiences = Audiences
   static Comments = Comments
 
   static async create (payload: any) {
@@ -411,33 +420,6 @@ export default class StorytellingsService {
   static async deleteById (id: number) {
     try {
       const resp = await axiosInstance.delete(`${BASEURL}/storytellings/${id}`)
-      return ApiData.fromResponse(resp)
-    } catch (err: any) {
-      throw new ApiError(err)
-    }
-  }
-
-  static async assignTag (id: number, name: string) {
-    try {
-      const resp = await axiosInstance.post(`${BASEURL}/storytellings/${id}/tags/${name}`)
-      return ApiData.fromResponse(resp)
-    } catch (err: any) {
-      throw new ApiError(err)
-    }
-  }
-
-  static async unassignTag (id: number, name: string) {
-    try {
-      const resp = await axiosInstance.delete(`${BASEURL}/storytellings/${id}/tags/${name}`)
-      return ApiData.fromResponse(resp)
-    } catch (err: any) {
-      throw new ApiError(err)
-    }
-  }
-
-  static async findContextById (id: number) {
-    try {
-      const resp = await axiosInstance.get(`${BASEURL}/storytellings/${id}/context`)
       return ApiData.fromResponse(resp)
     } catch (err: any) {
       throw new ApiError(err)

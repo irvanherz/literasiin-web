@@ -1,11 +1,12 @@
 import { PlusOutlined } from '@ant-design/icons'
-import { Button, Tabs } from 'antd'
+import { Button, Space, Tabs } from 'antd'
 import Layout from 'components/Layout'
 import RouteGuard from 'components/RouteGuard'
 import analytics from 'libs/analytics'
 import { useEffect } from 'react'
 import { Helmet } from 'react-helmet'
 import { FormattedMessage, useIntl } from 'react-intl'
+import AiSection from './AiSection'
 import PendingInvitationSection from './PendingInvitationSection'
 import StoryCreateButton from './StoryCreateButton'
 import StoryListAny from './StoryListAny'
@@ -33,14 +34,17 @@ export default function StoryListMine () {
             </StoryCreateButton>
           ]}
       >
-          <PendingInvitationSection />
-          <Tabs
-            destroyInactiveTabPane
-            items={[
-              { key: 'all', tabKey: 'all', label: <FormattedMessage defaultMessage='All Stories' />, children: <StoryListAny /> },
-              { key: 'published', tabKey: 'published', label: <FormattedMessage defaultMessage='Published' />, children: <StoryListPublished /> }
-            ]}
-          />
+          <Space direction='vertical' style={{ width: '100%' }}>
+            <PendingInvitationSection />
+            <Tabs
+              destroyInactiveTabPane
+              items={[
+                { key: 'all', tabKey: 'all', label: <FormattedMessage defaultMessage='All Stories' />, children: <StoryListAny /> },
+                { key: 'published', tabKey: 'published', label: <FormattedMessage defaultMessage='Published' />, children: <StoryListPublished /> }
+              ]}
+            />
+            <AiSection />
+          </Space>
         </Layout.Scaffold>
         <Helmet>
           <title>My Stories - Literasiin</title>

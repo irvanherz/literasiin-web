@@ -14,9 +14,6 @@ specifiers:
   '@lexical/html': ^0.11.1
   '@lexical/link': ^0.11.1
   '@lexical/list': ^0.11.1
-  '@lexical/mark': ^0.11.1
-  '@lexical/markdown': ^0.11.1
-  '@lexical/overflow': ^0.11.1
   '@lexical/react': ^0.11.1
   '@lexical/rich-text': ^0.11.1
   '@lexical/selection': ^0.11.1
@@ -30,7 +27,6 @@ specifiers:
   '@testing-library/user-event': ^13.5.0
   '@types/color': ^3.0.3
   '@types/google.maps': ^3.53.1
-  '@types/gtag.js': ^0.0.12
   '@types/jest': ^27.5.2
   '@types/lodash': ^4.14.191
   '@types/node': ^16.18.11
@@ -69,6 +65,7 @@ specifiers:
   react: ^18.2.0
   react-audio-player: ^0.17.0
   react-dom: ^18.2.0
+  react-google-recaptcha-v3: ^1.10.1
   react-helmet: ^6.1.0
   react-infinite-scroll-component: ^6.1.0
   react-intl: ^6.3.2
@@ -100,9 +97,6 @@ dependencies:
   '@lexical/html': 0.11.1_lexical@0.11.1
   '@lexical/link': 0.11.1_lexical@0.11.1
   '@lexical/list': 0.11.1_lexical@0.11.1
-  '@lexical/mark': 0.11.1_lexical@0.11.1
-  '@lexical/markdown': 0.11.1_kgzmibcfwfrauoddrc3c36vuue
-  '@lexical/overflow': 0.11.1_lexical@0.11.1
   '@lexical/react': 0.11.1_zdwktkrtjqagc2xugo5fyt4jaq
   '@lexical/rich-text': 0.11.1_wlbp5bujaj5mnc4djclg6bqf5e
   '@lexical/selection': 0.11.1_lexical@0.11.1
@@ -114,7 +108,6 @@ dependencies:
   '@testing-library/jest-dom': 5.16.5
   '@testing-library/react': 13.4.0_biqbaboplfbrettd7655fr4n2y
   '@testing-library/user-event': 13.5.0
-  '@types/gtag.js': 0.0.12
   '@types/jest': 27.5.2
   '@types/node': 16.18.31
   '@types/react': 18.2.6
@@ -133,6 +126,7 @@ dependencies:
   react: 18.2.0
   react-audio-player: 0.17.0_biqbaboplfbrettd7655fr4n2y
   react-dom: 18.2.0_react@18.2.0
+  react-google-recaptcha-v3: 1.10.1_biqbaboplfbrettd7655fr4n2y
   react-helmet: 6.1.0_react@18.2.0
   react-infinite-scroll-component: 6.1.0_react@18.2.0
   react-intl: 6.4.2_j5ip3o3v6sktjzl5cxtjyfbuo4
@@ -4180,10 +4174,6 @@ packages:
     resolution: {integrity: sha512-Sig0SNORX9fdW+bQuTEovKj3uHcUL6LQKbCrrqb1X7J6/ReAbhCXRAhc+SMejhLELFj2QcyuxmUooZ4bt5ReSw==}
     dependencies:
       '@types/node': 16.18.31
-
-  /@types/gtag.js/0.0.12:
-    resolution: {integrity: sha512-YQV9bUsemkzG81Ea295/nF/5GijnD2Af7QhEofh7xu+kvCN6RdodgNwwGWXB5GMI3NoyvQo0odNctoH/qLMIpg==}
-    dev: false
 
   /@types/hast/2.3.5:
     resolution: {integrity: sha512-SvQi0L/lNpThgPoleH53cdjB3y9zpLlVjRbqB3rH8hx1jiRSBGAhyjV3H+URFjNVRqt2EdYNrbZE5IsGlNfpRg==}
@@ -12799,6 +12789,17 @@ packages:
     resolution: {integrity: sha512-xTYf9zFim2pEif/Fw16dBiXpe0hoy5PxcD8+OwBnTtNLfIm3g6WxhKNurY+6OmdH1u6Ta/W/Vl6vjbYP1MFnDg==}
     dev: false
 
+  /react-google-recaptcha-v3/1.10.1_biqbaboplfbrettd7655fr4n2y:
+    resolution: {integrity: sha512-K3AYzSE0SasTn+XvV2tq+6YaxM+zQypk9rbCgG4OVUt7Rh4ze9basIKefoBz9sC0CNslJj9N1uwTTgRMJQbQJQ==}
+    peerDependencies:
+      react: ^16.3 || ^17.0 || ^18.0
+      react-dom: ^17.0 || ^18.0
+    dependencies:
+      hoist-non-react-statics: 3.3.2
+      react: 18.2.0
+      react-dom: 18.2.0_react@18.2.0
+    dev: false
+
   /react-helmet/6.1.0_react@18.2.0:
     resolution: {integrity: sha512-4uMzEY9nlDlgxr61NL3XbKRy1hEkXmKNXhjbAIOVw5vcFrsdYbH2FEwcNyWvWinl103nXgzYNlns9ca+8kFiWw==}
     peerDependencies:
@@ -12992,7 +12993,7 @@ packages:
       semver: 7.5.1
       source-map-loader: 3.0.2_webpack@5.83.1
       style-loader: 3.3.2_webpack@5.83.1
-      tailwindcss: 3.3.2
+      tailwindcss: 3.3.3
       terser-webpack-plugin: 5.3.9_webpack@5.83.1
       typescript: 4.9.5
       webpack: 5.83.1
@@ -14154,8 +14155,8 @@ packages:
   /symbol-tree/3.2.4:
     resolution: {integrity: sha512-9QNk5KwDF+Bvz+PyObkmSYjI5ksVUYtjW7AU22r2NKcfLJcXp96hkDWU3+XndOsUb+AQ9QhfzfCT2O+CNWT5Tw==}
 
-  /tailwindcss/3.3.2:
-    resolution: {integrity: sha512-9jPkMiIBXvPc2KywkraqsUfbfj+dHDb+JPWtSJa9MLFdrPyazI7q6WX2sUrm7R9eVR7qqv3Pas7EvQFzxKnI6w==}
+  /tailwindcss/3.3.3:
+    resolution: {integrity: sha512-A0KgSkef7eE4Mf+nKJ83i75TMyq8HqY3qmFIJSWy8bNt0v1lG7jUcpGpoTFxAwYcWOphcTBLPPJg+bDfhDf52w==}
     engines: {node: '>=14.0.0'}
     hasBin: true
     dependencies:
@@ -14179,7 +14180,6 @@ packages:
       postcss-load-config: 4.0.1_postcss@8.4.23
       postcss-nested: 6.0.1_postcss@8.4.23
       postcss-selector-parser: 6.0.13
-      postcss-value-parser: 4.2.0
       resolve: 1.22.2
       sucrase: 3.32.0
     transitivePeerDependencies:

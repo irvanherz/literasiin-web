@@ -12,7 +12,6 @@ import {
   INSERT_ORDERED_LIST_COMMAND,
   INSERT_UNORDERED_LIST_COMMAND
 } from '@lexical/list'
-import { INSERT_EMBED_COMMAND } from '@lexical/react/LexicalAutoEmbedPlugin'
 import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext'
 import { INSERT_HORIZONTAL_RULE_COMMAND } from '@lexical/react/LexicalHorizontalRuleNode'
 import {
@@ -22,7 +21,6 @@ import {
 } from '@lexical/react/LexicalTypeaheadMenuPlugin'
 import { $createHeadingNode, $createQuoteNode } from '@lexical/rich-text'
 import { $setBlocksType } from '@lexical/selection'
-import { INSERT_TABLE_COMMAND } from '@lexical/table'
 import {
   $createParagraphNode,
   $getSelection,
@@ -33,12 +31,9 @@ import {
 import { JSX, useCallback, useMemo, useState } from 'react'
 import * as ReactDOM from 'react-dom'
 import useModal from '../../hooks/useModal'
-import catTypingGif from '../../images/cat-typing.gif'
-import { EmbedConfigs } from '../AutoEmbedPlugin'
-import { INSERT_COLLAPSIBLE_COMMAND } from '../CollapsiblePlugin'
 // import { InsertEquationDialog } from '../EquationsPlugin'
 // import { INSERT_EXCALIDRAW_COMMAND } from '../ExcalidrawPlugin'
-import { InsertImageDialog, INSERT_IMAGE_COMMAND } from '../ImagesPlugin'
+import { InsertImageDialog } from '../ImagesPlugin'
 // import { InsertPollDialog } from '../PollPlugin'
 // import { InsertNewTableDialog, InsertTableDialog } from '../TablePlugin'
 
@@ -115,53 +110,6 @@ export default function ComponentPickerMenuPlugin (): JSX.Element {
     minLength: 0
   })
 
-  const getDynamicOptions = useCallback(() => {
-    const options: Array<ComponentPickerOption> = []
-
-    if (queryString == null) {
-      return options
-    }
-
-    const fullTableRegex = /^([1-9]|10)x([1-9]|10)$/
-    const partialTableRegex = /^([1-9]|10)x?$/
-
-    const fullTableMatch = fullTableRegex.exec(queryString)
-    const partialTableMatch = partialTableRegex.exec(queryString)
-
-    if (fullTableMatch) {
-      const [rows, columns] = fullTableMatch[0]
-        .split('x')
-        .map((n: string) => parseInt(n, 10))
-
-      options.push(
-        new ComponentPickerOption(`${rows}x${columns} Table`, {
-          icon: <i className="icon table" />,
-          keywords: ['table'],
-          onSelect: () =>
-            // @ts-ignore Correct types, but since they're dynamic TS doesn't like it.
-            editor.dispatchCommand(INSERT_TABLE_COMMAND, { columns, rows })
-        })
-      )
-    } else if (partialTableMatch) {
-      const rows = parseInt(partialTableMatch[0], 10)
-
-      options.push(
-        ...Array.from({ length: 5 }, (_, i) => i + 1).map(
-          (columns) =>
-            new ComponentPickerOption(`${rows}x${columns} Table`, {
-              icon: <i className="icon table" />,
-              keywords: ['table'],
-              onSelect: () =>
-                // @ts-ignore Correct types, but since they're dynamic TS doesn't like it.
-                editor.dispatchCommand(INSERT_TABLE_COMMAND, { columns, rows })
-            })
-        )
-      )
-    }
-
-    return options
-  }, [editor, queryString])
-
   const options = useMemo(() => {
     const baseOptions = [
       new ComponentPickerOption('Paragraph', {
@@ -192,22 +140,6 @@ export default function ComponentPickerMenuPlugin (): JSX.Element {
               })
           })
       ),
-      // new ComponentPickerOption('Table', {
-      //   icon: <i className="icon table" />,
-      //   keywords: ['table', 'grid', 'spreadsheet', 'rows', 'columns'],
-      //   onSelect: () =>
-      //     showModal('Insert Table', (onClose) => (
-      //       <InsertTableDialog activeEditor={editor} onClose={onClose} />
-      //     ))
-      // }),
-      // new ComponentPickerOption('Table (Experimental)', {
-      //   icon: <i className="icon table" />,
-      //   keywords: ['table', 'grid', 'spreadsheet', 'rows', 'columns'],
-      //   onSelect: () =>
-      //     showModal('Insert Table', (onClose) => (
-      //       <InsertNewTableDialog activeEditor={editor} onClose={onClose} />
-      //     ))
-      // }),
       new ComponentPickerOption('Numbered List', {
         icon: <i className="icon number" />,
         keywords: ['numbered list', 'ordered list', 'ol'],
@@ -263,46 +195,6 @@ export default function ComponentPickerMenuPlugin (): JSX.Element {
         onSelect: () =>
           editor.dispatchCommand(INSERT_HORIZONTAL_RULE_COMMAND, undefined)
       }),
-      // new ComponentPickerOption('Excalidraw', {
-      //   icon: <i className="icon diagram-2" />,
-      //   keywords: ['excalidraw', 'diagram', 'drawing'],
-      //   onSelect: () =>
-      //     editor.dispatchCommand(INSERT_EXCALIDRAW_COMMAND, undefined)
-      // }),
-      // new ComponentPickerOption('Poll', {
-      //   icon: <i className="icon poll" />,
-      //   keywords: ['poll', 'vote'],
-      //   onSelect: () =>
-      //     showModal('Insert Poll', (onClose) => (
-      //       <InsertPollDialog activeEditor={editor} onClose={onClose} />
-      //     ))
-      // }),
-      ...EmbedConfigs.map(
-        (embedConfig) =>
-          new ComponentPickerOption(`Embed ${embedConfig.contentName}`, {
-            icon: embedConfig.icon,
-            keywords: [...embedConfig.keywords, 'embed'],
-            onSelect: () =>
-              editor.dispatchCommand(INSERT_EMBED_COMMAND, embedConfig.type)
-          })
-      ),
-      // new ComponentPickerOption('Equation', {
-      //   icon: <i className="icon equation" />,
-      //   keywords: ['equation', 'latex', 'math'],
-      //   onSelect: () =>
-      //     showModal('Insert Equation', (onClose) => (
-      //       <InsertEquationDialog activeEditor={editor} onClose={onClose} />
-      //     ))
-      // }),
-      new ComponentPickerOption('GIF', {
-        icon: <i className="icon gif" />,
-        keywords: ['gif', 'animate', 'image', 'file'],
-        onSelect: () =>
-          editor.dispatchCommand(INSERT_IMAGE_COMMAND, {
-            altText: 'Cat typing on a laptop',
-            src: catTypingGif
-          })
-      }),
       new ComponentPickerOption('Image', {
         icon: <i className="icon image" />,
         keywords: ['image', 'photo', 'picture', 'file'],
@@ -310,12 +202,6 @@ export default function ComponentPickerMenuPlugin (): JSX.Element {
           showModal('Insert Image', (onClose) => (
             <InsertImageDialog activeEditor={editor} onClose={onClose} />
           ))
-      }),
-      new ComponentPickerOption('Collapsible', {
-        icon: <i className="icon caret-right" />,
-        keywords: ['collapse', 'collapsible', 'toggle'],
-        onSelect: () =>
-          editor.dispatchCommand(INSERT_COLLAPSIBLE_COMMAND, undefined)
       }),
       ...['left', 'center', 'right', 'justify'].map(
         (alignment) =>
@@ -329,11 +215,8 @@ export default function ComponentPickerMenuPlugin (): JSX.Element {
       )
     ]
 
-    const dynamicOptions = getDynamicOptions()
-
     return queryString
       ? [
-          ...dynamicOptions,
           ...baseOptions.filter((option) => {
             return new RegExp(queryString, 'gi').exec(option.title) ||
               option.keywords != null
@@ -344,7 +227,7 @@ export default function ComponentPickerMenuPlugin (): JSX.Element {
           })
         ]
       : baseOptions
-  }, [editor, getDynamicOptions, queryString, showModal])
+  }, [editor, queryString, showModal])
 
   const onSelectOption = useCallback(
     (

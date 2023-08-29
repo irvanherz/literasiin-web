@@ -1,7 +1,9 @@
 import { CustomerServiceOutlined } from '@ant-design/icons'
 import { FloatButton } from 'antd'
-import useStorytellingTracks from 'hooks/useStorytellingTracks'
-import { ReactNode, useMemo, useRef, useState } from 'react'
+import useStorytellingEpisodeTrack from 'hooks/useStorytellingEpisodeTrack'
+import { ReactNode, useEffect, useRef, useState } from 'react'
+import { useMutation } from 'react-query'
+import StorytellingsService from 'services/Storytellings'
 import StorytellingPlayerContext, { PlayerState } from './StorytellingPlayerContext'
 
 type StorytellingPlayerContextProviderProps = {
@@ -10,47 +12,36 @@ type StorytellingPlayerContextProviderProps = {
 
 export default function StorytellingPlayerContextProvider ({ children }: StorytellingPlayerContextProviderProps) {
   const audioRef = useRef<HTMLAudioElement>(null)
-  const [currentStorytellingId, setCurrentStorytellingId] = useState(0)
+  const [options, setOptions] = useState({})
   const [currentEpisodeId, setCurrentEpisodeId] = useState(0)
   const [playerState, setPlayerState] = useState<PlayerState | undefined>({ status: 'idle', buffering: false, duration: 0, time: 0 })
-  const { status, data: dataTrack } = useStorytellingTracks(currentStorytellingId || 0)
+  const { status, data } = useStorytellingEpisodeTrack(currentEpisodeId || 0, options)
+  const track = data?.data
+  const mediaUrl = track?.current?.media?.meta?.objects?.[0]?.url
 
-  const handleLoad = (storytellingId: number, episodeId: number) => {
-    console.log(storytellingId, episodeId)
+  const tracker = useMutation<any, any, any>(episodeId => StorytellingsService.Episodes.Audiences.track(episodeId))
 
+  const handleLoad = (episodeId: number, options: any = {}) => {
     if (audioRef.current) {
       audioRef.current?.pause() // Pause the current audio
       audioRef.current.currentTime = 0
     }
-    setCurrentStorytellingId(storytellingId)
+    setOptions(options)
     setCurrentEpisodeId(episodeId)
   }
 
-  const data = dataTrack?.data
-
-  const currentlyPlaying = useMemo(() => {
-    const selectedEpisode = (data?.episodes || []).find((ep: any) => ep.id === currentEpisodeId)
-    if (!selectedEpisode) return null
-    const nextEpisode = data.episodes.find((ep: any) => ep.id > selectedEpisode.id)
-
-    const mediaUrl = selectedEpisode.media?.meta?.objects?.[0]?.url
-    return {
-      storytelling: data.storytelling,
-      episode: selectedEpisode,
-      nextEpisode,
-      mediaUrl
-    }
-  }, [data, currentEpisodeId])
-
-  console.log(currentlyPlaying)
+  useEffect(() => {
+    const episodeId = track?.current?.id
+    if (!episodeId) return
+    tracker.mutate(episodeId)
+  }, [track?.current?.id])
 
   const handleChangePlayerState = (st: any) => setPlayerState({ ...playerState, ...st })
 
   const handleEnded = () => {
-    if (currentlyPlaying?.nextEpisode) {
-      setCurrentEpisodeId(currentlyPlaying.nextEpisode.id)
+    if (track?.next) {
+      setCurrentEpisodeId(track.next.id)
     } else {
-      setCurrentStorytellingId(0)
       setCurrentEpisodeId(0)
     }
   }
@@ -60,32 +51,30 @@ export default function StorytellingPlayerContextProvider ({ children }: Storyte
       value={{
         audio: audioRef.current!,
         status,
-        data,
+        data: track,
         playerState,
         load: handleLoad,
-        currentStorytellingId,
-        currentEpisodeId,
-        currentlyPlaying
+        currentEpisodeId
       }}
     >
       {children}
       <audio
         autoPlay
         ref={audioRef}
-        src={currentlyPlaying?.mediaUrl}
+        src={mediaUrl}
         onPlay={() => handleChangePlayerState({ status: 'playing' })}
         onPause={() => handleChangePlayerState({ status: 'paused' })}
         onEnded={handleEnded}
         onWaiting={() => handleChangePlayerState({ buffering: true })}
         onCanPlayThrough={() => handleChangePlayerState({ buffering: false })}
       />
-      {currentlyPlaying && (
+      {track && (
         <FloatButton
           shape='square'
           icon={<CustomerServiceOutlined />}
           tooltip={
             <div>
-              <div style={{ fontWeight: 'bold' }}>{currentlyPlaying.storytelling.title} - {currentlyPlaying.episode.title}</div>
+              <div style={{ fontWeight: 'bold' }}>{track?.current?.storytelling?.title} - {track?.current?.title}</div>
             </div>
             }
         />

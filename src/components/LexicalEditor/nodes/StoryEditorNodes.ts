@@ -9,18 +9,14 @@
 import type { Klass, LexicalNode } from 'lexical'
 
 import { ListItemNode, ListNode } from '@lexical/list'
-import { MarkNode } from '@lexical/mark'
+// import { MarkNode } from '@lexical/mark'
 import { HorizontalRuleNode } from '@lexical/react/LexicalHorizontalRuleNode'
 import { HeadingNode, QuoteNode } from '@lexical/rich-text'
 
 import { AutocompleteNode } from './AutocompleteNode'
 import { EmojiNode } from './EmojiNode'
-// import { EquationNode } from './EquationNode'
-// import { ExcalidrawNode } from './ExcalidrawNode'
-// import { FigmaNode } from './FigmaNode'
 import { KeywordNode } from './KeywordNode'
 // import { MentionNode } from './MentionNode'
-// import { TableNode as NewTableNode } from './TableNode'
 
 const StoryEditorNodes: Array<Klass<LexicalNode>> = [
   HeadingNode,
@@ -46,11 +42,11 @@ const StoryEditorNodes: Array<Klass<LexicalNode>> = [
   // EquationNode,
   AutocompleteNode,
   KeywordNode,
-  HorizontalRuleNode,
+  HorizontalRuleNode
   // TweetNode,
   // YouTubeNode,
   // FigmaNode,
-  MarkNode
+  // MarkNode
   // CollapsibleContainerNode,
   // CollapsibleContentNode,
   // CollapsibleTitleNode

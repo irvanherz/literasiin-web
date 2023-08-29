@@ -8,32 +8,20 @@
 
 import type { LexicalEditor } from 'lexical'
 
-import { $createCodeNode, $isCodeNode } from '@lexical/code'
-import { exportFile, importFile } from '@lexical/file'
-import {
-  $convertFromMarkdownString,
-  $convertToMarkdownString
-} from '@lexical/markdown'
 import { useCollaborationContext } from '@lexical/react/LexicalCollaborationContext'
 import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext'
 import { mergeRegister } from '@lexical/utils'
 import { CONNECTED_COMMAND, TOGGLE_CONNECT_COMMAND } from '@lexical/yjs'
 import {
-  $createTextNode,
   $getRoot,
   $isParagraphNode,
   CLEAR_EDITOR_COMMAND,
   COMMAND_PRIORITY_EDITOR
 } from 'lexical'
-import { JSX, useCallback, useEffect, useState } from 'react'
+import { JSX, useEffect, useState } from 'react'
 
 import useModal from '../../hooks/useModal'
 import Button from '../../ui/Button'
-import { PLAYGROUND_TRANSFORMERS } from '../MarkdownTransformers'
-import {
-  SPEECH_TO_TEXT_COMMAND,
-  SUPPORT_SPEECH_RECOGNITION
-} from '../SpeechToTextPlugin'
 
 async function sendEditorState (editor: LexicalEditor): Promise<void> {
   const stringifiedEditorState = JSON.stringify(editor.getEditorState())
@@ -80,7 +68,6 @@ export default function ActionsPlugin ({
 }): JSX.Element {
   const [editor] = useLexicalComposerContext()
   const [isEditable, setIsEditable] = useState(() => editor.isEditable())
-  const [isSpeechToText, setIsSpeechToText] = useState(false)
   const [connected, setConnected] = useState(false)
   const [isEditorEmpty, setIsEditorEmpty] = useState(true)
   const [modal, showModal] = useModal()
@@ -135,65 +122,8 @@ export default function ActionsPlugin ({
     )
   }, [editor, isEditable])
 
-  const handleMarkdownToggle = useCallback(() => {
-    editor.update(() => {
-      const root = $getRoot()
-      const firstChild = root.getFirstChild()
-      if ($isCodeNode(firstChild) && firstChild.getLanguage() === 'markdown') {
-        $convertFromMarkdownString(
-          firstChild.getTextContent(),
-          PLAYGROUND_TRANSFORMERS
-        )
-      } else {
-        const markdown = $convertToMarkdownString(PLAYGROUND_TRANSFORMERS)
-        root
-          .clear()
-          .append(
-            $createCodeNode('markdown').append($createTextNode(markdown))
-          )
-      }
-      root.selectEnd()
-    })
-  }, [editor])
-
   return (
     <div className="actions">
-      {SUPPORT_SPEECH_RECOGNITION && (
-        <button
-          onClick={() => {
-            editor.dispatchCommand(SPEECH_TO_TEXT_COMMAND, !isSpeechToText)
-            setIsSpeechToText(!isSpeechToText)
-          }}
-          className={
-            'action-button action-button-mic ' +
-            (isSpeechToText ? 'active' : '')
-          }
-          title="Speech To Text"
-          aria-label={`${
-            isSpeechToText ? 'Enable' : 'Disable'
-          } speech to text`}>
-          <i className="mic" />
-        </button>
-      )}
-      <button
-        className="action-button import"
-        onClick={() => importFile(editor)}
-        title="Import"
-        aria-label="Import editor state from JSON">
-        <i className="import" />
-      </button>
-      <button
-        className="action-button export"
-        onClick={() =>
-          exportFile(editor, {
-            fileName: `Playground ${new Date().toISOString()}`,
-            source: 'Playground'
-          })
-        }
-        title="Export"
-        aria-label="Export editor state to JSON">
-        <i className="export" />
-      </button>
       <button
         className="action-button clear"
         disabled={isEditorEmpty}
@@ -218,13 +148,6 @@ export default function ActionsPlugin ({
         title="Read-Only Mode"
         aria-label={`${!isEditable ? 'Unlock' : 'Lock'} read-only mode`}>
         <i className={!isEditable ? 'unlock' : 'lock'} />
-      </button>
-      <button
-        className="action-button"
-        onClick={handleMarkdownToggle}
-        title="Convert From Markdown"
-        aria-label="Convert from markdown">
-        <i className="markdown" />
       </button>
       {isCollabActive && (
         <button

@@ -21,7 +21,7 @@ export default function RouteGuard ({ children, require, onRejected }: RouteGuar
       const red = onRejected()
       return (<>{red}</>)
     } else {
-      return <Navigate to={REDIR[require]} />
+      return <Navigate replace to={REDIR[require]} />
     }
   } else {
     return children

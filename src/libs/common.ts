@@ -1,3 +1,5 @@
+import { Duration } from 'dayjs/plugin/duration'
+
 export const HOME_URL = window.location.protocol + '//' + window.location.host
 
 function fallbackCopyTextToClipboard (text: string) {
@@ -45,3 +47,11 @@ export function titleCase (s: string) {
     }
   )
 }
+
+export function formatAudioDuration (duration: Duration) {
+  if (!duration) return null
+  const h = duration.asHours()
+  return h > 1
+    ? duration.format('hh:mm:ss')
+    : duration.format('mm:ss')
+};

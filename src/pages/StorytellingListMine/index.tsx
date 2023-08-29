@@ -32,7 +32,8 @@ export default function StorytellingListMine () {
               <Button icon={<PlusOutlined />} type='primary'>{intl.formatMessage({ defaultMessage: 'New Storytelling' })}</Button>
             </StorytellingCreateButton>
           ]}
-      >
+          bodyStyle={{ paddingBottom: 16 }}
+        >
           {/* <PendingInvitationSection /> */}
           <Tabs
             destroyInactiveTabPane

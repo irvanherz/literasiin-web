@@ -1,4 +1,4 @@
-import { Form, Spin, Tabs } from 'antd'
+import { Form, Spin, Tabs, theme } from 'antd'
 import Layout from 'components/Layout'
 import RouteGuard from 'components/RouteGuard'
 import analytics from 'libs/analytics'
@@ -8,12 +8,12 @@ import { Helmet } from 'react-helmet'
 import { useQuery } from 'react-query'
 import { useNavigate, useParams } from 'react-router-dom'
 import StorytellingsService from 'services/Storytellings'
-import StorytellingAuthorsEditTab from './StorytellingAuthorsEditTab'
 import StorytellingDetailsEditTab from './StorytellingDetailsEditTab'
 import StorytellingEpisodesEditTab from './StorytellingEpisodesEditTab'
 
 export default function StorytellingEdit () {
   const params = useParams()
+  const { token } = theme.useToken()
   const navigate = useNavigate()
   const storytellingId = contentIdFromSlug(params.storytellingId || '')
   const sectionId = params.sectionId || 'details'
@@ -38,11 +38,11 @@ export default function StorytellingEdit () {
 
   return (
     <RouteGuard require='authenticated'>
-      <Layout.Default>
+      <Layout.Default style={{ background: token.colorBgBase }}>
         <Layout.Scaffold
           title="Edit Storytelling"
           description="Update information about your storytelling below"
-          bodyStyle={{ padding: '16px 0' }}
+          bodyStyle={{ paddingBottom: 16 }}
         >
           <Spin spinning={status === 'loading'}>
             <Tabs
@@ -50,9 +50,8 @@ export default function StorytellingEdit () {
               onChange={handleChangeTab}
               items={[
                 { key: 'details', label: 'Edit Details', children: <StorytellingDetailsEditTab storytelling={storytelling} /> },
-                { key: 'episodes', label: 'Episodes', children: <StorytellingEpisodesEditTab storytelling={storytelling} /> },
-                { key: 'authors', label: 'Authors', children: <StorytellingAuthorsEditTab storytelling={storytelling} /> }
-                // { key: 'settings', label: 'Settings', children: <StorytellingSettingsTab storytelling={storytelling} /> }
+                { key: 'episodes', label: 'Episodes', children: <StorytellingEpisodesEditTab storytelling={storytelling} /> }
+                // { key: 'authors', label: 'Authors', children: <StorytellingAuthorsEditTab storytelling={storytelling} /> }
               ]}
             />
           </Spin>

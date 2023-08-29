@@ -16,8 +16,8 @@ function StorytellingMeta ({ storytelling }: StorytellingMetaProps) {
     <Descriptions colon={false} layout="vertical" size='small' column={{ xs: 3, sm: 3, md: 5, lg: 5, xl: 5, xxl: 5 }}>
       <Descriptions.Item label={<FormattedMessage defaultMessage='Episodes' />}>{storytelling?.meta?.numEpisodes ? `${storytelling?.meta?.numPublishedEpisodes || 0} of ${storytelling?.meta?.numEpisodes || 0} published` : storytelling?.meta?.numEpisodes || 0 }</Descriptions.Item>
       <Descriptions.Item label={<FormattedMessage defaultMessage='Category' />}>{storytelling?.category?.name || <i><FormattedMessage defaultMessage='Uncategorized' /></i>}</Descriptions.Item>
-      <Descriptions.Item label={<FormattedMessage defaultMessage='Reads' />}>{storytelling?.meta?.numViews || 0}</Descriptions.Item>
-      <Descriptions.Item label={<FormattedMessage defaultMessage='Votes' />}>{storytelling?.meta?.numVotes || 0}</Descriptions.Item>
+      <Descriptions.Item label={<FormattedMessage defaultMessage='Total Listens' />}>{storytelling?.meta?.numListens || 0}</Descriptions.Item>
+      <Descriptions.Item label={<FormattedMessage defaultMessage='Likes' />}>{storytelling?.meta?.numVotes || 0}</Descriptions.Item>
       <Descriptions.Item label={<FormattedMessage defaultMessage='Last updated' />}><RenderTimeFromNow timestamp={storytelling?.updatedAt} /></Descriptions.Item>
     </Descriptions>
   )

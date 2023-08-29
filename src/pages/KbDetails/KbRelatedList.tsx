@@ -1,6 +1,7 @@
 import { FileOutlined } from '@ant-design/icons'
 import { Menu, MenuProps } from 'antd'
 import useKbs from 'hooks/useKbs'
+import { slugifyContentId } from 'libs/slug'
 import { useNavigate } from 'react-router-dom'
 import styled from 'styled-components'
 
@@ -20,7 +21,7 @@ export default function KbRelatedList ({ kb }: KbRelatedListProps) {
     icon: <FileOutlined />,
     label: kb.title,
     onClick: () => {
-      navigate(`/hc/${kb.categoryId}/${kb.id}`)
+      navigate(`/hc/${slugifyContentId(kb.category, 'name')}/${slugifyContentId(kb)}`)
     }
   }))
   return (

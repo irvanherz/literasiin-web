@@ -24,7 +24,6 @@ import {
   ListNode,
   REMOVE_LIST_COMMAND
 } from '@lexical/list'
-import { INSERT_EMBED_COMMAND } from '@lexical/react/LexicalAutoEmbedPlugin'
 import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext'
 import { $isDecoratorBlockNode } from '@lexical/react/LexicalDecoratorBlockNode'
 import { INSERT_HORIZONTAL_RULE_COMMAND } from '@lexical/react/LexicalHorizontalRuleNode'
@@ -52,7 +51,6 @@ import type { LexicalEditor, NodeKey } from 'lexical'
 import {
   $createParagraphNode,
   $getNodeByKey,
-  $getRoot,
   $getSelection,
   $isRangeSelection,
   $isRootOrShadowRoot,
@@ -75,19 +73,14 @@ import { JSX, useCallback, useEffect, useState } from 'react'
 import { IS_APPLE } from '../../shared/environment'
 
 import useModal from '../../hooks/useModal'
-import catTypingGif from '../../images/cat-typing.gif'
-import { $createStickyNode } from '../../nodes/StickyNode'
 import DropDown, { DropDownItem } from '../../ui/DropDown'
 import DropdownColorPicker from '../../ui/DropdownColorPicker'
 import { getSelectedNode } from '../../utils/getSelectedNode'
 import { sanitizeUrl } from '../../utils/url'
-import { EmbedConfigs } from '../AutoEmbedPlugin'
-import { INSERT_COLLAPSIBLE_COMMAND } from '../CollapsiblePlugin'
 // import { InsertEquationDialog } from '../EquationsPlugin'
 // import { INSERT_EXCALIDRAW_COMMAND } from '../ExcalidrawPlugin'
 import {
-  InsertImageDialog,
-  InsertImagePayload, INSERT_IMAGE_COMMAND
+  InsertImageDialog
 } from '../ImagesPlugin'
 // import { InsertPollDialog } from '../PollPlugin'
 // import { InsertNewTableDialog, InsertTableDialog } from '../TablePlugin'
@@ -646,9 +639,6 @@ export default function ToolbarPlugin (): JSX.Element {
     },
     [activeEditor, selectedElementKey]
   )
-  const insertGifOnClick = (payload: InsertImagePayload) => {
-    activeEditor.dispatchCommand(INSERT_IMAGE_COMMAND, payload)
-  }
 
   return (
     <div className="toolbar">
@@ -849,25 +839,6 @@ export default function ToolbarPlugin (): JSX.Element {
             </DropDownItem>
           </DropDown>
           <Divider />
-          {rootType === 'table' && (
-            <>
-              <DropDown
-                disabled={!isEditable}
-                buttonClassName="toolbar-item spaced"
-                buttonLabel="Table"
-                buttonAriaLabel="Open table toolkit"
-                buttonIconClassName="icon table secondary">
-                <DropDownItem
-                  onClick={() => {
-                    /**/
-                  }}
-                  className="item">
-                  <span className="text">TODO</span>
-                </DropDownItem>
-              </DropDown>
-              <Divider />
-            </>
-          )}
           <DropDown
             disabled={!isEditable}
             buttonClassName="toolbar-item spaced"
@@ -898,115 +869,6 @@ export default function ToolbarPlugin (): JSX.Element {
               <i className="icon image" />
               <span className="text">Image</span>
             </DropDownItem>
-            <DropDownItem
-              onClick={() =>
-                insertGifOnClick({
-                  altText: 'Cat typing on a laptop',
-                  src: catTypingGif
-                })
-              }
-              className="item">
-              <i className="icon gif" />
-              <span className="text">GIF</span>
-            </DropDownItem>
-            {/* <DropDownItem
-              onClick={() => {
-                activeEditor.dispatchCommand(
-                  INSERT_EXCALIDRAW_COMMAND,
-                  undefined
-                )
-              }}
-              className="item">
-              <i className="icon diagram-2" />
-              <span className="text">Excalidraw</span>
-            </DropDownItem> */}
-            {/* <DropDownItem
-              onClick={() => {
-                showModal('Insert Table', (onClose) => (
-                  <InsertTableDialog
-                    activeEditor={activeEditor}
-                    onClose={onClose}
-                  />
-                ))
-              }}
-              className="item">
-              <i className="icon table" />
-              <span className="text">Table</span>
-            </DropDownItem>
-            <DropDownItem
-              onClick={() => {
-                showModal('Insert Table', (onClose) => (
-                  <InsertNewTableDialog
-                    activeEditor={activeEditor}
-                    onClose={onClose}
-                  />
-                ))
-              }}
-              className="item">
-              <i className="icon table" />
-              <span className="text">Table (Experimental)</span>
-            </DropDownItem> */}
-            {/* <DropDownItem
-              onClick={() => {
-                showModal('Insert Poll', (onClose) => (
-                  <InsertPollDialog
-                    activeEditor={activeEditor}
-                    onClose={onClose}
-                  />
-                ))
-              }}
-              className="item">
-              <i className="icon poll" />
-              <span className="text">Poll</span>
-            </DropDownItem> */}
-
-            {/* <DropDownItem
-              onClick={() => {
-                showModal('Insert Equation', (onClose) => (
-                  <InsertEquationDialog
-                    activeEditor={activeEditor}
-                    onClose={onClose}
-                  />
-                ))
-              }}
-              className="item">
-              <i className="icon equation" />
-              <span className="text">Equation</span>
-            </DropDownItem> */}
-            <DropDownItem
-              onClick={() => {
-                editor.update(() => {
-                  const root = $getRoot()
-                  const stickyNode = $createStickyNode(0, 0)
-                  root.append(stickyNode)
-                })
-              }}
-              className="item">
-              <i className="icon sticky" />
-              <span className="text">Sticky Note</span>
-            </DropDownItem>
-            <DropDownItem
-              onClick={() => {
-                editor.dispatchCommand(INSERT_COLLAPSIBLE_COMMAND, undefined)
-              }}
-              className="item">
-              <i className="icon caret-right" />
-              <span className="text">Collapsible container</span>
-            </DropDownItem>
-            {EmbedConfigs.map((embedConfig) => (
-              <DropDownItem
-                key={embedConfig.type}
-                onClick={() => {
-                  activeEditor.dispatchCommand(
-                    INSERT_EMBED_COMMAND,
-                    embedConfig.type
-                  )
-                }}
-                className="item">
-                {embedConfig.icon}
-                <span className="text">{embedConfig.contentName}</span>
-              </DropDownItem>
-            ))}
           </DropDown>
         </>
       )}
@@ -1067,7 +929,6 @@ export default function ToolbarPlugin (): JSX.Element {
           <span className="text">Indent</span>
         </DropDownItem>
       </DropDown>
-
       {modal}
     </div>
   )

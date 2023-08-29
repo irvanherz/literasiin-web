@@ -14,7 +14,7 @@ export default function KbOtherMessage () {
       message='Have another question?'
       description='Keep in touch with us. We always be ready to help you!'
       action={
-        <Link to='https://wa.me/6287850620305'><Button type='primary'>Contact us</Button></Link>
+        <Link to='/contact-us'><Button type='primary'>Contact us</Button></Link>
       }
     />
   )

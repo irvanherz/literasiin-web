@@ -11,11 +11,11 @@ import classNames from 'classnames'
 import useThemeContext from 'hooks/useThemeContext'
 import { EditorState, LexicalEditor } from 'lexical'
 import { JSX } from 'react'
+import StoryEditorComponent from './StoryEditorComponent'
 import { SharedAutocompleteContext } from './context/SharedAutocompleteContext'
 import { SharedHistoryContext } from './context/SharedHistoryContext'
 import StoryEditorNodes from './nodes/StoryEditorNodes'
-import StoryEditorComponent from './StoryEditorComponent'
-import PlaygroundEditorTheme from './themes/PlaygroundEditorTheme'
+import DefaultEditorTheme from './themes/DefaultEditorTheme'
 
 export type StoryEditorProps = {
   onReady?: (editor: LexicalEditor) => void
@@ -30,7 +30,7 @@ export default function StoryEditor ({ onReady, onChange }: StoryEditorProps): J
     onError: (error: Error) => {
       throw error
     },
-    theme: PlaygroundEditorTheme
+    theme: DefaultEditorTheme
   }
 
   const { theme } = useThemeContext()

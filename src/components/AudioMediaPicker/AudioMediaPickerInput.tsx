@@ -1,6 +1,9 @@
-import { Card, Divider, Empty, List, Space } from 'antd'
+import { CustomerServiceOutlined } from '@ant-design/icons'
+import { Avatar, Card, Divider, Empty, List, Space } from 'antd'
 import useCustomComponent from 'hooks/useCustomComponent'
 import useMediaListInfinite from 'hooks/useMediaListInfinite'
+import { formatAudioDuration } from 'libs/common'
+import { AudioMedia } from 'models/Media'
 import { DOMAttributes } from 'react'
 import InfiniteScroll from 'react-infinite-scroll-component'
 import styled from 'styled-components'
@@ -22,12 +25,14 @@ type MediaItemProps = {
 }
 
 export function MediaItem ({ media, selected, onClick }:MediaItemProps) {
+  const med = new AudioMedia(media)
   return (
     <List.Item>
       <Card size='small' hoverable style={{ width: '100%' }} onClick={onClick} className={selected ? 'selected-media-item' : ''}>
         <Card.Meta
+          avatar={<Avatar icon={<CustomerServiceOutlined />} size={48} shape='square' />}
           title={media?.name}
-          description="Description"
+          description={formatAudioDuration(med.duration!)}
         />
       </Card>
     </List.Item>

@@ -1,15 +1,15 @@
-import { Space, theme } from 'antd'
+import { theme } from 'antd'
 import useConfigurationByName from 'hooks/useConfigurationByName'
 import analytics from 'libs/analytics'
 import { useEffect } from 'react'
 import { Helmet } from 'react-helmet'
 import Layout from '../../components/Layout'
 import ArticleList from './ArticleList'
-import Faqs from './Faqs'
 import Header from './Header'
 import Kbs from './Kbs'
 import Partners from './Partners'
 import StoryList from './StoryList'
+import StorytellingList from './StorytellingList'
 import Testimonials from './Testimonials'
 
 export default function Home () {
@@ -28,15 +28,13 @@ export default function Home () {
     <Layout.Default
       contentContainerStyle={{ background: token.colorBgContainer }}
     >
-      <Space direction='vertical' style={{ width: '100%' }}>
-        <Header />
-        <StoryList />
-        <ArticleList />
-        <Kbs config={config} />
-        <Testimonials config={config} />
-        <Partners config={config}/>
-        <Faqs config={config} />
-      </Space>
+      <Header />
+      <StoryList />
+      <StorytellingList />
+      <ArticleList />
+      <Kbs config={config} />
+      <Testimonials config={config} />
+      <Partners config={config}/>
       <Helmet>
         <title>Literasiin - Portal Menulis dan Menerbitkan Buku Jadi Lebih Menyenangkan!</title>
       </Helmet>

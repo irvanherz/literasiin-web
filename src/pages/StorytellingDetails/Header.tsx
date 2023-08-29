@@ -50,8 +50,8 @@ type HeaderProps = {
 
 export default function Header ({ storytelling }:HeaderProps) {
   const authors = useMemo(() => {
-    const writers: any[] = storytelling?.writers || []
-    return writers.reduce((a, c, i, arr) => {
+    const authors: any[] = storytelling?.authors || []
+    return authors.reduce((a, c, i, arr) => {
       if (i === arr.length - 2) {
         a.push(<Link to={`/users/${c.username}`} className='header-author'>{c.fullName}</Link>)
         a.push(<span> and </span>)
@@ -63,12 +63,12 @@ export default function Header ({ storytelling }:HeaderProps) {
       }
       return a
     }, [])
-  }, [storytelling?.writers])
+  }, [storytelling?.authors])
 
   return (
     <Wrapper>
       <div className='header-1'>
-        <div style={{ maxWidth: 150, margin: 'auto' }}>
+        <div style={{ maxWidth: 120, margin: 'auto' }}>
           <StorytellingCover storytelling={storytelling} containerStyle={{ borderRadius: 8, overflow: 'hidden' }}/>
         </div>
       </div>
@@ -79,18 +79,18 @@ export default function Header ({ storytelling }:HeaderProps) {
             <span>By </span>
             {authors}
           </div>
-          <div>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam quis massa vehicula, vehicula felis ac, convallis massa. Phasellus eget mi congue, cursus ipsum at, elementum augue. Vestibulum tempor dolor vel magna scelerisque, eu mollis ex suscipit. In commodo vulputate sapien, eget sagittis nisi faucibus in. In id fermentum tellus. Suspendisse in pellentesque nulla, vel pellentesque risus. Integer sed dapibus nibh. In ligula ex, ullamcorper at velit sed, pharetra aliquet ipsum. </div>
+          <div>{storytelling?.description || <i>No description</i>}</div>
           <Space style={{ textAlign: 'center' }} size={24}>
             <div>
-              <div>{storytelling?.meta?.numViews || 0}</div>
+              <div>{storytelling?.meta?.numListeners || 0}</div>
               <Typography.Text type='secondary'><FormattedMessage defaultMessage='Listeners' /></Typography.Text>
             </div>
             <div>
               <div>{storytelling?.meta?.numVotes || 0}</div>
-              <Typography.Text type='secondary'><FormattedMessage defaultMessage='Votes' /></Typography.Text>
+              <Typography.Text type='secondary'><FormattedMessage defaultMessage='Likes' /></Typography.Text>
             </div>
             <div>
-              <div>{storytelling?.meta?.numPublishedChapters || 0}</div>
+              <div>{storytelling?.meta?.numPublishedEpisodes || 0}</div>
               <Typography.Text type='secondary'><FormattedMessage defaultMessage='Episodes' /></Typography.Text>
             </div>
           </Space>

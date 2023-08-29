@@ -1,3 +1,5 @@
+import GoogleRecaptchaProvider from 'contexts/GoogleRecaptchaProvider'
+import AboutUs from 'pages/AboutUs'
 import ArticleDetails from 'pages/ArticleDetails'
 import ArticleEdit from 'pages/ArticleEdit'
 import ArticleListMine from 'pages/ArticleListMine'
@@ -8,12 +10,16 @@ import ResetPassword from 'pages/Auth/ResetPassword'
 import Signin from 'pages/Auth/Signin'
 import Signup from 'pages/Auth/Signup'
 import Chats from 'pages/Chats'
+import ContactUs from 'pages/ContactUs'
+import FAQ from 'pages/FAQ'
 import KbDetails from 'pages/KbDetails'
 import KbHome from 'pages/KbHome'
 import KbPerCategory from 'pages/KbPerCategory'
 import Notifications from 'pages/Notifications'
+import PrivacyPolicy from 'pages/PrivacyPolicy'
 import PublicationCreate from 'pages/PublicationCreate'
 import PublicationEdit from 'pages/PublicationEdit'
+import StoryAssistant from 'pages/StoryAssistant'
 import StoryChapterDetails from 'pages/StoryChapterDetails'
 import StoryChapterEdit from 'pages/StoryChapterEdit'
 import StoryDetails from 'pages/StoryDetails'
@@ -24,9 +30,11 @@ import StorytellingDetails from 'pages/StorytellingDetails'
 import StorytellingEdit from 'pages/StorytellingEdit'
 import StorytellingExplore from 'pages/StorytellingExplore'
 import StorytellingListMine from 'pages/StorytellingListMine'
+import Terms from 'pages/Terms'
 import UserProfileEdit from 'pages/UserProfileEdit'
 import Wallets from 'pages/Wallets'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
+import './App.scss'
 import Home from './pages/Home'
 import NotFound from './pages/NotFound'
 import UserDetails from './pages/UserDetails'
@@ -86,6 +94,11 @@ const router = createBrowserRouter([
     id: '/users/:username/edit/:sectionId',
     path: '/users/:username/edit/:sectionId',
     element: <UserProfileEdit />
+  },
+  {
+    id: '/stories/assistants/create',
+    path: '/stories/assistants/create',
+    element: <StoryAssistant />
   },
   {
     id: '/stories/mine',
@@ -196,6 +209,31 @@ const router = createBrowserRouter([
     id: '/storytellings/:storytellingId',
     path: '/storytellings/:storytellingId',
     element: <StorytellingDetails />
+  },
+  {
+    id: '/contact-us',
+    path: '/contact-us',
+    element: <GoogleRecaptchaProvider><ContactUs /></GoogleRecaptchaProvider>
+  },
+  {
+    id: '/privacy-policy',
+    path: '/privacy-policy',
+    element: <PrivacyPolicy />
+  },
+  {
+    id: '/terms-and-conditions',
+    path: '/terms-and-conditions',
+    element: <Terms />
+  },
+  {
+    id: '/faq',
+    path: '/faq',
+    element: <FAQ />
+  },
+  {
+    id: '/about-us',
+    path: '/about-us',
+    element: <AboutUs />
   },
   {
     id: '*',

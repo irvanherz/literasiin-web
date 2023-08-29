@@ -1,8 +1,9 @@
 import { ArrowRightOutlined } from '@ant-design/icons'
-import { Avatar, Card, List, Space, Typography } from 'antd'
+import { Avatar, Card, List, Space, Typography, theme } from 'antd'
 import Layout from 'components/Layout'
 import useKbCategory from 'hooks/useKbCategory'
 import useKbs from 'hooks/useKbs'
+import { contentIdFromSlug, slugifyContentId } from 'libs/slug'
 import { DEFAULT_IMAGE } from 'libs/variables'
 import Media from 'models/Media'
 import { Link, useParams } from 'react-router-dom'
@@ -13,7 +14,7 @@ type KbItemProps = {
 
 function KbItem ({ kb }: KbItemProps) {
   return (
-    <Link to={`/hc/${kb.categoryId}/${kb.id}`}>
+    <Link to={`/hc/${slugifyContentId(kb.category, 'name')}/${slugifyContentId(kb)}`}>
       <List.Item extra={<ArrowRightOutlined />}>
         <List.Item.Meta
           title={kb.title}
@@ -25,9 +26,9 @@ function KbItem ({ kb }: KbItemProps) {
 }
 
 export default function KbPerCategory () {
-  // const navigate = useNavigate()
+  const { token } = theme.useToken()
   const params = useParams()
-  const categoryId = +(params?.categoryId || 0)
+  const categoryId = contentIdFromSlug(params.categoryId || '')
   const { data: categoryData } = useKbCategory(categoryId)
   // const handleSearch = (search: string) => navigate(`/hc${qs.stringify({ search }, { addQueryPrefix: true })}`)
 
@@ -37,7 +38,7 @@ export default function KbPerCategory () {
   const kbs = data?.data || []
 
   return (
-    <Layout.Default>
+    <Layout.Default style={{ background: token.colorBgBase }}>
       <Layout.Scaffold
         headerStyle={{ textAlign: 'center' }}
         title={
@@ -63,12 +64,7 @@ export default function KbPerCategory () {
             bordered
             split
             dataSource={kbs}
-            style={{ background: '#FFF' }}
-            renderItem={kb => (
-              <Link to={`/hc/${1}`}>
-                <KbItem kb={kb} />
-              </Link>
-            )}
+            renderItem={kb => <KbItem kb={kb} />}
           />
         </Space>
 

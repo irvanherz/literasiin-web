@@ -18,7 +18,7 @@ import {
   DROP_COMMAND,
   LexicalEditor
 } from 'lexical'
-import { DragEvent as ReactDragEvent, JSX, useEffect, useRef, useState } from 'react'
+import { JSX, DragEvent as ReactDragEvent, useEffect, useRef, useState } from 'react'
 import { createPortal } from 'react-dom'
 import './index.css'
 

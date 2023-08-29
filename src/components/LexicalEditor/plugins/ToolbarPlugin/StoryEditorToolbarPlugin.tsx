@@ -575,6 +575,30 @@ export default function StoryEditorToolbarPlugin (): JSX.Element {
           <span className="text">Indent</span>
         </DropDownItem>
       </DropDown>
+      <Divider />
+      <DropDown
+        disabled={!isEditable}
+        buttonLabel="Align"
+        buttonIconClassName="icon left-align"
+        buttonClassName="toolbar-item spaced alignment"
+        buttonAriaLabel="Formatting options for text alignment">
+        <DropDownItem
+          onClick={() => {
+            activeEditor.dispatchCommand(FORMAT_ELEMENT_COMMAND, 'left')
+          }}
+          className="item">
+          <i className="icon left-align" />
+          <span className="text">AI Fix Grammar</span>
+        </DropDownItem>
+        <DropDownItem
+          onClick={() => {
+            activeEditor.dispatchCommand(FORMAT_ELEMENT_COMMAND, 'center')
+          }}
+          className="item">
+          <i className="icon paraphraser" />
+          <span className="text">AI Paraphrase</span>
+        </DropDownItem>
+      </DropDown>
     </div>
   )
 }

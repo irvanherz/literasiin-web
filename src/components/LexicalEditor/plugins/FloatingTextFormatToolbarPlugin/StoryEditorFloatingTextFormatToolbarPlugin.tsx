@@ -27,6 +27,18 @@ import { getDOMRangeRect } from '../../utils/getDOMRangeRect'
 import { getSelectedNode } from '../../utils/getSelectedNode'
 import { setFloatingElemPosition } from '../../utils/setFloatingElemPosition'
 
+type TextFormatFloatingToolbarProps = {
+  editor: LexicalEditor;
+  anchorElem: HTMLElement;
+  isBold: boolean;
+  isCode: boolean;
+  isItalic: boolean;
+  isLink: boolean;
+  isStrikethrough: boolean;
+  isSubscript: boolean;
+  isSuperscript: boolean;
+  isUnderline: boolean;
+}
 function TextFormatFloatingToolbar ({
   editor,
   anchorElem,
@@ -38,18 +50,7 @@ function TextFormatFloatingToolbar ({
   isStrikethrough,
   isSubscript,
   isSuperscript
-}: {
-  editor: LexicalEditor;
-  anchorElem: HTMLElement;
-  isBold: boolean;
-  isCode: boolean;
-  isItalic: boolean;
-  isLink: boolean;
-  isStrikethrough: boolean;
-  isSubscript: boolean;
-  isSuperscript: boolean;
-  isUnderline: boolean;
-}): JSX.Element {
+}: TextFormatFloatingToolbarProps): JSX.Element {
   const popupCharStylesEditorRef = useRef<HTMLDivElement | null>(null)
 
   function mouseMoveListener (e: MouseEvent) {

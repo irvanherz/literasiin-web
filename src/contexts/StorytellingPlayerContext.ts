@@ -11,11 +11,9 @@ export type StorytellingPlayerContextType = {
   audio?: HTMLAudioElement,
   status?: string
   data?: any
-  currentStorytellingId?: number,
   currentEpisodeId?: number,
-  currentlyPlaying?: any,
   playerState?: PlayerState,
-  load?: (storytellingId: number, episodeId: number) => void
+  load?: (episodeId: number, options:any) => void
 }
 
 const StorytellingPlayerContext = createContext<StorytellingPlayerContextType>({

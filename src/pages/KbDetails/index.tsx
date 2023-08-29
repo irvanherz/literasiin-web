@@ -3,6 +3,7 @@ import { Button, Card, Col, Row, Space, Typography } from 'antd'
 import KbShareButton from 'components/KbShareButton'
 import Layout from 'components/Layout'
 import PageWidthAdapter from 'components/PageWidthAdapter'
+import { contentIdFromSlug } from 'libs/slug'
 import { useQuery } from 'react-query'
 import { useParams } from 'react-router-dom'
 import KbsService from 'services/Kbs'
@@ -11,7 +12,7 @@ import KbRelatedList from './KbRelatedList'
 
 export default function KbDetails () {
   const params = useParams()
-  const kbId = +(params?.kbId || 0)
+  const kbId = contentIdFromSlug(params.kbId || '')
   const { data } = useQuery<any, any, any>(`kbs[${kbId}]`, () => KbsService.findById(kbId))
   const kb = data?.data
 

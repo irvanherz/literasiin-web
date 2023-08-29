@@ -25,8 +25,11 @@ export default function EditStorytellingEpisodeButton ({ storytelling, episode, 
   }, [episode, open])
 
   const handleFinish = async (values: any) => {
+    const payload = { ...values }
+    payload.mediaId = payload.media?.id
+    if (payload.media) delete payload.media
     try {
-      await updater.mutateAsync({ ...values })
+      await updater.mutateAsync(payload)
       afterUpdated?.()
       setOpen(false)
     } catch (err: any) {

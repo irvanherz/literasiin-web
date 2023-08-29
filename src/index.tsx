@@ -11,6 +11,7 @@ import SocketContextProvider from 'contexts/SocketContextProvider'
 import StorytellingPlayerContextProvider from 'contexts/StorytellingPlayerContextProvider'
 import ThemeContextProvider from 'contexts/ThemeContextProvider'
 import dayjs from 'dayjs'
+import duration from 'dayjs/plugin/duration'
 import relativeTime from 'dayjs/plugin/relativeTime'
 import { getAnalytics } from 'firebase/analytics'
 import { initializeApp } from 'firebase/app'
@@ -22,6 +23,7 @@ import App from './App'
 import reportWebVitals from './reportWebVitals'
 
 dayjs.extend(relativeTime)
+dayjs.extend(duration)
 const BubbleTheme = Quill.import('themes/bubble')
 
 class ExtendBubbleTheme extends BubbleTheme {
