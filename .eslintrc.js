@@ -6,7 +6,7 @@ module.exports = {
     sourceType: 'module'
   },
   plugins: [
-    'react', 
+    'react',
     '@typescript-eslint/eslint-plugin',
     'formatjs'
   ],
@@ -29,6 +29,7 @@ module.exports = {
     'react/jsx-indent': [2, 2, { checkAttributes: true, indentLogicalExpressions: true }],
     'react/jsx-indent-props': [2, 2],
     "formatjs/no-offset": "error",
+    "space-before-function-paren": 0,
     semi: ['error', 'never']
   },
   globals: {

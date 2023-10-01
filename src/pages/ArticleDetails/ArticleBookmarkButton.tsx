@@ -1,8 +1,8 @@
-import { BookFilled, BookOutlined } from '@ant-design/icons'
-import { Button, message, Tooltip } from 'antd'
+import { BookmarkIcon as BookmarkIconOutline } from '@heroicons/react/24/outline'
+import { BookmarkIcon as BookmarkIconSolid } from '@heroicons/react/24/solid'
+import { Tooltip, message } from 'antd'
 import useCurrentUser from 'hooks/useCurrentUser'
 import qs from 'qs'
-import { FormattedMessage } from 'react-intl'
 import { useMutation } from 'react-query'
 import { useLocation, useNavigate } from 'react-router-dom'
 import ArticlesService from 'services/Articles'
@@ -19,10 +19,11 @@ export default function ArticleBookmarkButton ({ article, context, afterUpdated 
   const articleId = article?.id
   const bookmarker = useMutation(() => ArticlesService.Readers.bookmark(articleId))
   const unbookmarker = useMutation(() => ArticlesService.Readers.unbookmark(articleId))
+  const executor = context?.hasBookmarked ? unbookmarker : bookmarker
 
-  const handleBookmark = () => {
+  const handleToggleBookmark = () => {
     if (!currentUser) navigate('/auth/signin' + qs.stringify({ redirect: location.pathname }, { addQueryPrefix: true }))
-    bookmarker.mutate(undefined, {
+    executor.mutate(undefined, {
       onSuccess: () => {
         afterUpdated && afterUpdated()
       },
@@ -32,29 +33,11 @@ export default function ArticleBookmarkButton ({ article, context, afterUpdated 
     })
   }
 
-  const handleUnbookmark = () => {
-    if (!currentUser) navigate('/auth/signin' + qs.stringify({ redirect: location.pathname }, { addQueryPrefix: true }))
-    unbookmarker.mutate(undefined, {
-      onSuccess: () => {
-        afterUpdated && afterUpdated()
-      },
-      onError: (err: any) => {
-        message.error(err?.message)
-      }
-    })
-  }
-
-  if (context?.hasBookmarked) {
-    return (
-      <Tooltip title={<FormattedMessage defaultMessage='Remove from reading list'/>}>
-        <Button type='ghost' icon={<BookFilled />} onClick={handleUnbookmark}><span>{article?.meta?.numBookmarks || 0}</span></Button>
-      </Tooltip>
-    )
-  } else {
-    return (
-      <Tooltip title={<FormattedMessage defaultMessage='Add to reading list'/>}>
-        <Button type='ghost' icon={<BookOutlined />} onClick={handleBookmark}><span>{article?.meta?.numBookmarks || 0}</span></Button>
-      </Tooltip>
-    )
-  }
+  return (
+    <Tooltip title={context?.hasBookmarked ? 'Hapus dari daftar bacaan' : 'Simpan ke daftar bacaan'}>
+      <button className='btn btn-sm' onClick={handleToggleBookmark}>
+        {context?.hasBookmarked ? <BookmarkIconSolid className='w-4' /> : <BookmarkIconOutline className='w-4' />} {article?.meta?.numBookmarks || 0}
+      </button>
+    </Tooltip>
+  )
 }

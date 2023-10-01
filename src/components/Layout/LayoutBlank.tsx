@@ -1,13 +1,5 @@
-import { Layout, theme } from 'antd'
+import classNames from 'classnames'
 import { CSSProperties, ReactNode } from 'react'
-import styled from 'styled-components'
-
-const StyledLayout = styled(Layout)`
-min-height: 100vh;
-padding: 24px;
-margin: 0 auto;
-}
-`
 
 type LayoutBlankProps = {
   children: ReactNode
@@ -18,12 +10,11 @@ type LayoutBlankProps = {
 }
 
 export default function LayoutBlank ({ children, style, className, contentStyle, contentClassName }: LayoutBlankProps) {
-  const { token } = theme.useToken()
   return (
-    <StyledLayout style={{ background: token.colorBgContainer, ...style }} className={className}>
-      <Layout.Content style={contentStyle} className={contentClassName}>
+    <div style={style} className={classNames('min-h-screen flex', className)}>
+      <div className={classNames('flex-1', contentClassName)} style={contentStyle}>
         {children}
-      </Layout.Content>
-    </StyledLayout>
+      </div>
+    </div>
   )
 }

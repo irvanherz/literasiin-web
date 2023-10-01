@@ -1,6 +1,5 @@
-import { LeftOutlined, RightOutlined } from '@ant-design/icons'
-import { Avatar, Card, Carousel, CarouselProps } from 'antd'
-import PageWidthAdapter from 'components/PageWidthAdapter'
+/* eslint-disable no-unused-vars */
+import { Avatar, Card } from 'antd'
 import { DEFAULT_PHOTO } from 'libs/variables'
 import styled from 'styled-components'
 
@@ -41,67 +40,6 @@ function TestimonialItem ({ testimonial }: TestimonialItemProps) {
   )
 }
 
-const TestimonialContainer = styled.div`
-.ant-carousel .slick-prev,
-.ant-carousel .slick-prev:hover {
-  left: 10px;
-  z-index: 2;
-  color: black;
-  font-size: 20px;
-  height: 30px;
-}
-
-.ant-carousel .slick-next,
-.ant-carousel .slick-next:hover {
-  right: 10px;
-  z-index: 2;
-  color: black;
-  font-size: 20px;
-  height: 30px;
-}
-.testimonial-element {
-  width: 100%;
-  margin: 0 -8px;
-  .slick-slide > div {
-    padding: 8px;
-    img {
-      border-radius: 8px;
-    }
-  }  
-}
-`
-
-const CAROUSEL_SETTINGS: CarouselProps = {
-  dots: false,
-  infinite: true,
-  speed: 500,
-  slidesToShow: 3,
-  slidesToScroll: 1,
-  arrows: true,
-  prevArrow: <LeftOutlined />,
-  nextArrow: <RightOutlined />,
-  responsive: [
-    {
-      breakpoint: 500,
-      settings: {
-        slidesToShow: 1
-      }
-    },
-    {
-      breakpoint: 920,
-      settings: {
-        slidesToShow: 2
-      }
-    },
-    {
-      breakpoint: 1200,
-      settings: {
-        slidesToShow: 3
-      }
-    }
-  ]
-}
-
 type TestimonialsProps = {
   config: any
 }
@@ -110,14 +48,21 @@ export default function Testimonials ({ config }: TestimonialsProps) {
   const testimonials: any[] = config?.testimonials || []
 
   return (
-    <TestimonialContainer {...CAROUSEL_SETTINGS}>
-      <PageWidthAdapter>
-        <Carousel className='testimonial-element' {...CAROUSEL_SETTINGS}>
-          {testimonials.map(testimonial => (
-            <TestimonialItem key='key' testimonial={testimonial} />
-          ))}
-        </Carousel>
-      </PageWidthAdapter>
-    </TestimonialContainer>
+    <div className='container pb-8'>
+      <div className='grid grid-cols-1 md:grid-cols-3 gap-4'>
+        {testimonials.map(testimonial => (
+          <div key={testimonial.id} className='relative p-4 mt-8 border rounded-lg shadow-sm bg-white'>
+            <div className="avatar absolute left-1/2 top-0 transform -translate-x-1/2 -translate-y-1/2 bg-amber-50 p-1 rounded-full">
+              <div className="w-16 rounded-full">
+                <img src={testimonial?.avatar || DEFAULT_PHOTO } />
+              </div>
+            </div>
+            <div className='mt-8'>
+              <p><span dangerouslySetInnerHTML={{ __html: testimonial.review }} /> <span style={{ fontWeight: 600 }}>&mdash;{testimonial.name}</span></p>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
   )
 }

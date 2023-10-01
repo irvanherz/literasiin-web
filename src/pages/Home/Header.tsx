@@ -1,58 +1,28 @@
-import { Button, Col, Row, Space, theme } from 'antd'
-import PageWidthAdapter from 'components/PageWidthAdapter'
-import useAuthContext from 'hooks/useAuthContext'
-import { FormattedMessage } from 'react-intl'
+/* eslint-disable no-unreachable */
 import { Link } from 'react-router-dom'
-import styled from 'styled-components'
 
+import useCurrentUser from 'hooks/useCurrentUser'
 import image1 from './images/image1.png'
 
-const Wrapper = styled.div`
-padding: 32px 0 64px 0;
-border-radius: 0 0 32px 32px;
-.text-1 {
-  font-size: 2.4em;
-  font-weight: 900;
-  padding-bottom: 16px;
-  .style-1 {
-    color: #2F327D;
-  }
-}
-.text-2 {
-  font-size: 1.2em;
-  font-weight: 500;
-  padding-bottom: 24px;
-}
-`
-
 export default function Header () {
-  const auth = useAuthContext()
-  const { token } = theme.useToken()
+  const currentUser = useCurrentUser()
   return (
-    <Wrapper style={{ background: token.colorPrimaryBg }}>
-      <PageWidthAdapter>
-        <Row style={{ alignItems: 'center' }}>
-          <Col xs={24} sm={14}>
-            <div className='text-1'>Portal <span className='style-1'>Menulis</span> dan Menerbitkan <span className='style-1'>Buku</span> Jadi Lebih <span className='style-1'>Menyenangkan!</span></div>
-            <div className='text-2'>Mau bangun ceritamu lebih menarik? Tapi bingung gimana caranya? Yuk tulis, temukan banyak pembaca dan temukan banyak penerbit.</div>
-            <div className='action-1'>
-              {auth.status === 'unauthenticated' && (
-                <Space>
-                  <Link to='/auth/signup'>
-                    <Button type='default'><FormattedMessage defaultMessage='Sign up' /></Button>
-                  </Link>
-                  <Link to='/auth/signin'>
-                    <Button type='primary'><FormattedMessage defaultMessage='Sign in' /></Button>
-                  </Link>
-                </Space>
-              )}
+    <div className='bg-white relative bg-cover bg-bottom' style={{ backgroundImage: `url(${process.env.PUBLIC_URL}/assets/images/bg-1.jpg)` }}>
+      <div className='container flex py-8'>
+        <div className='w-full md:w-3/4 space-y-4 text-center md:text-left self-center'>
+          <div className='text-2xl md:text-4xl font-black text-slate-800'>Portal <span className='text-emerald-600'>Menulis</span> dan Menerbitkan <span className='text-emerald-600'>Buku</span> Jadi Lebih <span className='text-emerald-600'>Menyenangkan!</span></div>
+          <div className='text-base font-medium md:text-lg md:font-semibold text-slate-700'>Mau bangun ceritamu lebih menarik? Tapi bingung gimana caranya? Yuk tulis, temukan banyak pembaca dan temukan banyak penerbit.</div>
+          {!currentUser && (
+            <div className='space-x-2'>
+              <Link className='btn btn-sm btn-primary' to='/auth/signup'>Daftar</Link>
+              <Link className='btn btn-sm' to='/auth/signin'>Masuk</Link>
             </div>
-          </Col>
-          <Col xs={0} sm={10}>
-            <img src={image1} style={{ width: '100%' }} />
-          </Col>
-        </Row>
-      </PageWidthAdapter>
-    </Wrapper>
+          )}
+        </div>
+        <div className='w-0 md:w-4/12 lg:4/12 xl:4/12'>
+          <img src={image1} className='w-full' />
+        </div>
+      </div>
+    </div>
   )
 }

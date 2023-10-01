@@ -8,7 +8,6 @@
 
 import { LexicalComposer } from '@lexical/react/LexicalComposer'
 import classNames from 'classnames'
-import useThemeContext from 'hooks/useThemeContext'
 import { EditorState, LexicalEditor } from 'lexical'
 import { JSX } from 'react'
 import StoryEditorComponent from './StoryEditorComponent'
@@ -18,11 +17,12 @@ import StoryEditorNodes from './nodes/StoryEditorNodes'
 import DefaultEditorTheme from './themes/DefaultEditorTheme'
 
 export type StoryEditorProps = {
+  className?: string
   onReady?: (editor: LexicalEditor) => void
   onChange?: (props: { editorState: EditorState, editor: LexicalEditor, tags: Set<string> }) => void
 }
 
-export default function StoryEditor ({ onReady, onChange }: StoryEditorProps): JSX.Element {
+export default function StoryEditor ({ onReady, onChange, className }: StoryEditorProps): JSX.Element {
   const initialConfig = {
     editorState: null,
     namespace: 'story-editor',
@@ -33,13 +33,11 @@ export default function StoryEditor ({ onReady, onChange }: StoryEditorProps): J
     theme: DefaultEditorTheme
   }
 
-  const { theme } = useThemeContext()
-
   return (
     <LexicalComposer initialConfig={initialConfig}>
       <SharedHistoryContext>
         <SharedAutocompleteContext>
-          <div className={classNames('editor-shell', `editor-shell-theme-${theme}`)}>
+          <div className={classNames('editor-shell rounded-t-lg border outline-none focus-within:outline focus-within:outline-slate-300', className)}>
             <StoryEditorComponent onReady={editor => onReady?.(editor)} onChange={props => onChange?.(props)} />
           </div>
         </SharedAutocompleteContext>

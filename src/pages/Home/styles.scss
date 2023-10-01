@@ -1,0 +1,16 @@
+.kbs-slider {
+  .slick-arrow.slick-prev {
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translate(-50%,-50%);
+    z-index: 1;
+  }
+  .slick-arrow.slick-next {
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translate(50%,-50%);
+    z-index: 1;
+  }
+}

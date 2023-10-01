@@ -1,14 +1,12 @@
-import { PlusOutlined } from '@ant-design/icons'
-import { Button, Card, List, Space } from 'antd'
+import { PlusIcon } from '@heroicons/react/24/solid'
+import { List, Space } from 'antd'
 import ArticleCard from 'components/ArticleCard'
 import useArticles from 'hooks/useArticles'
 import useCurrentUser from 'hooks/useCurrentUser'
 import CreateArticleButton from 'pages/ArticleListMine/CreateArticleButton'
-import { useIntl } from 'react-intl'
 
 type UserArticlesTabProps = { user: any }
 export default function UserArticlesTab ({ user }: UserArticlesTabProps) {
-  const intl = useIntl()
   const currentUser = useCurrentUser()
   const { data } = useArticles({ limit: 20, userId: user?.id, sortBy: 'createdAt', sortOrder: 'DESC' }, { enabled: !!user?.id })
   const articles = data?.data || []
@@ -17,13 +15,11 @@ export default function UserArticlesTab ({ user }: UserArticlesTabProps) {
     <Space direction='vertical' style={{ width: '100%' }}>
       {currentUser && currentUser?.id === user?.id
         ? (
-          <Card
-            bodyStyle={{ textAlign: 'center' }}
-          >
+          <div className='bg-white p-4 rounded-lg border shadow text-center'>
             <CreateArticleButton>
-              <Button shape='round' type='primary' icon={<PlusOutlined />}>{intl.formatMessage({ defaultMessage: 'New Article' })}</Button>
+              <button className='btn btn-sm btn-primary'><PlusIcon className='w-4' />Buat Artikel Baru</button>
             </CreateArticleButton>
-          </Card>
+          </div>
           )
         : null
       }

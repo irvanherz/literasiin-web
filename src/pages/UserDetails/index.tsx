@@ -1,7 +1,10 @@
-import { SettingFilled } from '@ant-design/icons'
-import { Avatar, Button, Col, Row, Space, Tabs } from 'antd'
+import { Cog6ToothIcon, ShareIcon } from '@heroicons/react/24/solid'
+import { Tabs } from 'antd'
 import Layout from 'components/Layout'
+import PageHeader from 'components/PageHeader'
+import ProfileShareButton from 'components/ProfileShareButton'
 import RouteGuard from 'components/RouteGuard'
+import RenderTimeFromNow from 'components/shared/RenderTimeFromNow'
 import useCurrentUser from 'hooks/useCurrentUser'
 import analytics from 'libs/analytics'
 import { DEFAULT_PHOTO } from 'libs/variables'
@@ -58,56 +61,68 @@ export default function UserDetails () {
 
   return (
     <RouteGuard require={username === 'me' ? 'authenticated' : undefined}>
-      <Layout.Default>
-        <Layout.Scaffold
-          headerStyle={{ textAlign: 'center' }}
-          title={
-            <Space direction='vertical' style={{ width: '100%' }}>
-              <Avatar size={128} shape='square' src={photo?.url || DEFAULT_PHOTO} />
-              <div>{user?.fullName}</div>
-              <div style={{ fontWeight: 'normal' }}>@{user?.username}</div>
-              <Space>
-                <FollowButton user={user} context={context} afterUpdated={refetchContext}/>
-                <ChatButton user={user} />
-              </Space>
-
-            </Space>
+      <Layout.Default
+        beforeContent={
+          <PageHeader
+            className='bg-slate-50'
+            title={
+              <div className='space-y-2 font-normal text-center'>
+                <div className='flex-none'>
+                  <div className="avatar shadow-md">
+                    <div className="w-32 rounded">
+                      <img src={photo?.url || DEFAULT_PHOTO} />
+                    </div>
+                  </div>
+                </div>
+                <div className='flex-1'>
+                  <div className='font-black text-xl'>{user?.fullName}</div>
+                  <div className='text-slate-600 text-sm'>@{user?.username}</div>
+                </div>
+                <div className='space-x-2'>
+                  <FollowButton user={user} context={context} afterUpdated={refetchContext}/>
+                  <ChatButton user={user} />
+                </div>
+                <div className='space-x-2'>
+                  <FollowerButton user={user} context={context} />
+                  <FollowingButton user={user} context={context} />
+                </div>
+              </div>
+            }
+          />
         }
-          description={
-            <Space>
-              <FollowerButton user={user} context={context} />
-              <FollowingButton user={user} context={context} />
-            </Space>
-        }
-          bodyStyle={{ padding: '16px 0' }}
-          actionsContainerStyle={{ alignItems: 'start' }}
-          actions={
-            currentUser && currentUser?.id === user?.id
-              ? [
-                <Link key='edit' to={`/users/${username}/edit`}>
-                  <Button shape='circle' icon={<SettingFilled />} />
-                </Link>
-                ]
-              : undefined
-          }
-        >
-          <Row gutter={[16, 16]}>
-            <Col xs={24} sm={12} md={12} lg={8} xl={8} xxl={8}>
-              <Space direction='vertical' style={{ width: '100%' }}>
-                <WalletCard user={user} />
-                <ProfileCard user={user || {}} afterUpdated={refetch} />
-              </Space>
-            </Col>
-            <Col xs={24} sm={12} md={12} lg={16} xl={16} xxl={16}>
-              <Tabs
-                items={tabItems}
-              />
-            </Col>
-            <Col span={24}>
-              <AnnouncementsSection />
-            </Col>
-          </Row>
-        </Layout.Scaffold>
+      >
+        <div>
+          <div className='bg-slate-50 border-b py-2'>
+            <div className='container flex items-center gap-2'>
+              <div className='flex-1 text-sm'>
+                <span className='text-slate-600'>Bergabung sejak <RenderTimeFromNow timestamp={user?.createdAt} /></span>&nbsp;&nbsp;&middot;&nbsp;&nbsp;
+                <span className='text-slate-600'>Terakhir masuk <RenderTimeFromNow timestamp={user?.lastLoginAt} /></span>
+              </div>
+              <div className='flex-0 flex gap-2'>
+                {currentUser?.id === user?.id && <Link to='/users/me/edit' className='btn btn-sm'><Cog6ToothIcon className='w-4' /><span className='hidden md:inline'>Edit Profil</span></Link>}
+                <ProfileShareButton user={user}>
+                  <button className='btn btn-sm'><ShareIcon className='w-4' /></button>
+                </ProfileShareButton>
+              </div>
+            </div>
+          </div>
+          <div className='pt-4 space-y-4'>
+            <div className='container flex flex-col md:flex-row gap-4'>
+              <div className='w-full md:w-1/4'>
+                <div className="space-y-4 relative md:sticky top-auto md:top-[72px]">
+                  <WalletCard user={user} />
+                  <ProfileCard user={user || {}} afterUpdated={refetch} />
+                </div>
+              </div>
+              <div className='w-full md:w-3/4'>
+                <Tabs
+                  items={tabItems}
+                />
+              </div>
+            </div>
+            <AnnouncementsSection />
+          </div>
+        </div>
         <Helmet>
           <title>{user?.username ? `${user.fullName} (@${user.username}) - Literasiin` : 'Literasiin'}</title>
         </Helmet>

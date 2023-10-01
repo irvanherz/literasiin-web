@@ -1,4 +1,5 @@
 import { Duration } from 'dayjs/plugin/duration'
+import { htmlToText } from 'html-to-text'
 
 export const HOME_URL = window.location.protocol + '//' + window.location.host
 
@@ -35,6 +36,7 @@ export function copyToClipboard (text: string) {
     // console.log('Async: Copying to clipboard was successful!')
   }, function (err) {
     console.error('Async: Could not copy text: ', err)
+    return false
   })
 }
 
@@ -55,3 +57,23 @@ export function formatAudioDuration (duration: Duration) {
     ? duration.format('hh:mm:ss')
     : duration.format('mm:ss')
 };
+
+export function fileToDataURL(file:File) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader()
+    reader.readAsDataURL(file)
+    reader.onload = () => resolve(reader.result)
+    reader.onerror = reject
+  })
+}
+
+export function countWords(str: string = '') {
+  return (str || '').trim().split(/\s+/).length
+}
+
+export function esimateReadingTimeInMinutes(html: string = '') {
+  const cleanStr = htmlToText(html)
+  const numWords = countWords(cleanStr)
+  const minutes = Math.ceil(numWords / 200)
+  return minutes
+}

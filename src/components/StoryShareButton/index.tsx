@@ -1,7 +1,9 @@
+/* eslint-disable no-unused-vars */
 import { Modal } from 'antd'
+import classNames from 'classnames'
 import StoryShareSegment from 'components/StoryShareSegment'
 import { cloneElement, ReactElement, useState } from 'react'
-import { FormattedMessage } from 'react-intl'
+import { createPortal } from 'react-dom'
 import styled from 'styled-components'
 
 const StyledModal = styled(Modal)`
@@ -21,19 +23,21 @@ export default function StoryShareButton ({ story, children }: StoryShareButtonP
 
   const handleOpen = () => setOpen(true)
   const handleClose = () => setOpen(false)
+
   return (
     <>
       {cloneElement(children, { onClick: handleOpen })}
-      <StyledModal
-        open={open}
-        title={<FormattedMessage defaultMessage='Share This Story'/>}
-        centered
-        footer={null}
-        onCancel={handleClose}
-        closable={false}
-      >
-        <StoryShareSegment story={story} />
-      </StyledModal>
+      {createPortal(
+        <dialog className={classNames('modal', open && 'modal-open')}>
+          <form method="dialog" className="modal-box max-w-[400px]">
+            <StoryShareSegment story={story} />
+          </form>
+          <form method="dialog" className="modal-backdrop">
+            <button onClick={handleClose}>close</button>
+          </form>
+        </dialog>,
+        document.body
+      )}
     </>
   )
 }

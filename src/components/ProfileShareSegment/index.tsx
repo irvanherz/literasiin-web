@@ -7,12 +7,12 @@ type ProfileShareSegmentProps = {
 }
 
 export default function ProfileShareSegment ({ user }: ProfileShareSegmentProps) {
-  const username = user.username
+  const username = user?.username
   const profileUrl = `${HOME_URL}/users/${username}`
-  const whatsappUrl = 'https://api.whatsapp.com/send' + qs.stringify({ text: `Lihat profil ${user.username} di Literasiin. ${profileUrl}` }, { addQueryPrefix: true })
-  const facebookUrl = 'https://www.facebook.com/sharer/sharer.php' + qs.stringify({ u: profileUrl, quote: `Lihat profil ${user.username} di Literasiin` }, { addQueryPrefix: true })
-  const twitterUrl = 'https://twitter.com/intent/tweet' + qs.stringify({ text: `Lihat profil ${user.username}" di Literasiin. ${profileUrl}` }, { addQueryPrefix: true })
-  const mailUrl = 'mailto:' + qs.stringify({ subject: `Lihat profil ${user.username}`, body: `Lihat profil ${user.username} di Literasiin. ${profileUrl}` }, { addQueryPrefix: true })
+  const whatsappUrl = 'https://api.whatsapp.com/send' + qs.stringify({ text: `Lihat profil ${user?.username} di Literasiin. ${profileUrl}` }, { addQueryPrefix: true })
+  const facebookUrl = 'https://www.facebook.com/sharer/sharer.php' + qs.stringify({ u: profileUrl, quote: `Lihat profil ${user?.username} di Literasiin` }, { addQueryPrefix: true })
+  const twitterUrl = 'https://twitter.com/intent/tweet' + qs.stringify({ text: `Lihat profil ${user?.username}" di Literasiin. ${profileUrl}` }, { addQueryPrefix: true })
+  const mailUrl = 'mailto:' + qs.stringify({ subject: `Lihat profil ${user?.username}`, body: `Lihat profil ${user?.username} di Literasiin. ${profileUrl}` }, { addQueryPrefix: true })
 
   const handleCopyLink = (e: any) => {
     e?.preventDefault()

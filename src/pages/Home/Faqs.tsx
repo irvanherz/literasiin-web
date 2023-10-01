@@ -1,42 +1,29 @@
-import { Collapse, Space, theme, Typography } from 'antd'
-import PageWidthAdapter from 'components/PageWidthAdapter'
-import { FormattedMessage } from 'react-intl'
-import styled from 'styled-components'
-
-const StyledCollapse = styled(Collapse)`
-.ant-collapse-header-text {
-  width: 100%;
-}
-`
+/* eslint-disable no-unreachable */
+import { useState } from 'react'
 
 type FaqsProps = {
   config: any
 }
 export default function Faqs ({ config }: FaqsProps) {
-  const { token } = theme.useToken()
-  const faqs = config?.faqs || []
+  const faqs: any[] = config?.faqs || []
+  const [currentCollapsedId, setCurrentCollapsedId] = useState('')
 
   return (
-    <Space direction="vertical" style={{ width: '100%', background: token.colorBgBase }}>
-      <div style={{ textAlign: 'center', padding: '30px 0' }}>
-        <PageWidthAdapter>
-          <Typography.Title style={{ margin: 0 }}><FormattedMessage defaultMessage='FAQ' /></Typography.Title>
-          <Typography.Text><FormattedMessage defaultMessage='Frequently Asked Question' /></Typography.Text>
-        </PageWidthAdapter>
+    <div className='py-8 space-y-4'>
+      <div className='container font-black text-2xl text-center'>
+        FAQ
       </div>
-      <div style={{ background: token.colorBgLayout, padding: '20px 0' }}>
-        <PageWidthAdapter>
-          <Space direction="vertical" style={{ width: '100%' }}>
-            {faqs.map((faq: any) => (
-              <StyledCollapse collapsible="header" key={faq.id}>
-                <Collapse.Panel key="x" header={faq.question}>
-                  <p dangerouslySetInnerHTML={{ __html: faq.answer }} />
-                </Collapse.Panel>
-              </StyledCollapse>
-            ))}
-          </Space>
-        </PageWidthAdapter>
+      <div className='container space-y-2'>
+        {faqs.map(faq => (
+          <div key={faq.id} className="collapse bg-white shadow">
+            <input type="radio" checked={currentCollapsedId === faq.id } onChange={e => setCurrentCollapsedId(faq.id)} />
+            <div className="collapse-title text-lg font-bold">{faq.question}</div>
+            <div className="collapse-content">
+              <p dangerouslySetInnerHTML={{ __html: faq.answer }}></p>
+            </div>
+          </div>
+        ))}
       </div>
-    </Space>
+    </div>
   )
 }

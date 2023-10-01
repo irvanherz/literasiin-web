@@ -1,8 +1,8 @@
-import { BookFilled, BookOutlined } from '@ant-design/icons'
-import { Button, message, Tooltip } from 'antd'
+import { BookmarkIcon as BookmarkIconOutline } from '@heroicons/react/24/outline'
+import { BookmarkIcon as BookmarkIconSolid } from '@heroicons/react/24/solid'
+import { Tooltip, message } from 'antd'
 import useCurrentUser from 'hooks/useCurrentUser'
 import qs from 'qs'
-import { FormattedMessage } from 'react-intl'
 import { useMutation } from 'react-query'
 import { useLocation, useNavigate } from 'react-router-dom'
 import StoriesService from 'services/Stories'
@@ -19,13 +19,14 @@ export default function BookmarkButton ({ story, context, afterUpdated }: Bookma
   const storyId = story?.id
   const bookmarker = useMutation(() => StoriesService.Readers.bookmark(storyId))
   const unbookmarker = useMutation(() => StoriesService.Readers.unbookmark(storyId))
+  const executor = context?.hasBookmarked ? unbookmarker : bookmarker
 
-  const handleBookmark = () => {
+  const handleToggleBookmark = () => {
     if (!currentUser) {
       if (!currentUser) navigate('/auth/signin' + qs.stringify({ redirect: location.pathname }, { addQueryPrefix: true }))
       return
     }
-    bookmarker.mutate(undefined, {
+    executor.mutate(undefined, {
       onSuccess: () => {
         afterUpdated && afterUpdated()
       },
@@ -34,32 +35,14 @@ export default function BookmarkButton ({ story, context, afterUpdated }: Bookma
       }
     })
   }
-
-  const handleUnbookmark = () => {
-    if (!currentUser) {
-      if (!currentUser) navigate('/auth/signin' + qs.stringify({ redirect: location.pathname }, { addQueryPrefix: true }))
-      return
-    }
-    unbookmarker.mutate(undefined, {
-      onSuccess: () => {
-        afterUpdated && afterUpdated()
-      },
-      onError: (err: any) => {
-        message.error(err?.message)
+  return (
+    <Tooltip
+      title={context?.hasBookmarked ? 'Hapus dari daftar bacaan' : 'Masukkan ke daftar bacaan'}
+    >
+      {context?.hasBookmarked
+        ? <button className='btn btn-sm btn-ghost' onClick={handleToggleBookmark}><BookmarkIconSolid className='w-4' /></button>
+        : <button className='btn btn-sm btn-ghost' onClick={handleToggleBookmark}><BookmarkIconOutline className='w-4' /></button>
       }
-    })
-  }
-  if (context?.hasBookmarked) {
-    return (
-      <Tooltip key='bookmark' title={<FormattedMessage defaultMessage='Remove from reading list' />}>
-        <Button loading={unbookmarker.isLoading} onClick={handleUnbookmark} key='bookmark' shape='circle' icon={<BookFilled />} />
-      </Tooltip>
-    )
-  } else {
-    return (
-      <Tooltip key='bookmark' title={<FormattedMessage defaultMessage='Add to reading list' />}>
-        <Button loading={bookmarker.isLoading} onClick={handleBookmark} key='bookmark' shape='circle' icon={<BookOutlined />} />
-      </Tooltip>
-    )
-  }
+    </Tooltip>
+  )
 }

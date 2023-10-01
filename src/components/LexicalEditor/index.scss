@@ -6,53 +6,47 @@
  *
  */
 
-.editor-shell.editor-shell-theme-dark {
-  filter: invert(0.9);
-}
 .editor-shell {
   color: #000;
-  border-radius: 2px;
   max-width: 1100px;
   position: relative;
   line-height: 1.7;
   font-weight: 400;
-  .editor-container {
-    background: #fff;
-    position: relative;
-    display: block;
-    border-bottom-left-radius: 10px;
-    border-bottom-right-radius: 10px;
-    
-    &.tree-view {
-      border-radius: 0;
-    }
-    &.plain-text {
-      border-top-left-radius: 10px;
-      border-top-right-radius: 10px;
-    }
-  }
-  .editor-scroller {
-    min-height: 150px;
-    border: 0;
-    display: flex;
-    position: relative;
-    outline: 0;
-    z-index: 0;
-    overflow: auto;
-    resize: vertical;
-  }
-  .editor {
-    flex: auto;
-    position: relative;
-    resize: vertical;
-    z-index: -1;
-  }
-  
 }
 
-.test-recorder-output {
-  margin: 20px auto 20px auto;
-  width: 100%;
+.editor-container {
+  background: #fff;
+  position: relative;
+  display: block;
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
+
+  &.tree-view {
+    border-radius: 0;
+  }
+
+  &.plain-text {
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+  }
+}
+
+.editor-scroller {
+  min-height: 150px;
+  border: 0;
+  display: flex;
+  position: relative;
+  outline: 0;
+  z-index: 0;
+  overflow: auto;
+  resize: vertical;
+}
+
+.editor {
+  flex: auto;
+  position: relative;
+  resize: vertical;
+  z-index: -1;
 }
 
 pre {
@@ -146,7 +140,7 @@ pre::-webkit-scrollbar-thumb {
   box-shadow: 1px 2px 4px rgba(0, 0, 0, 0.4);
 }
 
-.test-recorder-button + .test-recorder-button {
+.test-recorder-button+.test-recorder-button {
   margin-left: 4px;
 }
 
@@ -673,7 +667,7 @@ i.prettier-error {
   color: red;
 }
 
-.dropdown {
+.lexical-dropdown {
   z-index: 10;
   display: block;
   position: fixed;
@@ -682,84 +676,86 @@ i.prettier-error {
   border-radius: 8px;
   min-height: 40px;
   background-color: #fff;
-}
 
-.dropdown .item {
-  margin: 0 8px 0 8px;
-  padding: 8px;
-  color: #050505;
-  cursor: pointer;
-  line-height: 16px;
-  font-size: 15px;
-  display: flex;
-  align-content: center;
-  flex-direction: row;
-  flex-shrink: 0;
-  justify-content: space-between;
-  background-color: #fff;
-  border-radius: 8px;
-  border: 0;
-  max-width: 250px;
-  min-width: 100px;
-}
+  .item {
+    margin: 0 8px 0 8px;
+    padding: 8px;
+    color: #050505;
+    cursor: pointer;
+    line-height: 16px;
+    font-size: 15px;
+    display: flex;
+    align-content: center;
+    flex-direction: row;
+    flex-shrink: 0;
+    justify-content: space-between;
+    background-color: #fff;
+    border-radius: 8px;
+    border: 0;
+    max-width: 250px;
+    min-width: 100px;
+  }
 
-.dropdown .item.fontsize-item,
-.dropdown .item.fontsize-item .text {
-  min-width: unset;
-}
+  .item.fontsize-item,
+  .item.fontsize-item .text {
+    min-width: unset;
+  }
 
-.dropdown .item .active {
-  display: flex;
-  width: 20px;
-  height: 20px;
-  background-size: contain;
-}
+  .item .active {
+    display: flex;
+    width: 20px;
+    height: 20px;
+    background-size: contain;
+  }
 
-.dropdown .item:first-child {
-  margin-top: 8px;
-}
+  .item:first-child {
+    margin-top: 8px;
+  }
 
-.dropdown .item:last-child {
-  margin-bottom: 8px;
-}
+  .item:last-child {
+    margin-bottom: 8px;
+  }
 
-.dropdown .item:hover {
-  background-color: #eee;
-}
+  .item:hover {
+    background-color: #eee;
+  }
 
-.dropdown .item .text {
-  display: flex;
-  line-height: 20px;
-  flex-grow: 1;
-  min-width: 150px;
-}
+  .item .text {
+    display: flex;
+    line-height: 20px;
+    flex-grow: 1;
+    min-width: 150px;
+  }
 
-.dropdown .item .icon {
-  display: flex;
-  width: 20px;
-  height: 20px;
-  user-select: none;
-  margin-right: 12px;
-  line-height: 16px;
-  background-size: contain;
-  background-position: center;
-  background-repeat: no-repeat;
-}
+  .item .icon {
+    display: flex;
+    width: 20px;
+    height: 20px;
+    user-select: none;
+    margin-right: 12px;
+    line-height: 16px;
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+  }
 
-.dropdown .divider {
-  width: auto;
-  background-color: #eee;
-  margin: 4px 8px;
-  height: 1px;
+  .divider {
+    width: auto;
+    background-color: #eee;
+    margin: 4px 8px;
+    height: 1px;
+  }
 }
 
 @media screen and (max-width: 1100px) {
   .dropdown-button-text {
     display: none !important;
   }
+
   .font-size .dropdown-button-text {
     display: flex !important;
   }
+
   .code-language .dropdown-button-text {
     display: flex !important;
   }
@@ -829,6 +825,7 @@ i.prettier-error {
     opacity: 0;
     transform: translateX(-200px);
   }
+
   100% {
     opacity: 1;
     transform: translateX(0);
@@ -1204,6 +1201,7 @@ i.chevron-down {
 .action-button-mic.active {
   animation: mic-pulsate-color 3s infinite;
 }
+
 button.action-button:disabled {
   opacity: 0.6;
   background: #eee;
@@ -1214,9 +1212,11 @@ button.action-button:disabled {
   0% {
     background-color: #ffdcdc;
   }
+
   50% {
     background-color: #ff8585;
   }
+
   100% {
     background-color: #ffdcdc;
   }
@@ -1304,14 +1304,12 @@ button.action-button:disabled {
   margin-bottom: 1px;
   background: #fff;
   padding: 4px;
-  border-top-left-radius: 10px;
-  border-top-right-radius: 10px;
   vertical-align: middle;
   overflow: auto;
-  height: 36px;
   position: sticky;
   top: 64px;
   z-index: 2;
+  min-height: 36px;
 }
 
 .toolbar button.toolbar-item {
@@ -1457,24 +1455,20 @@ button.action-button:disabled {
 
 .sticky-note.yellow {
   border-top: 1px solid #fdfd86;
-  background: linear-gradient(
-    135deg,
-    #ffff88 81%,
-    #ffff88 82%,
-    #ffff88 82%,
-    #ffffc6 100%
-  );
+  background: linear-gradient(135deg,
+      #ffff88 81%,
+      #ffff88 82%,
+      #ffff88 82%,
+      #ffffc6 100%);
 }
 
 .sticky-note.pink {
   border-top: 1px solid #e7d1e4;
-  background: linear-gradient(
-    135deg,
-    #f7cbe8 81%,
-    #f7cbe8 82%,
-    #f7cbe8 82%,
-    #e7bfe1 100%
-  );
+  background: linear-gradient(135deg,
+      #f7cbe8 81%,
+      #f7cbe8 82%,
+      #f7cbe8 82%,
+      #e7bfe1 100%);
 }
 
 .sticky-note-container.dragging {
@@ -1537,24 +1531,30 @@ button.action-button:disabled {
 .github-corner:hover .octo-arm {
   animation: octocat-wave 560ms ease-in-out;
 }
+
 @keyframes octocat-wave {
+
   0%,
   100% {
     transform: rotate(0);
   }
+
   20%,
   60% {
     transform: rotate(-25deg);
   }
+
   40%,
   80% {
     transform: rotate(10deg);
   }
 }
+
 @media (max-width: 500px) {
   .github-corner:hover .octo-arm {
     animation: none;
   }
+
   .github-corner .octo-arm {
     animation: octocat-wave 560ms ease-in-out;
   }

@@ -1,21 +1,19 @@
-import { Avatar, Button, Card, Input, List, message, Space, Typography } from 'antd'
+import { PaperAirplaneIcon } from '@heroicons/react/24/solid'
+import { message } from 'antd'
+import classNames from 'classnames'
 import RenderTimeFromNow from 'components/shared/RenderTimeFromNow'
 import useArticleCommentsInfinite from 'hooks/useArticleCommentsInfinite'
 import useCurrentUser from 'hooks/useCurrentUser'
 import { DEFAULT_PHOTO } from 'libs/variables'
 import Media from 'models/Media'
-import qs from 'qs'
-import { useMemo, useState } from 'react'
-import { FormattedMessage } from 'react-intl'
+import { KeyboardEventHandler, useMemo, useState } from 'react'
 import { useMutation } from 'react-query'
-import { Link, useLocation } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import ArticlesService from 'services/Articles'
-import styled from 'styled-components'
 
 type CommentInputProps = { article: any, afterCreated?: () => void }
 
 function CommentInput ({ article, afterCreated }: CommentInputProps) {
-  const location = useLocation()
   const currentUser = useCurrentUser()
   const articleId = article?.id
   const [comment, setComment] = useState('')
@@ -37,49 +35,53 @@ function CommentInput ({ article, afterCreated }: CommentInputProps) {
     })
   }
 
-  return currentUser
-    ? (
-      <Card size='small'>
-        <Card.Meta
-          avatar={<Avatar src={avatar.sm?.url || DEFAULT_PHOTO} />}
-          title="Write your comment"
-          description={
-            <div style={{ display: 'flex', gap: 4 }}>
-              <div style={{ flex: 1 }}>
-                <Input
-                  // disabled={chapter?.commentStatus === 'disabled'}
-                  // placeholder={chapter?.commentStatus === 'disabled' ? 'Comment is disabled' : 'Comment...'}
-                  onPressEnter={handleSend} value={comment}
-                  onChange={e => setComment(e.target.value)
-                }/>
-              </div>
-              <div style={{ flex: 0 }}>
-                <Button onClick={handleSend} loading={creator.isLoading} disabled={!comment}><FormattedMessage defaultMessage='Send' /></Button>
-              </div>
-            </div>
-          }
-        />
-      </Card>
-      )
-    : (
-      <Card size='small'>
-        <Space direction='vertical' style={{ width: '100%', textAlign: 'center' }}>
-          <Typography.Text strong><FormattedMessage defaultMessage='Please signin to post comment' /></Typography.Text>
-          <div>
-            <Link to={`/auth/signin${qs.stringify({ redirect: location.pathname }, { addQueryPrefix: true })}`}>
-              <Button type='primary'><FormattedMessage defaultMessage='Sign in' /></Button>
-            </Link>
+  const handleKeyDown: KeyboardEventHandler<HTMLInputElement> = (e) => {
+    if (e.key === 'Enter') {
+      e.preventDefault()
+      handleSend()
+    }
+  }
+
+  if (currentUser) {
+    return (
+      <div className='flex gap-4 p-4 bg-white rounded shadow'>
+        <div className='flex-none'>
+          <div className='aspect-1 shadow w-8'>
+            <img src={avatar.sm?.url || DEFAULT_PHOTO} className='object-cover' />
           </div>
-        </Space>
-      </Card>
-      )
+        </div>
+        <div className='flex-1 flex gap-2'>
+          <div className='flex-1'>
+            <input
+              className='input input-sm input-bordered w-full'
+                // disabled={chapter?.commentStatus === 'disabled'}
+              placeholder='Tulis komentar kamu...'
+              onKeyDown={handleKeyDown}
+              value={comment}
+              onChange={e => setComment(e.target.value)}
+            />
+          </div>
+          <div className='flex-none'>
+            <button className='btn btn-sm btn-primary' onClick={handleSend}><PaperAirplaneIcon className='w-4'/> Kirim</button>
+          </div>
+        </div>
+      </div>
+    )
+  } else {
+    return (
+      <div className='text-center p-4 space-y-2 bg-white rounded shadow'>
+        <div>
+          <div className='font-bold'>Masuk dulu</div>
+          <div className='text-slate-500'>Kamu harus memiliki akun untuk menulis komentar</div>
+        </div>
+        <div>
+          <Link to='/auth/signin' className='btn btn-sm btn-primary'>Masuk</Link>
+        </div>
+      </div>
+    )
+  }
 }
 
-const StyledCommentCard = styled(Card)`
-&.comment-mine {
-  background: #e6ffcf;
-}
-`
 type CommentProps = { comment: any }
 
 function Comment ({ comment }: CommentProps) {
@@ -88,34 +90,27 @@ function Comment ({ comment }: CommentProps) {
   const isMine = currentUser && currentUser?.id === comment?.userId
 
   return (
-    <StyledCommentCard size='small' className={isMine ? 'comment-mine' : ''}>
-      <Space style={{ width: '100%', justifyContent: 'space-between' }}>
-        <Card.Meta
-          avatar={<Avatar src={avatar.sm?.url || DEFAULT_PHOTO} />}
-          title={comment.user?.fullName}
-          description={comment.comment}
-        />
-        <Typography.Text type='secondary'><RenderTimeFromNow timestamp={comment?.createdAt} /></Typography.Text>
-      </Space>
-    </StyledCommentCard>
+    <div className={classNames('flex gap-4 p-4 rounded shadow bg-white border', isMine ? 'border-emerald-400' : 'border-white')}>
+      <div className='flex-none'>
+        <div className='aspect-1 shadow w-8'>
+          <img src={avatar.sm?.url || DEFAULT_PHOTO} className='object-cover' />
+        </div>
+      </div>
+      <div className='flex-1'>
+        <div className=''>
+          <span className='font-bold'>{comment.user?.fullName}</span>
+          &nbsp;&middot;&nbsp;
+          <span className='text-slate-600'><RenderTimeFromNow timestamp={comment?.createdAt} /></span>
+        </div>
+        <div className='text-slate-600'>{comment.comment}</div>
+      </div>
+    </div>
   )
 }
 
-const StyledList = styled(List)`
-.ant-list-header {
-  border: none;
-}
-.ant-list-footer {
-  text-align: center;
-}
-`
+type ArticleCommentsProps = { article: any }
 
-type CommentsProps = {
-  article: any
-  parent: any
-}
-
-function Comments ({ article, parent }: CommentsProps) {
+export default function ArticleComments ({ article }: ArticleCommentsProps) {
   const articleId = article?.id
   const { data, refetch, hasNextPage, fetchNextPage } = useArticleCommentsInfinite({ articleId })
 
@@ -128,30 +123,24 @@ function Comments ({ article, parent }: CommentsProps) {
   }, [data?.pages])
 
   return (
-    <StyledList
-      bordered={!!parent}
-      header={<CommentInput article={article} afterCreated={refetch} />}
-      grid={{ gutter: 16, column: 1 }}
-      dataSource={comments}
-      renderItem={comment => (
-        <List.Item>
-          <Comment comment={comment} />
-        </List.Item>
-      )}
-      footer={hasNextPage && (
-        <Button onClick={() => fetchNextPage()}><FormattedMessage defaultMessage='Load more' /></Button>
-      )}
-    />
-  )
-}
-
-type ArticleCommentsProps = { article: any }
-export default function ArticleComments ({ article }: ArticleCommentsProps) {
-  return (
-    <Card
-      title={<FormattedMessage defaultMessage='Comments' />}
-    >
-      <Comments article={article} parent={null}/>
-    </Card>
+    <div className='space-y-2'>
+      <div>
+        <div className='font-black text-slate-700'>Komentar</div>
+        <div className='text-slate-500 text-sm'>Berikan tanggapan kamu untuk artikel ini</div>
+      </div>
+      <div>
+        <CommentInput article={article} afterCreated={refetch} />
+      </div>
+      <div className='space-y-2'>
+        {comments.map(comment => <Comment key={comment.id} comment={comment} />)}
+      </div>
+      <div>
+        {hasNextPage && (
+          <div className='text-center'>
+            <button className='btn btn-sm' onClick={() => fetchNextPage()}>Muat lainnya</button>
+          </div>
+        )}
+      </div>
+    </div>
   )
 }

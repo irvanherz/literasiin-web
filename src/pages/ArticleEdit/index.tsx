@@ -1,34 +1,58 @@
+/* eslint-disable no-unused-vars */
+import { DocumentArrowDownIcon, EyeIcon, PaperAirplaneIcon } from '@heroicons/react/24/solid'
 import { $generateHtmlFromNodes, $generateNodesFromDOM } from '@lexical/html'
-import { Card, Col, Dropdown, Form, Input, Row, Select, message } from 'antd'
+import { message } from 'antd'
+import classNames from 'classnames'
 import Layout from 'components/Layout'
 import StoryEditor from 'components/LexicalEditor/StoryEditor'
+import PageHeader from 'components/PageHeader'
 import RouteGuard from 'components/RouteGuard'
-import ArticleImageInput from 'components/shared/ArticleImageInput'
+import RenderTimeFromNow from 'components/shared/RenderTimeFromNow'
 import useArticle from 'hooks/useArticle'
 import useArticleCategories from 'hooks/useArticleCategories'
 import useArticleUpdate from 'hooks/useArticleUpdate'
+import useCustomComponent from 'hooks/useCustomComponent'
 import { $getRoot, $isDecoratorNode, $isElementNode, LexicalEditor } from 'lexical'
 import analytics from 'libs/analytics'
-import { contentIdFromSlug, slugifyContentId } from 'libs/slug'
-import { useEffect, useLayoutEffect, useState } from 'react'
+import { contentIdFromSlug } from 'libs/slug'
+import { useCallback, useEffect, useLayoutEffect, useState } from 'react'
 import { Helmet } from 'react-helmet'
-import { FormattedMessage, useIntl } from 'react-intl'
-import { useNavigate, useParams } from 'react-router-dom'
+import { Controller, useForm } from 'react-hook-form'
+import { Link, useParams } from 'react-router-dom'
+import ImageInput from './ImageInput'
+
+type CategoryInputProps = {
+  value?: number
+  defaultValue?: number
+  onChange?:(val: number) => void
+}
+function CategoryInput({ value, defaultValue, onChange }: CategoryInputProps) {
+  const [computedValue, triggerChange] = useCustomComponent({ value, defaultValue, onChange })
+  const { data } = useArticleCategories({})
+  const categories: any[] = data?.data || []
+
+  return (
+    <select
+      value={computedValue}
+      onChange={e => triggerChange(+e.target.value)}
+      className="select select-sm select-bordered w-full"
+      placeholder='Pilih kategori...'
+    >
+      {categories.map(cat => (
+        <option key={cat.id} value={cat.id}>{cat.name}</option>
+      ))}
+    </select>
+  )
+}
 
 export default function ArticleEdit () {
-  const intl = useIntl()
   const params = useParams()
   const articleId = contentIdFromSlug(params.articleId || '')
-  const navigate = useNavigate()
-  const [form] = Form.useForm()
   const { data, refetch } = useArticle(articleId)
   const updater = useArticleUpdate(articleId)
   const article = data?.data
   const [editor, setEditor] = useState<LexicalEditor>()
-
-  const { data: categoryData } = useArticleCategories({})
-  const categories = categoryData?.data || []
-  const categoryOptions: any[] = categories.map((cat: any) => ({ value: cat.id, label: cat.name }))
+  const { register, control, handleSubmit, reset, getValues, formState: { errors } } = useForm()
 
   useEffect(() => {
     analytics.page({
@@ -39,7 +63,12 @@ export default function ArticleEdit () {
 
   useLayoutEffect(() => {
     if (!article || !editor) return
-    form.setFieldsValue({ ...article })
+    reset({
+      title: article?.title,
+      description: article?.description,
+      categoryId: article?.categoryId,
+      image: article?.image
+    })
     editor.update(() => {
       // In the browser you can use the native DOMParser API to parse the HTML string.
       const parser = new DOMParser()
@@ -55,15 +84,10 @@ export default function ArticleEdit () {
         }
       })
     })
-  }, [article])
+  }, [article, editor])
 
-  const handlePublish = async () => {
+  const handleSave = useCallback(async (type:string = 'save') => {
     try {
-      const values: any = await form.validateFields()
-      values.imageId = values?.image?.id
-      delete values.image
-      values.status = 'published'
-
       const content = await new Promise((resolve) => {
         const editorState = editor!.getEditorState()
         editorState.read(() => {
@@ -71,156 +95,146 @@ export default function ArticleEdit () {
           resolve(content)
         })
       })
-      values.content = content
 
-      updater.mutate(values, {
-        onSuccess: (data) => {
-          message.success('Article published successfully')
-          navigate(`/articles/${slugifyContentId(article)}`)
-        },
-        onError: (err) => {
-          message.error(err.message)
-        }
-      })
-    } catch (err) {
-      message.error('Check all fields then try again')
-    }
-  }
-
-  const handleRevertToDraft = async () => {
-    try {
-      const values: any = await form.validateFields()
-      values.imageId = values?.image?.id
+      let successMessage = 'Artikel sudah tersimpan'
+      const values = getValues()
+      values.imageId = values.image?.id || null
       delete values.image
-      values.status = 'draft'
-
-      const content = await new Promise((resolve) => {
-        const editorState = editor!.getEditorState()
-        editorState.read(() => {
-          const content = $generateHtmlFromNodes(editor!)
-          resolve(content)
-        })
-      })
       values.content = content
-
-      updater.mutate(values, {
-        onSuccess: (data) => {
-          message.success('Article reverted to draft')
-          refetch()
-        },
-        onError: (err) => {
-          message.error(err.message)
+      if (type === 'publish') {
+        if (
+          (values.title || '').length >= 5 &&
+          (values.description || '').length >= 5 &&
+          (values.content || '').length >= 50
+        ) {
+          values.status = 'published'
+        } else {
+          successMessage = 'Artikel sudah tersimpan, namun masih berstatus draft. Pastikan judul, deskripsi singkat, atau isi artikel tidak terlalu pendek.'
         }
-      })
+      } else if (type === 'revert_to_draft') {
+        values.status = 'draft'
+      }
+
+      await updater.mutateAsync(values)
+      message.success(successMessage)
+      refetch()
     } catch (err) {
-      message.error('Check all fields then try again')
+      console.log(err)
+      message.error('Terjadi kesalahan')
     }
-  }
-
-  const handleSave = async () => {
-    try {
-      const values: any = await form.validateFields()
-      values.imageId = values?.image?.id
-      delete values.image
-
-      const content = await new Promise((resolve) => {
-        const editorState = editor!.getEditorState()
-        editorState.read(() => {
-          const content = $generateHtmlFromNodes(editor!)
-          resolve(content)
-        })
-      })
-      values.content = content
-
-      updater.mutate(values, {
-        onSuccess: (data) => {
-          message.success('Changes has saved')
-          refetch()
-        },
-        onError: (err) => {
-          message.error(err.message)
-        }
-      })
-    } catch (err) {
-      message.error('Check all fields then try again')
-    }
-  }
+  }, [editor, refetch, updater])
 
   return (
     <RouteGuard require='authenticated'>
-      <Layout.Default>
-        <Layout.Scaffold
-          title={<FormattedMessage defaultMessage="Edit Article" />}
-          description={<FormattedMessage defaultMessage="Update information about your article below" />}
-          bodyStyle={{ padding: '16px 0' }}
-          actions={[
-            <Dropdown.Button
-              key='save'
-              type='primary'
-              onClick={handleSave}
-              menu={{
-                items: [
-                  { key: 'save', label: 'Save', onClick: handleSave },
-                  article?.status === 'published'
-                    ? { key: 'rev', label: 'Save & Revert to Draft', onClick: handleRevertToDraft }
-                    : { key: 'pub', label: 'Save & Publish', onClick: handlePublish }
-                ]
-              }}
-            >
-              Save
-            </Dropdown.Button>
-          ]}
-        >
-          <Form
-            form={form}
-            wrapperCol={{ span: 24 }}
-            labelCol={{ span: 24 }}
-          >
-            <Row gutter={[16, 16]}>
-              <Col xs={24} sm={12} md={16} lg={18} xl={18} xxl={18}>
-                <Card>
-                  <Form.Item
-                    label={<FormattedMessage defaultMessage="Title" />}
-                    name='title'
-                    rules={[{ required: true, message: intl.formatMessage({ defaultMessage: 'Title is required!' }) }]}
-                  >
-                    <Input placeholder={intl.formatMessage({ defaultMessage: 'Title...' })} maxLength={255} />
-                  </Form.Item>
-                  <Form.Item
-                    label={<FormattedMessage defaultMessage="Description" />}
-                    name='description'
-                  >
-                    <Input.TextArea cols={5} placeholder={intl.formatMessage({ defaultMessage: 'Description...' })} maxLength={255} />
-                  </Form.Item>
-                  <Form.Item
-                    noStyle
-                    label={<FormattedMessage defaultMessage="Content" />}
-                    name='content'
-                  >
-                    <StoryEditor onReady={setEditor} />
-                  </Form.Item>
-                </Card>
-              </Col>
-              <Col xs={24} sm={12} md={8} lg={6} xl={6} xxl={6}>
-                <Card>
-                  <Form.Item
-                    label={<FormattedMessage defaultMessage="Category" />}
-                    name="categoryId"
-                  >
-                    <Select placeholder={intl.formatMessage({ defaultMessage: 'Select category...' })} options={categoryOptions}/>
-                  </Form.Item>
-                  <Form.Item
-                    label={<FormattedMessage defaultMessage="Image" />}
-                    name='image'
-                    rules={[{ required: true, message: intl.formatMessage({ defaultMessage: 'Image is required!' }) }]}
-                  >
-                    <ArticleImageInput />
-                  </Form.Item>
-                </Card>
-              </Col>
-            </Row>
-          </Form>
-        </Layout.Scaffold>
+      <Layout.Default
+        className='bg-slate-50'
+        beforeContent={
+          <PageHeader
+            title='Edit'
+            description='Judul Artikel'
+            extra={
+              <div className='flex gap-2'>
+                <div className="dropdown dropdown-bottom">
+                  <label tabIndex={0} className='btn btn-sm'><EyeIcon className='w-4' /><span className='hidden md:inline'>Pratinjau</span></label>
+                  <ul tabIndex={0} className="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52">
+                    <li><Link to='/'><EyeIcon className='w-4' /> Pratinjau Artikel</Link></li>
+                    <li><button disabled={updater.isLoading} onClick={() => handleSave('save')}><DocumentArrowDownIcon className='w-4' />Simpan</button></li>
+                    <li><button disabled={updater.isLoading} onClick={() => handleSave('revert_to_draft')}><DocumentArrowDownIcon className='w-4' />Kembalikan ke Draf</button></li>
+                  </ul>
+                </div>
+                <button className='btn btn-sm btn-primary' onClick={() => handleSave('publish')}><PaperAirplaneIcon className='w-4' /> <span className='hidden md:inline'>Publish</span></button>
+              </div>
+            }
+          />
+        }
+        contentContainerClassName='flex flex-row'
+      >
+        <div className='container py-4 flex-1 flex gap-4 flex-col md:flex-row divide-0 md:divide-x'>
+          <div className='w-full md:w-4/6 lg:8/12 space-y-4'>
+            <div className="mb-2">
+              <label className="block text-gray-700 font-semibold mb-2">Judul Bab</label>
+              <div className='mb-1'>
+                <input
+                  type='text'
+                  className={classNames('input input-sm input-bordered w-full font-bold shadow-sm', errors.title && 'input-error')}
+                  placeholder="Masukkan judul artikel..."
+                  {...register('title')}
+              />
+              </div>
+              <div className='font-semibold min-h-[8px]'></div>
+            </div>
+            <div className="mb-2">
+              <label className="block text-gray-700 font-semibold mb-2">Deskripsi Singkat</label>
+              <div className='mb-1'>
+                <textarea
+                  className={classNames('input input-sm input-bordered w-full font-bold shadow-sm min-h-[100px] leading-normal py-2', errors.description && 'input-error')}
+                  placeholder="Masukkan deskripsi singkat tentang artikel ini..."
+                  {...register('description')}
+                />
+              </div>
+              <div className='font-semibold min-h-[8px]'></div>
+            </div>
+            <div className="mb-2">
+              <label className="block text-gray-700 font-semibold mb-2"></label>
+              <div className='mb-1'>
+                <StoryEditor onReady={setEditor} />
+              </div>
+              <div className='font-semibold min-h-[8px]'></div>
+            </div>
+          </div>
+          <div className='w-full md:w-2/6 space-y-4 md:pl-4'>
+            <div className='bg-white rounded-lg shadow p-4 space-y-2'>
+              <div>
+                <div className='text-slate-500 text-sm font-bold'>Status artikel</div>
+                <div className='text-slate-800 font-black'>{(article?.status || '').toUpperCase()}</div>
+              </div>
+              <div>
+                <div className='text-slate-500 text-sm font-bold'>Terakhir update</div>
+                <div className='text-slate-800 font-black'><RenderTimeFromNow timestamp={article?.updatedAt} /></div>
+              </div>
+            </div>
+            <div className="mb-2">
+              <label className="block text-gray-700 font-semibold mb-2">Gambar</label>
+              <div className='mb-1'>
+                <Controller
+                  control={control}
+                  name="image"
+                  render={({
+                    field: { onChange, onBlur, value, name, ref },
+                    fieldState: { invalid, isTouched, isDirty, error },
+                    formState
+                  }) => (
+                    <ImageInput
+                      onChange={onChange}
+                      value={value}
+                    />
+                  )}
+                />
+              </div>
+              <div className='font-semibold min-h-[8px]'></div>
+            </div>
+            <div className="mb-2">
+              <label className="block text-gray-700 font-semibold mb-2">Kategori Artikel</label>
+              <div className='mb-1'>
+                <Controller
+                  control={control}
+                  name="categoryId"
+                  render={({
+                    field: { onChange, onBlur, value, name, ref },
+                    fieldState: { invalid, isTouched, isDirty, error },
+                    formState
+                  }) => (
+                    <CategoryInput
+                      onChange={onChange}
+                      value={value}
+                    />
+                  )}
+                />
+              </div>
+              <div className='font-semibold min-h-[8px]'></div>
+            </div>
+          </div>
+        </div>
         <Helmet>
           <title>Edit Article - Literasiin</title>
         </Helmet>

@@ -8,7 +8,7 @@
 
 import type { EditorThemeClasses } from 'lexical'
 
-import './DefaultEditorTheme.css'
+import './DefaultEditorTheme.scss'
 
 const theme: EditorThemeClasses = {
   blockCursor: 'LiterasiinTheme__blockCursor',

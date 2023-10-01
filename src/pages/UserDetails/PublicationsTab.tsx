@@ -1,4 +1,5 @@
-import { Button, Card, Descriptions, List, message, Modal, Space } from 'antd'
+import { PlusIcon } from '@heroicons/react/24/solid'
+import { Button, Card, Descriptions, List, Modal, Space, message } from 'antd'
 import StoryCover from 'components/StoryCover'
 import useCurrentUser from 'hooks/useCurrentUser'
 import usePublicationDelete from 'hooks/usePublicationDelete'
@@ -6,7 +7,6 @@ import usePublications from 'hooks/usePublications'
 import { DEFAULT_IMAGE } from 'libs/variables'
 import Media from 'models/Media'
 import { useMemo } from 'react'
-import { FormattedMessage } from 'react-intl'
 import { Link, useNavigate } from 'react-router-dom'
 import styled from 'styled-components'
 import PublicationCreateButton from './PublicationCreateButton'
@@ -105,13 +105,11 @@ export default function PublicationsTab ({ user }: PublicationsTabProps) {
     <Space direction='vertical' style={{ width: '100%' }}>
       {currentUser && currentUser?.id === user?.id
         ? (
-          <Card
-            bodyStyle={{ textAlign: 'center' }}
-          >
+          <div className='bg-white p-4 rounded-lg border shadow text-center'>
             <PublicationCreateButton>
-              <Button shape='round' type='primary'><FormattedMessage defaultMessage='New Publication' /></Button>
+              <button className='btn btn-sm btn-primary'><PlusIcon className='w-4' />Terbitkan Buku Saya</button>
             </PublicationCreateButton>
-          </Card>
+          </div>
           )
         : null
       }

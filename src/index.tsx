@@ -94,7 +94,6 @@ root.render(
       </GoogleOAuthProvider>
     </QueryClientProvider>
   </FcmContextProvider>
-
   // </React.StrictMode>
 )
 

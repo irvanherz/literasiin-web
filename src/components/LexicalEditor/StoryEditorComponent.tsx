@@ -82,8 +82,7 @@ export default function StoryEditorComponent ({ onReady, onChange }: StoryEditor
   return (
     <>
       <StoryEditorToolbarPlugin />
-      <div
-        className='editor-container tree-view'>
+      <div className='editor-container tree-view'>
         <MaxLengthPlugin maxLength={100000} />
         <DragDropPaste />
         <AutoFocusPlugin />

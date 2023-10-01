@@ -1,5 +1,8 @@
 {
   "editor.detectIndentation": true,
+  "editor.formatOnPaste": true,
+  "editor.formatOnSave": true,
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
   "editor.tabSize": 2,
   "editor.codeActionsOnSave": [
     "source.organizeImports",
@@ -9,5 +12,14 @@
   "eslint.validate": [
     "javascript"
   ],
-  "typescript.preferences.importModuleSpecifier": "shortest"
+  "typescript.preferences.importModuleSpecifier": "shortest",
+  "[typescriptreact]": {
+    "editor.defaultFormatter": "dbaeumer.vscode-eslint"
+  },
+  "[scss]": {
+    "editor.defaultFormatter": "vscode.css-language-features"
+  },
+  "files.associations": {
+    "*.scss": "postcss"
+  }
 }

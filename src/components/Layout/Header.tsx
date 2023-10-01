@@ -1,68 +1,54 @@
-import { BellOutlined, MessageOutlined } from '@ant-design/icons'
-import { Button, Space } from 'antd'
+import { BellIcon, ChatBubbleLeftRightIcon } from '@heroicons/react/24/solid'
 import useAuthContext from 'hooks/useAuthContext'
 import { ReactNode } from 'react'
 import { FormattedMessage } from 'react-intl'
 import { Link } from 'react-router-dom'
-import styled from 'styled-components'
-import PageWidthAdapter from '../PageWidthAdapter'
 import ProfileMenu from './ProfileMenu'
 
-function UserMenu () {
+function UserMenu() {
   const auth = useAuthContext()
   return auth.status === 'authenticated'
     ? (
-      <Space>
-        <Link to='/notifications'>
-          <Button shape='circle' icon={<BellOutlined />} />
+      <div className='space-x-2 flex items-center'>
+        <Link to="/notifications" className='flex'>
+          <button className='btn btn-sm btn-circle'><BellIcon className='w-4' /></button>
         </Link>
-        <Link to='/chats'>
-          <Button shape='circle' icon={<MessageOutlined />} />
+        <Link to="/chats" className='flex'>
+          <button className='btn btn-sm btn-circle'><ChatBubbleLeftRightIcon className='w-4' /></button>
         </Link>
         <ProfileMenu />
-      </Space>
+      </div>
       )
     : (
       <Link to="/auth/signin">
-        <Button><FormattedMessage defaultMessage="Sign in" /></Button>
+        <button className='btn btn-sm'>
+          <FormattedMessage defaultMessage="Sign in" />
+        </button>
       </Link>
       )
 }
 
-const StyledPageWidthAdapter = styled(PageWidthAdapter)`
-display: flex;
-align-items: center;
-gap: 8px;
-height: 100%;
-.logo {
-  display: flex;
-  flex: 0;
-  img { flex: 1; height: 36px }
-}
-.search {
-  flex: 1;
-}
-.user-menus {
-  flex: 0;
-}
-`
 type HeaderProps = {
-  searchComponent?: ReactNode
-  showUserMenu?: boolean
-}
+  searchComponent?: ReactNode;
+  showUserMenu?: boolean;
+};
 
-export default function Header ({ searchComponent, showUserMenu = true }: HeaderProps) {
+export default function Header({
+  searchComponent,
+  showUserMenu = true
+}: HeaderProps) {
   return (
-    <StyledPageWidthAdapter className="adapter">
-      <Link to="/" className="logo">
-        <img src={`${process.env.PUBLIC_URL}/assets/images/logo.svg`} />
-      </Link>
-      <div className="search">
-        {searchComponent}
+    <div className='h-16 sticky top-0 border-b py-2 backdrop-blur-sm bg-base-100/90 flex z-10'>
+      <div className="container m-auto flex items-center">
+        <Link to="/">
+          <img
+            className="w-8"
+            src={`${process.env.PUBLIC_URL}/assets/images/logo.svg`}
+          />
+        </Link>
+        <div className="flex-1">{searchComponent}</div>
+        <div className="flex-none">{showUserMenu && <UserMenu />}</div>
       </div>
-      <div className='user-menus'>
-        {showUserMenu && <UserMenu />}
-      </div>
-    </StyledPageWidthAdapter>
+    </div>
   )
 }

@@ -1,4 +1,5 @@
 import { UploadProps } from 'antd'
+import { AxiosRequestConfig } from 'axios'
 import { axiosInstance, generateAuthorizationHeaderValue } from 'libs/api'
 import ApiData from 'models/ApiData'
 import ApiError from 'models/ApiError'
@@ -9,6 +10,18 @@ export default class MediaService {
   static async create (payload: any) {
     try {
       const resp = await axiosInstance.post(`${BASEURL}/media`, payload)
+      return ApiData.fromResponse(resp)
+    } catch (err: any) {
+      throw new ApiError(err)
+    }
+  }
+
+  static async uploadImage (file: any, preset: string, onUploadProgress?: AxiosRequestConfig<any>['onUploadProgress']) {
+    try {
+      const payload = new FormData()
+      payload.set('file', file)
+      payload.set('preset', preset)
+      const resp = await axiosInstance.post(`${BASEURL}/media`, payload, { onUploadProgress })
       return ApiData.fromResponse(resp)
     } catch (err: any) {
       throw new ApiError(err)

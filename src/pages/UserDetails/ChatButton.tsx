@@ -1,8 +1,7 @@
-import { MessageOutlined } from '@ant-design/icons'
-import { Button, message } from 'antd'
+import { PaperAirplaneIcon } from '@heroicons/react/24/solid'
+import { message } from 'antd'
 import useCurrentUser from 'hooks/useCurrentUser'
 import qs from 'qs'
-import { useIntl } from 'react-intl'
 import { useMutation } from 'react-query'
 import { useLocation, useNavigate } from 'react-router-dom'
 import ChatsService from 'services/Chats'
@@ -11,7 +10,6 @@ type ChatButtonProps = {
   user: any
 }
 export default function ChatButton ({ user }: ChatButtonProps) {
-  const intl = useIntl()
   const navigate = useNavigate()
   const location = useLocation()
   const currentUser = useCurrentUser()
@@ -31,5 +29,5 @@ export default function ChatButton ({ user }: ChatButtonProps) {
   }
 
   if (user?.id === currentUser?.id) return null
-  return <Button size='small' onClick={handleChat} loading={mutator.isLoading} icon={<MessageOutlined />}>{intl.formatMessage({ defaultMessage: 'Chat' })}</Button>
+  return <button className='btn btn-xs' onClick={handleChat} disabled={mutator.isLoading}><PaperAirplaneIcon className='w-4' /> Kirim Pesan</button>
 }

@@ -15,11 +15,11 @@ import FAQ from 'pages/FAQ'
 import KbDetails from 'pages/KbDetails'
 import KbHome from 'pages/KbHome'
 import KbPerCategory from 'pages/KbPerCategory'
+import LiterasiAI from 'pages/LiterasiAI'
 import Notifications from 'pages/Notifications'
 import PrivacyPolicy from 'pages/PrivacyPolicy'
 import PublicationCreate from 'pages/PublicationCreate'
 import PublicationEdit from 'pages/PublicationEdit'
-import StoryAssistant from 'pages/StoryAssistant'
 import StoryChapterDetails from 'pages/StoryChapterDetails'
 import StoryChapterEdit from 'pages/StoryChapterEdit'
 import StoryDetails from 'pages/StoryDetails'
@@ -96,9 +96,14 @@ const router = createBrowserRouter([
     element: <UserProfileEdit />
   },
   {
-    id: '/stories/assistants/create',
-    path: '/stories/assistants/create',
-    element: <StoryAssistant />
+    id: '/literasi-ai',
+    path: '/literasi-ai',
+    element: <LiterasiAI />
+  },
+  {
+    id: '/literasi-ai/:sectionId',
+    path: '/literasi-ai/:sectionId',
+    element: <LiterasiAI />
   },
   {
     id: '/stories/mine',
@@ -118,6 +123,11 @@ const router = createBrowserRouter([
   {
     id: '/stories/:storyId/edit',
     path: '/stories/:storyId/edit',
+    element: <StoryEdit />
+  },
+  {
+    id: '/stories/:storyId/edit/:sectionId',
+    path: '/stories/:storyId/edit/:sectionId',
     element: <StoryEdit />
   },
   {

@@ -1,16 +1,17 @@
-import { BankOutlined, MailOutlined, PhoneOutlined, SendOutlined } from '@ant-design/icons'
-import { Button, Card, Col, Form, List, Modal, Row, Space, Typography, message, theme } from 'antd'
+import { BuildingOfficeIcon, EnvelopeOpenIcon, PhoneIcon } from '@heroicons/react/24/solid'
+import { Modal, message } from 'antd'
 import Layout from 'components/Layout'
+import PageHeader from 'components/PageHeader'
 import useGeneralUserMessageCreate from 'hooks/useGeneralUserMessageCreate'
 import { useCallback } from 'react'
 import { useGoogleReCaptcha } from 'react-google-recaptcha-v3'
+import { FormProvider, SubmitErrorHandler, SubmitHandler, useForm } from 'react-hook-form'
 import ContactForm from './ContactForm'
 
 export default function ContactUs () {
   const { executeRecaptcha } = useGoogleReCaptcha()
-  const { token } = theme.useToken()
   const creator = useGeneralUserMessageCreate()
-  const [form] = Form.useForm()
+  const form = useForm()
 
   // Create an event handler so you can call the verification on button click event or form submit
   const handleRecaptchaVerify = useCallback(async () => {
@@ -24,7 +25,7 @@ export default function ContactUs () {
     // Do whatever you want with the token
   }, [executeRecaptcha])
 
-  const handleFinish = async (payload: any) => {
+  const handleSubmit: SubmitHandler<any> = async (payload: any) => {
     const captchaToken = await handleRecaptchaVerify()
     if (!captchaToken) message.error('Captcha validation failed!')
     payload.captchaToken = captchaToken
@@ -43,60 +44,58 @@ export default function ContactUs () {
     })
   }
 
-  const handleValidationFailed = (payload: any) => {
-    message.error('Check all fields and then try again')
-  }
+  const handleSubmitError: SubmitErrorHandler<any> = async (values: any) => {}
 
   return (
-
-    <Layout.Default>
-      <Layout.Scaffold
-        title="Contact Us"
-        description="Send your question"
-        bodyStyle={{ padding: '24px 0' }}
-        >
-        <Row gutter={[16, 16]}>
-          <Col xs={24} sm={12} md={10} lg={8} xl={8} xxl={8}>
-            <Card>
-              <Typography.Title level={2} style={{ fontSize: token.fontSizeXL, marginTop: 0 }}>Contact Info</Typography.Title>
-              <List size='small'>
-                <List.Item>
-                  <List.Item.Meta
-                    avatar={<BankOutlined />}
-                    title="Office"
-                    description="Jl Pembangunan no 20, Petojo Utara, Gambir, Kota Jakarta Pusat, DKI Jakarta"
-                    />
-                </List.Item>
-                <List.Item>
-                  <List.Item.Meta
-                    avatar={<PhoneOutlined />}
-                    title="Phone"
-                    description="+62 85156818651"
-                    />
-                </List.Item>
-                <List.Item>
-                  <List.Item.Meta
-                    avatar={<MailOutlined />}
-                    title="Email"
-                    description="cs@literasiin.com"
-                    />
-                </List.Item>
-              </List>
-            </Card>
-          </Col>
-          <Col xs={24} sm={12} md={14} lg={16} xl={16} xxl={16}>
-            <Card>
-              <Space direction='vertical' style={{ width: '100%' }}>
-                <Typography.Title level={2} style={{ fontSize: token.fontSizeXL, marginTop: 0 }}>Send a Message</Typography.Title>
-                <Form form={form} labelCol={{ span: 24 }} wrapperCol={{ span: 24 }} onFinish={handleFinish} onFinishFailed={handleValidationFailed}>
-                  <ContactForm />
-                </Form>
-                <Button type='primary' icon={<SendOutlined />} onClick={form.submit} loading={creator.isLoading}>Send</Button>
-              </Space>
-            </Card>
-          </Col>
-        </Row>
-      </Layout.Scaffold>
+    <Layout.Default
+      beforeContent={
+        <PageHeader
+          title='Kontak Kami'
+          description='Berikan kami pertanyaan'
+        />
+      }
+    >
+      <div className='py-4'>
+        <div className='container flex gap-4 flex-col md:flex-row'>
+          <div className='w-full md:w-1/3 border rounded-lg p-4 space-y-4 bg-white'>
+            <div className='font-black text-2xl'>Informasi Kontak</div>
+            <div className='space-y-4'>
+              <div className='flex gap-4'>
+                <div className='flex-none'><BuildingOfficeIcon className='w-4 inline' /></div>
+                <div className='flex-1'>
+                  <div className='font-bold'>Kantor</div>
+                  <div className='text-slate-500 text-sm'>Jl Pembangunan no 20, Petojo Utara, Gambir, Kota Jakarta Pusat, DKI Jakarta</div>
+                </div>
+              </div>
+              <div className='flex gap-4'>
+                <div className='flex-none'><EnvelopeOpenIcon className='w-4 inline' /></div>
+                <div className='flex-1'>
+                  <div className='font-bold'>Email</div>
+                  <div className='text-slate-500 text-sm'>cs@literasiin.com</div>
+                </div>
+              </div>
+              <div className='flex gap-4'>
+                <div className='flex-none'><PhoneIcon className='w-4 inline' /></div>
+                <div className='flex-1'>
+                  <div className='font-bold'>Telepon</div>
+                  <div className='text-slate-500 text-sm'>+62 85156818651</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div className='w-full md:w-2/3 border rounded-lg p-4 space-y-4 bg-white'>
+            <div className='font-black text-2xl'>Kirim Pesan</div>
+            <div>
+              <FormProvider {...form}>
+                <ContactForm />
+              </FormProvider>
+            </div>
+            <div>
+              <button disabled={creator.isLoading} className='btn btn-sm btn-primary' onClick={form.handleSubmit(handleSubmit, handleSubmitError)}>Kirim</button>
+            </div>
+          </div>
+        </div>
+      </div>
     </Layout.Default>
   )
 }

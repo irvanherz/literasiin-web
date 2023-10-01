@@ -1,9 +1,8 @@
-import { CaretDownFilled, CaretUpFilled } from '@ant-design/icons'
-import { Button, Space, Tooltip } from 'antd'
+import { ArrowDownIcon, ArrowUpIcon } from '@heroicons/react/24/solid'
+import classNames from 'classnames'
 import useCurrentUser from 'hooks/useCurrentUser'
 import qs from 'qs'
 import { useMemo } from 'react'
-import { FormattedMessage } from 'react-intl'
 import { useMutation } from 'react-query'
 import { useLocation, useNavigate } from 'react-router-dom'
 import ArticlesService from 'services/Articles'
@@ -40,20 +39,16 @@ export default function ArticleVoteButton ({ article, context, afterUpdated }: A
   }
 
   const label = useMemo(() => {
-    if (context?.vote === 1) return <div><FormattedMessage defaultMessage='You have upvoted this post'/></div>
-    else if (context?.vote === -1) return <div><FormattedMessage defaultMessage='You have downvoted this post'/></div>
-    else return null
+    if (context?.vote === 1) return <div className='font-bold'>Kamu memberi reaksi positif artikel ini</div>
+    else if (context?.vote === -1) return <div className='font-bold'>Kamu memberi reaksi negatif artikel ini</div>
+    else return <div className='text-slate-400'>Kamu belum memberikan nilai</div>
   }, [context])
 
   return (
-    <Space>
-      <Tooltip title={<FormattedMessage defaultMessage='Upvote this article' />} >
-        <Button type={context?.vote === 1 ? 'primary' : 'default'} onClick={handleToggleUpvote} icon={<CaretUpFilled />}></Button>
-      </Tooltip>
-      <Tooltip title={<FormattedMessage defaultMessage='Downvote this article'/>} >
-        <Button type={context?.vote === -1 ? 'primary' : 'default'} danger={context?.vote === -1} onClick={handleToggleDownvote} icon={<CaretDownFilled />}></Button>
-      </Tooltip>
-      {label}
-    </Space>
+    <div className='inline-flex items-center gap-2'>
+      <button className={classNames('btn btn-sm btn-circle', context?.vote === 1 ? 'btn-primary' : '')} onClick={handleToggleUpvote}><ArrowUpIcon className='w-4' /></button>
+      <button className={classNames('btn btn-sm btn-circle', context?.vote === -1 ? 'btn-error' : '')} onClick={handleToggleDownvote}><ArrowDownIcon className='w-4' /></button>
+      <span>{label}</span>
+    </div>
   )
 }

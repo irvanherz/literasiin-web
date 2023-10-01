@@ -1,75 +1,97 @@
 /* eslint-disable prefer-promise-reject-errors */
-import { DatePicker, Form, Input, Select } from 'antd'
+import { InformationCircleIcon } from '@heroicons/react/24/solid'
+import classNames from 'classnames'
 import UsernameInput from 'components/shared/UsernameInput'
-import { useIntl } from 'react-intl'
+import { Controller, useFormContext } from 'react-hook-form'
 
 export default function SignupForm () {
-  const intl = useIntl()
-  const form = Form.useFormInstance()
-  const password = Form.useWatch('password', form)
-
-  const validatePasswordConfirmation = (_rule: any, value: string) => {
-    if (!value) return Promise.reject('Please confirm your password')
-    if (password !== value) return Promise.reject('Password confirmation does not match')
-    else return Promise.resolve()
-  }
+  const { register, watch, control, formState: { errors } } = useFormContext()
 
   return (
-    <Form.Provider>
-      <Form.Item
-        label={intl.formatMessage({ defaultMessage: 'Email' })}
-        name='email'
-        rules={[{ required: true, message: intl.formatMessage({ defaultMessage: 'Email is required!' }) }]}
-      >
-        <Input type="email" placeholder={intl.formatMessage({ defaultMessage: 'Email...' })} maxLength={255} />
-      </Form.Item>
-      <Form.Item
-        label={intl.formatMessage({ defaultMessage: 'Username' })}
-        name='username'
-        rules={[{ required: true, message: intl.formatMessage({ defaultMessage: 'Username is required!' }) }]}
-      >
-        <UsernameInput placeholder={intl.formatMessage({ defaultMessage: 'Username...' })} maxLength={255} />
-      </Form.Item>
-      <Form.Item
-        label={intl.formatMessage({ defaultMessage: 'Full name' })}
-        name='fullName'
-        rules={[{ required: true, message: intl.formatMessage({ defaultMessage: 'Full name is required!' }) }]}
-      >
-        <Input placeholder={intl.formatMessage({ defaultMessage: 'Full name...' })} maxLength={255} />
-      </Form.Item>
-      <Form.Item
-        label={intl.formatMessage({ defaultMessage: 'Gender' })}
-        name='gender'
-        rules={[{ required: true, message: intl.formatMessage({ defaultMessage: 'Gender is required!' }) }]}
-      >
-        <Select
-          options={[{ label: 'Male', value: 'male' }, { label: 'Female', value: 'female' }, { label: 'Other', value: 'other' }]}
-          placeholder={intl.formatMessage({ defaultMessage: 'Select gender...' })}
-          style={{ maxWidth: 300 }}
-        />
-      </Form.Item>
-      <Form.Item
-        label={intl.formatMessage({ defaultMessage: 'Date of birth' })}
-        name='dob'
-        rules={[{ required: true, message: intl.formatMessage({ defaultMessage: 'Date of birth is required!' }) }]}
-      >
-        <DatePicker placeholder={intl.formatMessage({ defaultMessage: 'Select date...' })} />
-      </Form.Item>
-      <Form.Item
-        label={intl.formatMessage({ defaultMessage: 'Password' })}
-        name='password'
-        rules={[{ required: true, message: intl.formatMessage({ defaultMessage: 'Password is required!' }) }]}
-      >
-        <Input type="password" placeholder={intl.formatMessage({ defaultMessage: 'Password...' })} maxLength={50} />
-      </Form.Item>
-      <Form.Item
-        label={intl.formatMessage({ defaultMessage: 'Confirm password' })}
-        name='passwordConfirmation'
-        dependencies={['password']}
-        rules={[{ required: true, message: intl.formatMessage({ defaultMessage: 'Please verify your password!' }), validator: validatePasswordConfirmation }]}
-      >
-        <Input type="password" placeholder={intl.formatMessage({ defaultMessage: 'Confirm your password...' })} maxLength={50}/>
-      </Form.Item>
-    </Form.Provider>
+    <form>
+      <div className="mb-2">
+        <label className="block text-gray-700 font-semibold mb-2">Email</label>
+        <div className='mb-1'>
+          <input
+            type='text'
+            className={classNames('input input-sm input-bordered w-full font-bold shadow-sm', errors.email && 'input-error')}
+            placeholder="Masukkan email..."
+            {...register('email', { required: { value: true, message: 'Email tidak boleh kosong' } })}
+          />
+        </div>
+        <div className='font-semibold min-h-[8px]'>
+          {errors.email && <p className='text-error flex items-center gap-1'><InformationCircleIcon className='w-4 inline'/> <span>{errors.email.message?.toString()}</span></p>}
+        </div>
+      </div>
+      <div className="mb-2">
+        <label className="block text-gray-700 font-semibold mb-2">Username</label>
+        <div className='mb-1'>
+          <Controller
+            control={control}
+            name="username"
+            rules={{ required: { value: true, message: 'Username tidak boleh kosong' } }}
+            render={({
+              field: { onChange, onBlur, value, name, ref },
+              fieldState: { invalid, isTouched, isDirty, error },
+              formState
+            }) => (
+              <UsernameInput
+                className={classNames('input input-sm input-bordered w-full font-bold shadow-sm', errors.username && 'input-error')}
+                placeholder="Masukkan username..."
+                maxLength={255}
+                onBlur={onBlur} // notify when input is touched
+                onChange={onChange}
+                value={value}
+              />
+            )}
+          />
+        </div>
+        <div className='font-semibold min-h-[8px]'>
+          {errors.username && <p className='text-error flex items-center gap-1'><InformationCircleIcon className='w-4 inline'/> <span>{errors.username.message?.toString()}</span></p>}
+        </div>
+      </div>
+      <div className="mb-2">
+        <label className="block text-gray-700 font-semibold mb-2">Nama lengkap</label>
+        <div className='mb-1'>
+          <input
+            type='text'
+            className={classNames('input input-sm input-bordered w-full font-bold shadow-sm', errors.fullName && 'input-error')}
+            placeholder="Masukkan nama lengkap..."
+            {...register('fullName', { required: { value: true, message: 'Nama lengkap tidak boleh kosong' } })}
+          />
+        </div>
+        <div className='font-semibold min-h-[8px]'>
+          {errors.fullName && <p className='text-error flex items-center gap-1'><InformationCircleIcon className='w-4 inline'/> <span>{errors.fullName.message?.toString()}</span></p>}
+        </div>
+      </div>
+      <div className="mb-2">
+        <label className="block text-gray-700 font-semibold mb-2">Kata sandi</label>
+        <div className='mb-1'>
+          <input
+            type='password'
+            className={classNames('input input-sm input-bordered w-full font-bold shadow-sm', errors.password && 'input-error')}
+            placeholder="Masukkan kata sandi..."
+            {...register('password', { required: { value: true, message: 'Kata sandi tidak boleh kosong' } })}
+          />
+        </div>
+        <div className='font-semibold min-h-[8px]'>
+          {errors.password && <p className='text-error flex items-center gap-1'><InformationCircleIcon className='w-4 inline'/> <span>{errors.password.message?.toString()}</span></p>}
+        </div>
+      </div>
+      <div className="mb-2">
+        <label className="block text-gray-700 font-semibold mb-2">Konfirmasi kata sandi</label>
+        <div className='mb-1'>
+          <input
+            type='password'
+            className={classNames('input input-sm input-bordered w-full font-bold shadow-sm', errors.passwordConfirmation && 'input-error')}
+            placeholder="Masukkan kembali kata sandi..."
+            {...register('passwordConfirmation', { required: { value: true, message: 'Konfirmasi kata sandi kamu' }, validate: (val: string) => watch('password') === val ? true : 'Kata sandi tidak sama' })}
+          />
+        </div>
+        <div className='font-semibold min-h-[8px]'>
+          {errors.passwordConfirmation && <p className='text-error flex items-center gap-1'><InformationCircleIcon className='w-4 inline'/> <span>{errors.passwordConfirmation.message?.toString()}</span></p>}
+        </div>
+      </div>
+    </form>
   )
 }

@@ -1,23 +1,79 @@
-import { HomeOutlined, LeftOutlined, PauseOutlined, RightOutlined, StopFilled } from '@ant-design/icons'
-import { Card, Col, Row, Space } from 'antd'
-import ContentGateway from 'components/ContentGateway'
+/* eslint-disable no-unused-vars */
+import { ArrowLeftIcon, ArrowRightIcon, HomeIcon, PauseIcon, StopIcon } from '@heroicons/react/24/solid'
 import Layout from 'components/Layout'
+import PageHeader from 'components/PageHeader'
 import StoryChapterShareSegment from 'components/StoryChapterShareSegment'
 import useStory from 'hooks/useStory'
 import useStoryChapter from 'hooks/useStoryChapter'
 import useStoryChapterContext from 'hooks/useStoryChapterContext'
 import analytics from 'libs/analytics'
+import { esimateReadingTimeInMinutes } from 'libs/common'
 import { contentIdFromSlug, slugifyContentId } from 'libs/slug'
-import { useEffect, useMemo } from 'react'
+import { DEFAULT_IMAGE } from 'libs/variables'
+import Media from 'models/Media'
+import { useEffect } from 'react'
 import { Helmet } from 'react-helmet'
-import { FormattedMessage } from 'react-intl'
 import { useMutation } from 'react-query'
 import { Link, useParams } from 'react-router-dom'
 import StoriesService from 'services/Stories'
-import StoryChapterComments from './StoryChapterComments'
-import StoryChapterWriter from './StoryChapterWriter'
-import StoryRecommendations from './StoryRecommendations'
+import ChapterComments from './ChapterComments'
+import RecommendedStories from './RecommendedStories'
 import VoteButton from './VoteButton'
+import Writers from './Writers'
+
+type ChapterNavProps = {
+  story: any
+  chapter: any
+  context: any
+}
+
+function ChapterNav({ story, chapter, context }: ChapterNavProps) {
+  const res: any[] = []
+  if (context?.prevChapter) {
+    res.push(
+      <Link to={`/stories/chapters/${context?.prevChapter?.id}`} className='flex-1 p-4'>
+        <div><ArrowLeftIcon className='w-4 inline' /></div>
+        <div className='text-sm'>{context?.prevChapter?.title}</div>
+      </Link>
+    )
+  } else {
+    res.push(
+      <Link to={`/stories/${slugifyContentId(story)}`} className='flex-1 p-4'>
+        <div><HomeIcon className='w-4 inline' /></div>
+        <div className='text-sm'>Kembali ke daftar cerita</div>
+      </Link>
+    )
+  }
+  if (context?.nextChapter) {
+    res.push(
+      <Link to={`/stories/chapters/${context.nextChapter?.id}`} className='flex-1 p-4'>
+        <div><ArrowRightIcon className='w-4 inline' /></div>
+        <div className='text-sm'>{context.nextChapter?.title}</div>
+      </Link>
+    )
+  } else {
+    if (story?.hasCompleted) {
+      res.push(
+        <div className='flex-1 text-slate-500 p-4'>
+          <div><StopIcon className='w-4 inline' /></div>
+          <div className='text-sm'>Tamat</div>
+        </div>
+      )
+    } else {
+      res.push(
+        <div className='flex-1 text-slate-500 p-4'>
+          <div><PauseIcon className='w-4 inline' /></div>
+          <div className='text-sm'>Bersambung...</div>
+        </div>
+      )
+    }
+  }
+  return (
+    <div className='flex divide-x text-center border-t'>
+      {res}
+    </div>
+  )
+}
 
 export default function StoryChapterDetails () {
   const params = useParams()
@@ -43,91 +99,70 @@ export default function StoryChapterDetails () {
     })
   }, [chapter])
 
-  const navActions = useMemo(() => {
-    const res: any[] = []
-    if (context?.prevChapter) {
-      res.push(
-        <Link to={`/stories/chapters/${context?.prevChapter?.id}`} className='story-chapter-nav-link'>
-          <div className='story-chapter-nav-title'><LeftOutlined /></div>
-          <div className='story-chapter-nav-subtitle'>{context?.prevChapter?.title}</div>
-        </Link>
-      )
-    } else {
-      res.push(
-        <Link to={`/stories/${slugifyContentId(story)}`} className='story-chapter-nav-link'>
-          <div className='story-chapter-nav-title'><HomeOutlined /></div>
-          <div className='story-chapter-nav-subtitle'><FormattedMessage defaultMessage='Back to story list' /></div>
-        </Link>
-      )
-    }
-    if (context?.nextChapter) {
-      res.push(
-        <Link to={`/stories/chapters/${context.nextChapter?.id}`} className='story-chapter-nav-link'>
-          <div className='story-chapter-nav-title'><RightOutlined /></div>
-          <div className='story-chapter-nav-subtitle'>{context.nextChapter?.title}</div>
-        </Link>
-      )
-    } else {
-      if (story?.hasCompleted) {
-        res.push(
-          <div className='story-chapter-nav-link story-chapter-nav-link-disabled'>
-            <div className='story-chapter-nav-title'><StopFilled /></div>
-            <div className='story-chapter-nav-subtitle'><FormattedMessage defaultMessage='End of story' /></div>
-          </div>
-        )
-      } else {
-        res.push(
-          <div className='story-chapter-nav-link story-chapter-nav-link-disabled'>
-            <div className='story-chapter-nav-title'><PauseOutlined /></div>
-            <div className='story-chapter-nav-subtitle'><FormattedMessage defaultMessage='To be continued' />...</div>
-          </div>
-        )
-      }
-    }
-    return res
-  }, [story, context])
+  const cover = new Media(story?.cover)
 
   return (
-    <Layout.Default>
-      <ContentGateway data={data?.data} status={status} error={error}>
-        <Layout.Scaffold
-          bodyStyle={{ padding: '16px 0' }}
-          title={story?.title}
-          description={chapter?.title}
-          actions={[
-            <VoteButton key='vote' chapter={chapter} context={context} afterUpdated={refetchContext} />
-          ]}
-      >
-          <Row gutter={[16, 16]}>
-            <Col xs={24} sm={24} md={12} lg={16} xl={16} xxl={16}>
-              <Space direction='vertical' style={{ width: '100%' }}>
-                <Card
-                  actions={navActions}
-                >
-                  <div dangerouslySetInnerHTML={{ __html: chapter?.content || '' }}></div>
-                </Card>
-                <StoryChapterComments story={story} chapter={chapter} />
-              </Space>
-            </Col>
-            <Col xs={24} sm={24} md={12} lg={8} xl={8} xxl={8}>
-              <Space direction='vertical' style={{ width: '100%' }}>
-                <StoryChapterWriter story={story} />
-                {story
-                  ? (
-                    <Card>
-                      <StoryChapterShareSegment story={story} chapter={chapter} />
-                    </Card>
-                    )
-                  : null}
-
-              </Space>
-            </Col>
-            <Col span={24}>
-              <StoryRecommendations />
-            </Col>
-          </Row>
-        </Layout.Scaffold>
-      </ContentGateway>
+    <Layout.Default
+      beforeContent={
+        <PageHeader
+          title={
+            <div className='flex font-normal gap-4'>
+              <div className='w-16'>
+                <div className='aspect-w-2 aspect-h-3 overflow-hidden rounded-md shadow'>
+                  <img src={cover.md?.url || DEFAULT_IMAGE} className='object-cover' />
+                </div>
+              </div>
+              <div className='flex-1'>
+                <div className='font-black'>{story?.title}</div>
+                <div className='text-sm text-slate-600'>{chapter?.title}</div>
+              </div>
+            </div>
+          }
+        />
+      }
+    >
+      <div>
+        <div className='bg-slate-50 border-b'>
+          <div className='container py-2 flex'>
+            <div className='flex-1 inline-flex items-center'>
+              <span className='font-bold'>{esimateReadingTimeInMinutes(chapter?.content)} menit membaca</span>&nbsp;&nbsp;&middot;&nbsp;&nbsp;
+              <span className='text-slate-600'>{chapter?.meta?.numReads} kali dibaca</span>&nbsp;&nbsp;&middot;&nbsp;&nbsp;
+              <span className='text-slate-600'>{chapter?.meta?.numVotes} suka</span>
+            </div>
+            <div className='flex-none'>
+              <VoteButton chapter={chapter} context={context} afterUpdated={refetchContext} />
+            </div>
+          </div>
+        </div>
+        <div className='container flex flex-col md:flex-row py-4 gap-4'>
+          <div className='w-full md:w-8/12 flex flex-col gap-4'>
+            <div className='flex-1 rounded-lg shadow bg-white'>
+              <div className='p-4 flex-1'>
+                <div dangerouslySetInnerHTML={{ __html: chapter?.content || '' }} />
+              </div>
+              <div className='flex-none'>
+                <ChapterNav story={story} chapter={chapter} context={context} />
+              </div>
+            </div>
+            <div className='flex-1 rounded-lg shadow bg-white p-4'>
+              <ChapterComments chapter={chapter} />
+            </div>
+          </div>
+          <div className='w-full md:w-4/12 space-y-4'>
+            <div className='space-y-4 md:sticky md:top-[72px]'>
+              <div className='bg-white rounded-lg shadow p-4'>
+                <StoryChapterShareSegment story={story} chapter={chapter} />
+              </div>
+              <Writers story={story} />
+            </div>
+          </div>
+        </div>
+        <div className='border-t bg-slate-50'>
+          <div className='container py-4'>
+            <RecommendedStories />
+          </div>
+        </div>
+      </div>
       <Helmet>
         <title>{chapter?.title ? `${chapter.title} - Literasiin` : 'Literasiin'}</title>
       </Helmet>

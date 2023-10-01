@@ -1,5 +1,6 @@
-import { Layout, theme } from 'antd'
-import Color from 'color'
+/* eslint-disable no-unused-vars */
+import { Layout } from 'antd'
+import classNames from 'classnames'
 import ScrollToTop from 'components/utils/ScrollToTop'
 import { CSSProperties, ReactNode } from 'react'
 import styled from 'styled-components'
@@ -29,30 +30,32 @@ const StyledLayout = styled(Layout)`
   `
 
 type LayoutDefaultProps = {
-  children: ReactNode,
-  searchComponent?: ReactNode,
+  children: ReactNode
+  contentContainerClassName?: string
+  searchComponent?: ReactNode
+  beforeContent?: ReactNode
+  beforeContentContainerClassName?: string
+  afterContent?:ReactNode
+  afterContentContainerClassName?: string
   style?: CSSProperties
+  className?: string
   showUserMenu?: boolean
   contentContainerStyle?: CSSProperties
 }
 
-export default function LayoutDefault ({ children, searchComponent, style, contentContainerStyle, showUserMenu = true }: LayoutDefaultProps) {
-  const { token } = theme.useToken()
-
+export default function LayoutDefault ({ children, contentContainerClassName, beforeContent, beforeContentContainerClassName, afterContent, afterContentContainerClassName, searchComponent, style, className, contentContainerStyle, showUserMenu = true }: LayoutDefaultProps) {
   return (
-    <StyledLayout style={{ color: token.colorTextBase, ...style }}>
-      <div className='layout-default-top'>
-        <Layout.Header className='layout-default-header' style={{ background: Color(token.colorBgContainer).alpha(0.75).hexa(), borderBottom: `1px solid ${token.colorSplit}` }}>
-          <Header searchComponent={searchComponent} showUserMenu={showUserMenu} />
-        </Layout.Header>
-        <Layout.Content className='layout-default-content' style={contentContainerStyle}>
+    <div style={style} className={classNames('bg-slate-100', className)}>
+      <div className='min-h-screen flex flex-col'>
+        <Header searchComponent={searchComponent} showUserMenu={showUserMenu} />
+        <div className={classNames('flex-none', beforeContentContainerClassName)}>{beforeContent}</div>
+        <div className={classNames('flex-1', contentContainerClassName)} style={contentContainerStyle}>
           {children}
-        </Layout.Content>
+        </div>
+        <div className={classNames('flex-none', afterContentContainerClassName)}>{afterContent}</div>
       </div>
-      <Layout.Footer className='layoout-default-footer' style={{ background: token.colorBgContainer }}>
-        <Footer />
-      </Layout.Footer>
+      <Footer />
       <ScrollToTop />
-    </StyledLayout>
+    </div>
   )
 }

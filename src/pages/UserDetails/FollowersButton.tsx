@@ -1,4 +1,4 @@
-import { Avatar, Button, List, Modal } from 'antd'
+import { Avatar, List, Modal } from 'antd'
 import { DEFAULT_PHOTO } from 'libs/variables'
 import { useState } from 'react'
 import InfiniteScroll from 'react-infinite-scroll-component'
@@ -66,10 +66,10 @@ export default function FollowersButton ({ user, context }: FollowersButtonProps
 
   return (
     <>
-      <Button onClick={handleOpen} type='ghost' style={{ display: 'inline-block', height: 'auto' }}>
+      <button onClick={handleOpen} className='btn btn-ghost'>
         <div>{context?.numFollowers || 0}</div>
         <div><FormattedMessage defaultMessage="Followers" /></div>
-      </Button>
+      </button>
       <Modal
         centered
         open={open}

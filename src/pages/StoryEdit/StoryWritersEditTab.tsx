@@ -1,12 +1,17 @@
-import { UserAddOutlined, UserDeleteOutlined } from '@ant-design/icons'
-import { Button, ConfigProvider, Empty, List, message, Modal } from 'antd'
-import { FormattedMessage } from 'react-intl'
+import { UserAddOutlined } from '@ant-design/icons'
+import { UserMinusIcon } from '@heroicons/react/24/solid'
+import { Button, Modal, Tooltip, message } from 'antd'
 import { useMutation, useQuery } from 'react-query'
 import StoriesService from 'services/Stories'
 import InviteWriterButton from './InviteWriterButton'
 
-type StoryWriterItemProps = { story: any, writer: any, afterDeleted?: () => void}
-function StoryWriterItem ({ story, writer, afterDeleted }:StoryWriterItemProps) {
+type WriterProps = {
+  story: any
+  writer: any
+  afterDeleted?: () => void
+}
+
+function Writer ({ story, writer, afterDeleted }: WriterProps) {
   const connId = writer?.meta?.id
   const remover = useMutation(() => StoriesService.Writers.deleteById(connId))
 
@@ -25,15 +30,20 @@ function StoryWriterItem ({ story, writer, afterDeleted }:StoryWriterItemProps) 
       }
     })
   }
+
   return (
-    <List.Item
-      extra={writer?.meta?.role !== 'owner' ? <Button shape='circle' danger icon={<UserDeleteOutlined />} onClick={handleDelete}></Button> : <span>Owner</span>}
-    >
-      <List.Item.Meta
-        title={writer?.fullName}
-        description={writer?.meta?.status || '-'}
-      />
-    </List.Item>
+    <div className='bg-white p-4 rounded-lg shadow'>
+      <div className='flex items-center'>
+        <div className='flex-1'>
+          <div className='font-black inline-flex items-center gap-4'>
+            <span>{writer.fullName}</span>
+            {writer?.meta?.role !== 'owner' && <Tooltip title="Hapus dari daftar"><button className='btn btn-xs btn-circle' onClick={handleDelete}><UserMinusIcon className='w-4' /></button></Tooltip>}
+          </div>
+          <div className='text-slate-500'>{writer.meta?.status}</div>
+        </div>
+        <div className='flex-none text-slate-600'>{writer.meta?.role}</div>
+      </div>
+    </div>
   )
 }
 
@@ -45,26 +55,15 @@ export default function StoryWritersEditTab ({ story }: StoryWritersEditTabProps
   const writers: any[] = data?.data || []
 
   return (
-    <ConfigProvider
-      renderEmpty={() => (
-        <Empty
-          image={Empty.PRESENTED_IMAGE_SIMPLE}
-          description={<FormattedMessage defaultMessage="This story has no writers" />}
-      />
-      )}
-    >
-      <List
-        dataSource={writers}
-        renderItem={writer => <StoryWriterItem story={story} writer={writer} afterDeleted={refetch} />}
-        footer={
-          <div style={{ textAlign: 'center' }}>
-            <InviteWriterButton story={story} afterCreated={refetch}>
-              <Button icon={<UserAddOutlined />}><FormattedMessage defaultMessage="Invite Other Writer" /></Button>
-            </InviteWriterButton>
-          </div>
-        }
-      />
-    </ConfigProvider>
-
+    <div className='space-y-4'>
+      <div className='space-y-2'>
+        {writers.map(writer => <Writer key={writer.id} story={story} writer={writer} afterDeleted={refetch} />)}
+      </div>
+      <div className='bg-white p-4 rounded-lg shadow text-center'>
+        <InviteWriterButton story={story} afterCreated={refetch}>
+          <Button icon={<UserAddOutlined />}>Undang Penulis Lain</Button>
+        </InviteWriterButton>
+      </div>
+    </div>
   )
 }

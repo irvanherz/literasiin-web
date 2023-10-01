@@ -1,50 +1,50 @@
-import { Card, List, Space, Typography } from 'antd'
 import useArticles from 'hooks/useArticles'
 import useConfigurationByName from 'hooks/useConfigurationByName'
-import { FormattedMessage } from 'react-intl'
+import { slugifyContentId } from 'libs/slug'
+import { DEFAULT_PHOTO } from 'libs/variables'
+import Media from 'models/Media'
 import { Link } from 'react-router-dom'
-import styled from 'styled-components'
 
 type AnnouncementListItemProps = {announcement: any}
 function AnnouncementListItem ({ announcement }: AnnouncementListItemProps) {
+  const image = new Media(announcement?.image)
   return (
-    <List.Item>
-      <Link to={`/articles/${announcement.id}`}>
-        <Card style={{ width: '100%' }}>
-          <Typography.Paragraph style={{ margin: 0 }} ellipsis={{ rows: 1 }}>{announcement.title}</Typography.Paragraph>
-        </Card>
-      </Link>
-    </List.Item>
+    <Link to={`/articles/${slugifyContentId(announcement)}`} className='bg-emerald-500 rounded-lg text-white p-2 hover:bg-emerald-800'>
+      <div className='flex gap-2'>
+        <div className='flex-none'>
+          <div className="avatar shadow-md">
+            <div className="w-12 rounded">
+              <img src={image.md?.url || DEFAULT_PHOTO} />
+            </div>
+          </div>
+        </div>
+        <div className='flex-1'>
+          <div className='font-bold line-clamp-1'>{announcement.title}</div>
+          <div className='text-sm line-clamp-1'>{announcement.description}</div>
+        </div>
+      </div>
+    </Link>
   )
 }
 
-const AnnouncementsSectionWrapper = styled(Card)`
-.ant-card-head-title {
-  padding: 16px 0;
-}
-`
 export default function AnnouncementsSection () {
   const { data: configData } = useConfigurationByName('profile-announcements-params')
   const params = configData?.data?.value
   const { data } = useArticles(params, { enabled: !!params })
-  const articles = data?.data || []
+  const articles: any[] = data?.data || []
   return articles?.length
     ? (
-      <AnnouncementsSectionWrapper
-        title={
-          <Space direction='vertical' style={{ width: '100%', padding: '16px, 0' }}>
-            <div style={{ fontSize: '1.6em', fontWeight: 900 }}><FormattedMessage defaultMessage="Announcements" /></div>
-            <div><FormattedMessage defaultMessage="Latest information from Literasiin" /></div>
-          </Space>
-        }
-      >
-        <List
-          dataSource={articles}
-          grid={{ gutter: 16, xs: 1, sm: 2, md: 3, lg: 4, xl: 4, xxl: 4 }}
-          renderItem={announcement => <AnnouncementListItem announcement={announcement} />}
-        />
-      </AnnouncementsSectionWrapper>
-
+      <div className='bg-emerald-700 py-4'>
+        <div className='container space-y-4'>
+          <div>
+            <div className='text-2xl text-white font-black'>Pengumuman</div>
+            <div className='text-white font-bold'>Info terbaru literasiin</div>
+          </div>
+          <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4'>
+            {articles.map(article => <AnnouncementListItem key={article.id} announcement={article} />)}
+          </div>
+        </div>
+      </div>
       )
     : null
 }

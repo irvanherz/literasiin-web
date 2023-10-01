@@ -391,7 +391,7 @@ export default function StoryEditorToolbarPlugin (): JSX.Element {
   }, [activeEditor])
 
   return (
-    <div className="toolbar">
+    <div className="toolbar adaptive-scroll rounded-t-lg">
       <button
         disabled={!canUndo || !isEditable}
         onClick={() => {
@@ -576,7 +576,7 @@ export default function StoryEditorToolbarPlugin (): JSX.Element {
         </DropDownItem>
       </DropDown>
       <Divider />
-      <DropDown
+      {/* <DropDown
         disabled={!isEditable}
         buttonLabel="Align"
         buttonIconClassName="icon left-align"
@@ -598,7 +598,7 @@ export default function StoryEditorToolbarPlugin (): JSX.Element {
           <i className="icon paraphraser" />
           <span className="text">AI Paraphrase</span>
         </DropDownItem>
-      </DropDown>
+      </DropDown> */}
     </div>
   )
 }

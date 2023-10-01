@@ -1,7 +1,5 @@
-import { SettingFilled } from '@ant-design/icons'
-import { Button, Card, Space } from 'antd'
+import { ArrowRightIcon } from '@heroicons/react/24/solid'
 import useCurrentUser from 'hooks/useCurrentUser'
-import { FormattedMessage } from 'react-intl'
 import { useQuery } from 'react-query'
 import { Link } from 'react-router-dom'
 import WalletsService from 'services/Wallets'
@@ -20,19 +18,17 @@ export default function WalletCard ({ user }: WalletCardProps) {
 
   return (currentUser && canLoad && wallet)
     ? (
-      <Card>
-        <Space style={{ width: '100%', justifyContent: 'space-between' }}>
-          <div>
-            <div style={{ fontWeight: 800 }}>{formattedBalance}</div>
-            <div><FormattedMessage defaultMessage='coins' /></div>
-          </div>
-          <div>
-            <Link to='/wallets'>
-              <Button icon={<SettingFilled />} shape='circle'/>
-            </Link>
-          </div>
-        </Space>
-      </Card>
+      <div className='shadow-md rounded-lg bg-emerald-700 text-white px-4 py-2 flex items-center'>
+        <div className='flex-1'>
+          <div className='font-black text-2xl'>{formattedBalance}</div>
+          <div className='text-sm'>KOIN</div>
+        </div>
+        <div className='flex-none'>
+          <Link to='/wallets'>
+            <button className='btn btn-sm btn-circle btn-ghost'><ArrowRightIcon className='w-4' /></button>
+          </Link>
+        </div>
+      </div>
       )
     : null
 }

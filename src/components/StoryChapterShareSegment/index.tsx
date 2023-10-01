@@ -10,10 +10,10 @@ type StoryChapterShareSegmentProps = {
 
 export default function StoryChapterShareSegment ({ story, chapter }: StoryChapterShareSegmentProps) {
   const storyUrl = `${HOME_URL}/stories/chapters/${slugifyContentId(chapter)}`
-  const whatsappUrl = 'https://api.whatsapp.com/send' + qs.stringify({ text: `Baca cerita "${story.title}: ${chapter.title}" di Literasiin. \n${storyUrl}` }, { addQueryPrefix: true })
-  const facebookUrl = 'https://www.facebook.com/sharer/sharer.php' + qs.stringify({ u: storyUrl, quote: `Baca cerita "${story.title}: ${chapter.title}" di Literasiin` }, { addQueryPrefix: true })
-  const twitterUrl = 'https://twitter.com/intent/tweet' + qs.stringify({ text: `Baca cerita "${story.title}: ${chapter.title}" di Literasiin. ${storyUrl}` }, { addQueryPrefix: true })
-  const mailUrl = 'mailto:' + qs.stringify({ subject: `Baca cerita "${story.title}: ${chapter.title}"`, body: `Baca cerita "${story.title}: ${chapter.title}" di Literasiin. \n${storyUrl}` }, { addQueryPrefix: true })
+  const whatsappUrl = 'https://api.whatsapp.com/send' + qs.stringify({ text: `Baca cerita "${story?.title}: ${chapter?.title}" di Literasiin. \n${storyUrl}` }, { addQueryPrefix: true })
+  const facebookUrl = 'https://www.facebook.com/sharer/sharer.php' + qs.stringify({ u: storyUrl, quote: `Baca cerita "${story?.title}: ${chapter?.title}" di Literasiin` }, { addQueryPrefix: true })
+  const twitterUrl = 'https://twitter.com/intent/tweet' + qs.stringify({ text: `Baca cerita "${story?.title}: ${chapter?.title}" di Literasiin. ${storyUrl}` }, { addQueryPrefix: true })
+  const mailUrl = 'mailto:' + qs.stringify({ subject: `Baca cerita "${story?.title}: ${chapter?.title}"`, body: `Baca cerita "${story?.title}: ${chapter?.title}" di Literasiin. \n${storyUrl}` }, { addQueryPrefix: true })
 
   const handleCopyLink = (e: any) => {
     e?.preventDefault()

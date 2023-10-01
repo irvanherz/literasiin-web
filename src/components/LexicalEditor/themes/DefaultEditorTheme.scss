@@ -9,14 +9,17 @@
 .LiterasiinTheme__ltr {
   text-align: left;
 }
+
 .LiterasiinTheme__rtl {
   text-align: right;
 }
+
 .LiterasiinTheme__paragraph {
   margin: 0;
-  margin-bottom: 12px;
+  margin-bottom: 8px;
   position: relative;
 }
+
 .LiterasiinTheme__quote {
   margin: 0;
   margin-left: 20px;
@@ -28,67 +31,78 @@
   border-left-style: solid;
   padding-left: 16px;
 }
+
 .LiterasiinTheme__h1 {
-  font-size: 18px;
-  /* color: rgba(0,0,0,0.85); */
-  font-weight: 800;
-  margin: 0;
+  @apply text-xl;
+  @apply font-black;
 }
+
 .LiterasiinTheme__h2 {
-  font-size: 16px;
-  /* color: rgba(0,0,0,0.85); */
-  font-weight: 700;
-  margin: 0;
+  @apply text-lg;
+  @apply font-black;
 }
+
 .LiterasiinTheme__h3 {
-  font-size: 14px;
-  /* color: rgba(0,0,0,0.85); */
-  margin: 0;
+  @apply text-base;
+  @apply font-black;
 }
+
 .LiterasiinTheme__indent {
   --lexical-indent-base-value: 40px;
 }
+
 .LiterasiinTheme__textBold {
   font-weight: bold;
 }
+
 .LiterasiinTheme__textItalic {
   font-style: italic;
 }
+
 .LiterasiinTheme__textUnderline {
   text-decoration: underline;
 }
+
 .LiterasiinTheme__textStrikethrough {
   text-decoration: line-through;
 }
+
 .LiterasiinTheme__textUnderlineStrikethrough {
   text-decoration: underline line-through;
 }
+
 .LiterasiinTheme__textSubscript {
   font-size: 0.8em;
   vertical-align: sub !important;
 }
+
 .LiterasiinTheme__textSuperscript {
   font-size: 0.8em;
   vertical-align: super;
 }
+
 .LiterasiinTheme__textCode {
   /* background-color: rgb(240, 242, 245); */
   padding: 1px 0.25rem;
   font-family: Menlo, Consolas, Monaco, monospace;
   font-size: 94%;
 }
+
 .LiterasiinTheme__hashtag {
   background-color: rgba(88, 144, 255, 0.15);
   border-bottom: 1px solid rgba(88, 144, 255, 0.3);
 }
+
 .LiterasiinTheme__link {
   color: rgb(33, 111, 219);
   text-decoration: none;
 }
+
 .LiterasiinTheme__link:hover {
   text-decoration: underline;
   cursor: pointer;
 }
+
 .LiterasiinTheme__code {
   /* background-color: rgb(240, 242, 245); */
   font-family: Menlo, Consolas, Monaco, monospace;
@@ -103,6 +117,7 @@
   position: relative;
   tab-size: 2;
 }
+
 .LiterasiinTheme__code:before {
   content: attr(data-gutter);
   position: absolute;
@@ -116,6 +131,7 @@
   text-align: right;
   min-width: 25px;
 }
+
 .LiterasiinTheme__table {
   border-collapse: collapse;
   border-spacing: 0;
@@ -125,9 +141,11 @@
   width: calc(100% - 25px);
   margin: 30px 0;
 }
+
 .LiterasiinTheme__tableSelected {
   outline: 2px solid rgb(60, 132, 244);
 }
+
 .LiterasiinTheme__tableCell {
   /* border: 1px solid #bbb; */
   min-width: 75px;
@@ -138,6 +156,7 @@
   cursor: default;
   outline: none;
 }
+
 .LiterasiinTheme__tableCellSortedIndicator {
   display: block;
   opacity: 0.5;
@@ -148,6 +167,7 @@
   height: 4px;
   background-color: #999;
 }
+
 .LiterasiinTheme__tableCellResizer {
   position: absolute;
   right: -4px;
@@ -157,13 +177,16 @@
   z-index: 10;
   top: 0;
 }
+
 .LiterasiinTheme__tableCellHeader {
   background-color: #f2f3f5;
   text-align: start;
 }
+
 .LiterasiinTheme__tableCellSelected {
   background-color: #c9dbf0;
 }
+
 .LiterasiinTheme__tableCellPrimarySelected {
   border: 2px solid rgb(60, 132, 244);
   display: block;
@@ -174,10 +197,12 @@
   top: -1px;
   z-index: 2;
 }
+
 .LiterasiinTheme__tableCellEditing {
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.4);
   border-radius: 3px;
 }
+
 .LiterasiinTheme__tableAddColumns {
   position: absolute;
   top: 0;
@@ -189,6 +214,7 @@
   border: 0;
   cursor: pointer;
 }
+
 .LiterasiinTheme__tableAddColumns:after {
   background-image: url(../images/icons/plus.svg);
   background-size: contain;
@@ -203,9 +229,11 @@
   height: 100%;
   opacity: 0.4;
 }
+
 .LiterasiinTheme__tableAddColumns:hover {
   background-color: #c9dbf0;
 }
+
 .LiterasiinTheme__tableAddRows {
   position: absolute;
   bottom: -25px;
@@ -217,6 +245,7 @@
   border: 0;
   cursor: pointer;
 }
+
 .LiterasiinTheme__tableAddRows:after {
   background-image: url(../images/icons/plus.svg);
   background-size: contain;
@@ -231,17 +260,21 @@
   height: 100%;
   opacity: 0.4;
 }
+
 .LiterasiinTheme__tableAddRows:hover {
   background-color: #c9dbf0;
 }
+
 @keyframes table-controls {
   0% {
     opacity: 0;
   }
+
   100% {
     opacity: 1;
   }
 }
+
 .LiterasiinTheme__tableCellResizeRuler {
   display: block;
   position: absolute;
@@ -250,6 +283,7 @@
   height: 100%;
   top: 0;
 }
+
 .LiterasiinTheme__tableCellActionButtonContainer {
   display: block;
   right: 5px;
@@ -259,6 +293,7 @@
   width: 20px;
   height: 20px;
 }
+
 .LiterasiinTheme__tableCellActionButton {
   background-color: #eee;
   display: block;
@@ -269,50 +304,60 @@
   color: #222;
   cursor: pointer;
 }
+
 .LiterasiinTheme__tableCellActionButton:hover {
   background-color: #ddd;
 }
+
 .LiterasiinTheme__characterLimit {
   display: inline;
   background-color: #ffbbbb !important;
 }
+
 .LiterasiinTheme__ol1 {
   padding: 0;
   margin: 0;
   list-style-position: inside;
 }
+
 .LiterasiinTheme__ol2 {
   padding: 0;
   margin: 0;
   list-style-type: upper-alpha;
   list-style-position: inside;
 }
+
 .LiterasiinTheme__ol3 {
   padding: 0;
   margin: 0;
   list-style-type: lower-alpha;
   list-style-position: inside;
 }
+
 .LiterasiinTheme__ol4 {
   padding: 0;
   margin: 0;
   list-style-type: upper-roman;
   list-style-position: inside;
 }
+
 .LiterasiinTheme__ol5 {
   padding: 0;
   margin: 0;
   list-style-type: lower-roman;
   list-style-position: inside;
 }
+
 .LiterasiinTheme__ul {
   padding: 0;
   margin: 0;
   list-style-position: inside;
 }
+
 .LiterasiinTheme__listItem {
   margin: 0 32px;
 }
+
 .LiterasiinTheme__listItemChecked,
 .LiterasiinTheme__listItemUnchecked {
   position: relative;
@@ -323,9 +368,11 @@
   list-style-type: none;
   outline: none;
 }
+
 .LiterasiinTheme__listItemChecked {
   text-decoration: line-through;
 }
+
 .LiterasiinTheme__listItemUnchecked:before,
 .LiterasiinTheme__listItemChecked:before {
   content: '';
@@ -338,26 +385,31 @@
   background-size: cover;
   position: absolute;
 }
+
 .LiterasiinTheme__listItemUnchecked[dir='rtl']:before,
 .LiterasiinTheme__listItemChecked[dir='rtl']:before {
   left: auto;
   right: 0;
 }
+
 .LiterasiinTheme__listItemUnchecked:focus:before,
 .LiterasiinTheme__listItemChecked:focus:before {
   box-shadow: 0 0 0 2px #a6cdfe;
   border-radius: 2px;
 }
+
 .LiterasiinTheme__listItemUnchecked:before {
   border: 1px solid #999;
   border-radius: 2px;
 }
+
 .LiterasiinTheme__listItemChecked:before {
   border: 1px solid rgb(61, 135, 245);
   border-radius: 2px;
   background-color: #3d87f5;
   background-repeat: no-repeat;
 }
+
 .LiterasiinTheme__listItemChecked:after {
   content: '';
   cursor: pointer;
@@ -373,57 +425,73 @@
   transform: rotate(45deg);
   border-width: 0 2px 2px 0;
 }
+
 .LiterasiinTheme__nestedListItem {
   list-style-type: none;
 }
+
 .LiterasiinTheme__nestedListItem:before,
 .LiterasiinTheme__nestedListItem:after {
   display: none;
 }
+
 .LiterasiinTheme__tokenComment {
   color: slategray;
 }
+
 .LiterasiinTheme__tokenPunctuation {
   color: #999;
 }
+
 .LiterasiinTheme__tokenProperty {
   color: #905;
 }
+
 .LiterasiinTheme__tokenSelector {
   color: #690;
 }
+
 .LiterasiinTheme__tokenOperator {
   color: #9a6e3a;
 }
+
 .LiterasiinTheme__tokenAttr {
   color: #07a;
 }
+
 .LiterasiinTheme__tokenVariable {
   color: #e90;
 }
+
 .LiterasiinTheme__tokenFunction {
   color: #dd4a68;
 }
+
 .LiterasiinTheme__mark {
   background: rgba(255, 212, 0, 0.14);
   border-bottom: 2px solid rgba(255, 212, 0, 0.3);
   padding-bottom: 2px;
 }
+
 .LiterasiinTheme__markOverlap {
   background: rgba(255, 212, 0, 0.3);
   border-bottom: 2px solid rgba(255, 212, 0, 0.7);
 }
+
 .LiterasiinTheme__mark.selected {
   background: rgba(255, 212, 0, 0.5);
   border-bottom: 2px solid rgba(255, 212, 0, 1);
 }
+
 .LiterasiinTheme__markOverlap.selected {
   background: rgba(255, 212, 0, 0.7);
   border-bottom: 2px solid rgba(255, 212, 0, 0.7);
 }
+
 .LiterasiinTheme__embedBlock {
   user-select: none;
 }
+
 .LiterasiinTheme__embedBlockFocus {
   outline: 2px solid rgb(60, 132, 244);
 }

@@ -1,20 +1,23 @@
-import { Anchor, Col, Row, Typography, theme } from 'antd'
+import { Anchor } from 'antd'
 import Layout from 'components/Layout'
+import PageHeader from 'components/PageHeader'
 
 export default function PrivacyPolicy () {
-  const { token } = theme.useToken()
   return (
-    <Layout.Default style={{ background: token.colorBgBase }}>
-      <Layout.Scaffold
-        title="Kebijakan Privasi"
-        description="Kebijakan privacy penggunaan website Literasiin"
-        headerStyle={{ background: token.colorPrimaryBg }}
-        bodyStyle={{ padding: '24px 0' }}
-      >
-        <Row gutter={[16, 16]}>
-          <Col xs={24} sm={12} md={18} lg={18} xl={18} xxl={18}>
-            <div id="intro">
-              <Typography.Paragraph>
+    <Layout.Default
+      className='bg-white'
+      beforeContent={
+        <PageHeader
+          title='Kebijakan Privasi'
+          description='Kebijakan privasi penggunaan website Literasiin'
+        />
+      }
+    >
+      <div className='py-4'>
+        <div className='container flex'>
+          <div className='w-full md:w-3/4 space-y-4 pr-0 md:pr-4'>
+            <div className='space-y-2' id="intro">
+              <p>
                 Website literasiin.com dimiliki oleh Literasiin.com, yang akan
                 menjadi pengontrol atas data pribadi Anda.Kami telah mengadopsi
                 Kebijakan Privasi ini untuk menjelaskan bagaimana kami memproses
@@ -24,11 +27,11 @@ export default function PrivacyPolicy () {
                 Privasi ini sebelum menggunakan website literasiin.com. Kami menjaga
                 data pribadi Anda dan berjanji untuk menjamin kerahasiaan dan
                 keamanannya.
-              </Typography.Paragraph>
+              </p>
             </div>
-            <div id="private-data">
-              <Typography.Title level={3} style={{ fontSize: token.fontSizeXL }}>Informasi pribadi yang kami kumpulkan:</Typography.Title>
-              <Typography.Paragraph>
+            <div className='space-y-2' id="private-data">
+              <div className='text-2xl font-black'>Informasi pribadi yang kami kumpulkan:</div>
+              <p>
                 Website literasiin.com dimiliki oleh Literasiin.com, yang akan
                 menjadi pengontrol atas data pribadi Anda.Kami telah mengadopsi
                 Kebijakan Privasi ini untuk menjelaskan bagaimana kami memproses
@@ -38,11 +41,11 @@ export default function PrivacyPolicy () {
                 Privasi ini sebelum menggunakan website literasiin.com. Kami menjaga
                 data pribadi Anda dan berjanji untuk menjamin kerahasiaan dan
                 keamanannya.
-              </Typography.Paragraph>
+              </p>
             </div>
-            <div id="data-processing">
-              <Typography.Title level={3} style={{ fontSize: token.fontSizeXL }}>Mengapa kami memproses data Anda?</Typography.Title>
-              <Typography.Paragraph>
+            <div className='space-y-2' id="data-processing">
+              <div className='text-2xl font-black'>Mengapa kami memproses data Anda?</div>
+              <p>
                 Menjaga data pelanggan agar tetap aman adalah prioritas utama kami.
                 Oleh karena itu, kami hanya dapat memproses sejumlah kecil data
                 pengguna, sebanyak yang benar-benar diperlukan untuk menjalankan
@@ -51,8 +54,8 @@ export default function PrivacyPolicy () {
                 informasi statistik terkait penggunaan website. Informasi statistik
                 ini tidak digabungkan sedemikian rupa hingga dapat mengidentifikasi
                 pengguna tertentu dari sistem.
-              </Typography.Paragraph>
-              <Typography.Paragraph>
+              </p>
+              <p>
                 Anda dapat mengunjungi website tanpa memberi tahu kami identitas
                 Anda atau mengungkapkan informasi apa pun, yang dapat digunakan oleh
                 seseorang untuk mengidentifikasi Anda sebagai individu tertentu yang
@@ -67,13 +70,13 @@ export default function PrivacyPolicy () {
                 menghubungi kami secara langsung dari website. Pengguna yang tidak
                 yakin tentang informasi yang wajib diberikan dapat menghubungi kami
                 melalui admin@literasiin.com.
-              </Typography.Paragraph>
+              </p>
             </div>
-            <div id="your-rights">
-              <Typography.Title level={3} style={{ fontSize: token.fontSizeXL }}>Hak-hak Anda:</Typography.Title>
-              <Typography.Paragraph>
+            <div className='space-y-2' id="your-rights">
+              <div className='text-2xl font-black'>Hak-hak Anda:</div>
+              <p>
                 <div>Anda memiliki hak-hak berikut terkait data pribadi Anda:</div>
-                <ul>
+                <ul className='list-disc ml-4'>
                   <li>
                     Hak untuk mendapatkan penjelasan.
                   </li>
@@ -100,22 +103,22 @@ export default function PrivacyPolicy () {
                     otomatis.
                   </li>
                 </ul>
-              </Typography.Paragraph>
+              </p>
             </div>
-            <div id="links">
-              <Typography.Title level={3} style={{ fontSize: token.fontSizeXL }}>Link ke website lain:</Typography.Title>
-              <Typography.Paragraph>
+            <div className='space-y-2' id="links">
+              <div className='text-2xl font-black'>Link ke website lain:</div>
+              <p>
                 Website kami mungkin berisi tautan ke website lain yang tidak
                 dimiliki atau dikendalikan oleh kami. Perlu diketahui bahwa kami
                 tidak bertanggung jawab atas praktik privasi website lain atau pihak
                 ketiga. Kami menyarankan Anda untuk selalu waspada ketika
                 meninggalkan website kami dan membaca pernyataan privasi setiap
                 website yang mungkin mengumpulkan informasi pribadi.
-              </Typography.Paragraph>
+              </p>
             </div>
-            <div id="data-safety">
-              <Typography.Title level={3} style={{ fontSize: token.fontSizeXL }}>Keamanan informasi:</Typography.Title>
-              <Typography.Paragraph>
+            <div className='space-y-2' id="data-safety">
+              <div className='text-2xl font-black'>Keamanan informasi:</div>
+              <p>
                 Kami menjaga keamanan informasi yang Anda berikan pada server
                 komputer dalam lingkungan yang terkendali, aman, dan terlindungi
                 dari akses, penggunaan, atau pengungkapan yang tidak sah. Kami
@@ -124,11 +127,11 @@ export default function PrivacyPolicy () {
                 pengungkapan tidak sah atas data pribadi dalam kendali dan
                 pengawasannya. Namun, kami tidak menjamin tidak akan ada transmisi
                 data melalui Internet atau jaringan nirkabel.
-              </Typography.Paragraph>
+              </p>
             </div>
-            <div id="laws">
-              <Typography.Title level={3} style={{ fontSize: token.fontSizeXL }}>Pengungkapan hukum:</Typography.Title>
-              <Typography.Paragraph>
+            <div className='space-y-2' id="laws">
+              <div className='text-2xl font-black'>Pengungkapan hukum:</div>
+              <p>
                 Kami akan mengungkapkan informasi apa pun yang kami kumpulkan,
                 gunakan, atau terima jika diwajibkan atau diizinkan oleh hukum,
                 misalnya untuk mematuhi panggilan pengadilan atau proses hukum
@@ -136,19 +139,19 @@ export default function PrivacyPolicy () {
                 diperlukan untuk melindungi hak kami, melindungi keselamatan Anda
                 atau keselamatan orang lain, menyelidiki penipuan, atau menanggapi
                 permintaan dari pemerintah.
-              </Typography.Paragraph>
+              </p>
             </div>
-            <div id="contacts">
-              <Typography.Title level={3} style={{ fontSize: token.fontSizeXL }}>Informasi kontak:</Typography.Title>
-              <Typography.Paragraph>
+            <div className='space-y-2' id="contacts">
+              <div className='text-2xl font-black'>Informasi kontak:</div>
+              <p>
                 Jika Anda ingin menghubungi kami untuk mempelajari Kebijakan ini
                 lebih lanjut atau menanyakan masalah apa pun yang berkaitan dengan
                 hak perorangan dan Informasi pribadi Anda, Anda dapat mengirim email
                 ke admin@literasiin.com.
-              </Typography.Paragraph>
+              </p>
             </div>
-          </Col>
-          <Col xs={24} sm={12} md={6} lg={6} xl={6} xxl={16}>
+          </div>
+          <div className='w-0 md:w-1/4'>
             <Anchor
               className='hide-xs'
               offsetTop={72}
@@ -194,10 +197,10 @@ export default function PrivacyPolicy () {
                   title: 'Informasi kontak'
                 }
               ]}
-      />
-          </Col>
-        </Row>
-      </Layout.Scaffold>
+            />
+          </div>
+        </div>
+      </div>
     </Layout.Default>
   )
 }

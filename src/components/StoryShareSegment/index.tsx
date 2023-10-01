@@ -9,12 +9,12 @@ type StoryShareSegmentProps = {
 }
 
 export default function StoryShareSegment ({ story }: StoryShareSegmentProps) {
-  const storyId = story.id
+  const storyId = story?.id
   const storyUrl = `${HOME_URL}/stories/${slugifyContentId(story)}`
-  const whatsappUrl = 'https://api.whatsapp.com/send' + qs.stringify({ text: `Baca cerita "${story.title}" di Literasiin. ${storyUrl}` }, { addQueryPrefix: true })
-  const facebookUrl = 'https://www.facebook.com/sharer/sharer.php' + qs.stringify({ u: storyUrl, quote: `Baca cerita "${story.title}" di Literasiin.` }, { addQueryPrefix: true })
-  const twitterUrl = 'https://twitter.com/intent/tweet' + qs.stringify({ text: `Baca cerita "${story.title}" di Literasiin. ${storyUrl}` }, { addQueryPrefix: true })
-  const mailUrl = 'mailto:' + qs.stringify({ subject: `Baca cerita "${story.title}"`, body: `Baca cerita "${story.title}" di Literasiin. ${storyUrl}` }, { addQueryPrefix: true })
+  const whatsappUrl = 'https://api.whatsapp.com/send' + qs.stringify({ text: `Baca cerita "${story?.title}" di Literasiin. ${storyUrl}` }, { addQueryPrefix: true })
+  const facebookUrl = 'https://www.facebook.com/sharer/sharer.php' + qs.stringify({ u: storyUrl, quote: `Baca cerita "${story?.title}" di Literasiin.` }, { addQueryPrefix: true })
+  const twitterUrl = 'https://twitter.com/intent/tweet' + qs.stringify({ text: `Baca cerita "${story?.title}" di Literasiin. ${storyUrl}` }, { addQueryPrefix: true })
+  const mailUrl = 'mailto:' + qs.stringify({ subject: `Baca cerita "${story?.title}"`, body: `Baca cerita "${story?.title}" di Literasiin. ${storyUrl}` }, { addQueryPrefix: true })
 
   const trackShare = (method:string) => {
     analytics.track('share', {
